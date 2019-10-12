@@ -1,30 +1,13 @@
-import argparse
 import logging
+import sys
 
 import pandas
-from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.db import odbc
+from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.google.sheets import Spreadsheet
 from data_tools.logging import LoggerFactory
-from sheetload._version import __version__
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
-parser.add_argument("--mode", help="Chooses between prod or dev run", type=str, default="dev")
-parser.add_argument("--log_level", help="sets the log level", type=str, default="info")
-parser.add_argument("--sheet_name", help="Name of your sheet from config", type=str, default=None)
-parser.add_argument("--sheet_key", help="Google sheet Key", type=str, default=None)
-parser.add_argument("--schema", help="Target Schema Name", type=str, default=None)
-parser.add_argument("--table", help="Target Table Name", type=str, default=None)
-parser.add_argument("--create_table", action="store_true", default=False)
-parser.add_argument(
-    "--force",
-    help="Forces target schema to be followed. Even when in DEV mode.",
-    action="store_true",
-    default=False,
-)
-parser.add_argument("--dry_run", action="store_true", default=False)
-args = parser.parse_args()
+from sheetload.flags import args
 
 SHEET_NAME = None
 CREATE_TABLE = None
@@ -98,6 +81,21 @@ class SheetBag:
             f"Log level: {args.log_level.upper()}. Writing to: {self.target_schema.upper()}"
         )
 
+    @staticmethod
+    def check_answer(user_input):
+        acceptable_answers = ["y", "n", "a"]
+        if user_input in acceptable_answers:
+            if user_input.lower() == "y":
+                return True
+            if user_input.lower() == "n":
+                return False
+            if user_input.lower() == "a":
+                logger.info("User aborted.")
+                sys.exit(1)
+        raise NotImplementedError(
+            "Your response cannot be interpreted. Choose 'y':yes, 'n':no, 'a':abort"
+        )
+
     def load_sheet(self):
         """Loads a google sheet, and calls clean up steps if applicable.
         Sheet must have been shared with account admin email address used in storage.
@@ -106,36 +104,46 @@ class SheetBag:
             TypeError: When loader does not return results that can be converted into a pandas
             DataFrame a type error will be raised.
         """
+
         logger.info(f"Importing data from {self.sheet_key}")
         df = Spreadsheet(self.sheet_key).worksheet_to_df()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
         df = self.cleanup(df)
         self.sheet_df = df
-        if args.dry_run:
-            self._show_dry_run_preview()
+
+    def cleanup(self, df):
+        clean_up = True
+        # check for interactive mode
+        if args.i:
+            logger.info("PRE-CLEANING PREVIEW: This is what you would push to the database.")
+            self._show_dry_run_preview(df)
+            clean_up_answer = input("Would you like to perform cleanup? (y/n/a): ")
+            clean_up = self.check_answer(clean_up_answer)
+
+        if clean_up is True:
+            logger.info("Housekeeping...")
+            # clean column names (slashes and spaces to understore), remove trailing whitespace
+            df.columns = [col.replace(" ", "_").replace("/", "_").strip() for col in df.columns]
+            # remove empty cols
+            if "" in df.columns:
+                df = df.drop([""], axis=1)
+
+            # clean trailing spaces in fields
+            for col in df.columns:
+                if df[col].dtype == "object":
+                    df[col] = df[col].str.strip()
+            clean_df = df
+            if args.dry_run or args.i:
+                logger.info("This is what you would push to the database:")
+            self._show_dry_run_preview(clean_df)
+
+            return clean_df
 
     @staticmethod
-    def cleanup(sheet_df):
-        logger.info("Housekeeping...")
-        # clean column names (slashes and spaces to understore), remove trailing whitespace
-        sheet_df.columns = [
-            col.replace(" ", "_").replace("/", "_").strip() for col in sheet_df.columns
-        ]
-        # remove empty cols
-        if "" in sheet_df.columns:
-            sheet_df = sheet_df.drop([""], axis=1)
-
-        # clean trailing spaces in fields
-        for col in sheet_df.columns:
-            if sheet_df[col].dtype == "object":
-                sheet_df[col] = sheet_df[col].str.strip()
-
-        return sheet_df
-
-    def _show_dry_run_preview(self):
-        logger.info("\nDataFrame DataTypes: \n\n" + str(self.sheet_df.dtypes))
-        logger.info("\nDataFrame Preview: \n\n" + str(self.sheet_df.head(10)))
+    def _show_dry_run_preview(sheet_df):
+        logger.info("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
+        logger.info("\nDataFrame Preview: \n\n" + str(sheet_df.head(10)))
 
     def _check_table(self):
         columns_query = f"""
@@ -160,13 +168,9 @@ class SheetBag:
             try:
                 logger.info("Checking table existance...")
                 columns, rows = self._check_table()
-            except Exception:
-                raise RuntimeError(
-                    "Could not check table existance. The table may not have manage to push."
-                )
+            except Exception as e:
+                raise RuntimeError(e)
             logger.info(f"Push successful. Columns {columns}, Rows: {rows}")
-        else:
-            logger.info("This is what you would push to the data base if not in dry run mode.")
 
 
 def run():
