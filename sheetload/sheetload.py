@@ -6,8 +6,10 @@ from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.db import odbc
 from data_tools.google.sheets import Spreadsheet
 from data_tools.logging import LoggerFactory
+from sheetload._version import __version__
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 parser.add_argument("--mode", help="Chooses between prod or dev run", type=str, default="dev")
 parser.add_argument("--log_level", help="sets the log level", type=str, default="info")
 parser.add_argument("--sheet_name", help="Name of your sheet from config", type=str, default=None)
