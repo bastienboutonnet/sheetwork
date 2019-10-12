@@ -21,6 +21,7 @@ parser.add_argument(
     action="store_true",
     default=False,
 )
+parser.add_argument("--dry_run", action="store_true", default=False)
 args = parser.parse_args()
 
 SHEET_NAME = None
@@ -72,7 +73,7 @@ class SheetBag:
         self.target_table = None
         self.create_table = False
         self.sheet_df = None
-        self.parse_yaml()
+        self.parse_config()
 
     def parse_config(self):
         logger.info("Parsing configuration...")
@@ -109,6 +110,8 @@ class SheetBag:
             raise TypeError("import_sheet did not return a pandas DataFrame")
         df = self.cleanup(df)
         self.sheet_df = df
+        if args.dry_run:
+            self._show_dry_run_preview()
 
     @staticmethod
     def cleanup(sheet_df):
@@ -128,6 +131,10 @@ class SheetBag:
 
         return sheet_df
 
+    def _show_dry_run_preview(self):
+        logger.info("\nDataFrame DataTypes: \n\n" + str(self.sheet_df.dtypes))
+        logger.info("\nDataFrame Preview: \n\n" + str(self.sheet_df.head(10)))
+
     def _check_table(self):
         columns_query = f"""
                         select count(*)
@@ -143,18 +150,21 @@ class SheetBag:
         return columns[0][0], rows[0][0]
 
     def push_sheet(self):
-        logger.info("Pushing sheet to Snowflake...")
-        push_pandas_to_snowflake(
-            self.sheet_df, self.target_schema, self.target_table, create=self.create_table
-        )
-        try:
-            logger.info("Checking table existance...")
-            columns, rows = self._check_table()
-        except Exception:
-            raise RuntimeError(
-                "Could not check table existance. The table may not have manage to push."
+        if not args.dry_run:
+            logger.info("Pushing sheet to Snowflake...")
+            push_pandas_to_snowflake(
+                self.sheet_df, self.target_schema, self.target_table, create=self.create_table
             )
-        logger.info(f"Push successful. Columns {columns}, Rows: {rows}")
+            try:
+                logger.info("Checking table existance...")
+                columns, rows = self._check_table()
+            except Exception:
+                raise RuntimeError(
+                    "Could not check table existance. The table may not have manage to push."
+                )
+            logger.info(f"Push successful. Columns {columns}, Rows: {rows}")
+        else:
+            logger.info("This is what you would push to the data base if not in dry run mode.")
 
 
 def run():
