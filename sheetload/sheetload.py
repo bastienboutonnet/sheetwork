@@ -3,16 +3,24 @@ import logging
 
 import pandas
 from data_tools.db.pandas import push_pandas_to_snowflake
+from data_tools.db import odbc
 from data_tools.google.sheets import Spreadsheet
 from data_tools.logging import LoggerFactory
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--mode", help="Chooses between prod or dev run", type=str, default="dev")
 parser.add_argument("--log_level", help="sets the log level", type=str, default="info")
 parser.add_argument("--sheet_name", help="Name of your sheet from config", type=str, default=None)
 parser.add_argument("--sheet_key", help="Google sheet Key", type=str, default=None)
 parser.add_argument("--schema", help="Target Schema Name", type=str, default=None)
 parser.add_argument("--table", help="Target Table Name", type=str, default=None)
 parser.add_argument("--create_table", action="store_true", default=False)
+parser.add_argument(
+    "--force",
+    help="Forces target schema to be followed. Even when in DEV mode.",
+    action="store_true",
+    default=False,
+)
 args = parser.parse_args()
 
 SHEET_NAME = None
@@ -23,6 +31,9 @@ TARGET_TABLE = None
 # set up logger levels
 if args.log_level in {"debug", "warning", "info", "error"}:
     logger = LoggerFactory.get_logger(level=getattr(logging, args.log_level.upper()))
+if args.mode == "dev":
+    args.log_level = "debug"
+    logger = LoggerFactory.get_logger(level=getattr(logging, "debug".upper()))
 else:
     raise NotImplementedError("This level is not supported.")
 
@@ -63,17 +74,26 @@ class SheetBag:
         self.sheet_df = None
         self.parse_yaml()
 
-    def parse_yaml(self):
-        logger.info("Parsing yml")
-        self.target_schema = "sand"
+    def parse_config(self):
+        logger.info("Parsing configuration...")
+        self.target_schema = args.schema
+
+        # override target schema for dev.
+        if args.mode == "dev" and not args.force:
+            self.target_schema = "sand"
+
         self.target_table = "bb_sheetload_test"
         self.create_table = True
-        logger.info(SHEET_NAME)
+
         if SHEET_NAME:
             self.sheet_key = SHEET_NAME
         else:
             self.sheet_key = "Unknown"
         logger.info(self.sheet_key)
+        logger.info(
+            f"Running in {args.mode.upper()} mode."
+            f"Log level: {args.log_level.upper()}. Writing to: {self.target_schema.upper()}"
+        )
 
     def load_sheet(self):
         """Loads a google sheet, and calls clean up steps if applicable.
@@ -108,12 +128,33 @@ class SheetBag:
 
         return sheet_df
 
+    def _check_table(self):
+        columns_query = f"""
+                        select count(*)
+                        from dwh.information_schema.columns
+                        where table_catalog = 'DWH'
+                        and table_schema = '{self.target_schema.upper()}'
+                        and table_name = '{self.target_table.upper()}'
+                        ;
+                        """
+        rows_query = f"select count(*) from {self.target_schema}.{self.target_table}"
+        columns = odbc.run_query(odbc.SNOWFLAKE_DSN, columns_query)
+        rows = odbc.run_query(odbc.SNOWFLAKE_DSN, rows_query)
+        return columns[0][0], rows[0][0]
+
     def push_sheet(self):
-        logger.info("Pushing sheet to Snowflake.")
+        logger.info("Pushing sheet to Snowflake...")
         push_pandas_to_snowflake(
             self.sheet_df, self.target_schema, self.target_table, create=self.create_table
         )
-        logger.info("Push complete.")
+        try:
+            logger.info("Checking table existance...")
+            columns, rows = self._check_table()
+        except Exception:
+            raise RuntimeError(
+                "Could not check table existance. The table may not have manage to push."
+            )
+        logger.info(f"Push successful. Columns {columns}, Rows: {rows}")
 
 
 def run():
