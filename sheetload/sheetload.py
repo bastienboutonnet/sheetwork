@@ -74,6 +74,13 @@ class SheetBag:
         logger.info(self.sheet_key)
 
     def load_sheet(self):
+        """Loads a google sheet, and calls clean up steps if applicable.
+        Sheet must have been shared with account admin email address used in storage.
+
+        Raises:
+            TypeError: When loader does not return results that can be converted into a pandas
+            DataFrame a type error will be raised.
+        """
         logger.info(f"Importing data from {self.sheet_key}")
         df = Spreadsheet(self.sheet_key).worksheet_to_df()
         if not isinstance(df, pandas.DataFrame):
