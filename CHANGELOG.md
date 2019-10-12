@@ -1,4 +1,4 @@
-# sheetload (Unreleased)
+# 1.0.0 Kraftwerk (Unreleased)
 ## Overview
 This is the very first version of Sheetload. It is named after the German electronic pioneers "Kraftwerk" as it is the pioneer (first version) of the package that will set and pave the way for future generations to come and we will all live happy forever ever after...
 
