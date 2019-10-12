@@ -47,7 +47,9 @@ def set_flags_from_args(flags):
             )
     if not flags.sheet_key and not flags.sheet_name:
         raise NotImplementedError(
-            "No sheet selected for import. Provide a sheet_key or a sheet_name. See help, for hints."
+            """
+            No sheet selected for import. Provide a sheet_key or a sheet_name.
+            See help, for hints."""
         )
 
 
@@ -85,17 +87,33 @@ class SheetBag:
         df = Spreadsheet(self.sheet_key).worksheet_to_df()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
+        df = self.cleanup(df)
         self.sheet_df = df
 
     @staticmethod
     def cleanup(sheet_df):
-        logging.info("Housekeeping...")
-        pass
+        logger.info("Housekeeping...")
+        # clean column names (slashes and spaces to understore), remove trailing whitespace
+        sheet_df.columns = [
+            col.replace(" ", "_").replace("/", "_").strip() for col in sheet_df.columns
+        ]
+        # remove empty cols
+        if "" in sheet_df.columns:
+            sheet_df = sheet_df.drop([""], axis=1)
+
+        # clean trailing spaces in fields
+        for col in sheet_df.columns:
+            if sheet_df[col].dtype == "object":
+                sheet_df[col] = sheet_df[col].str.strip()
+
+        return sheet_df
 
     def push_sheet(self):
+        logger.info("Pushing sheet to Snowflake.")
         push_pandas_to_snowflake(
             self.sheet_df, self.target_schema, self.target_table, create=self.create_table
         )
+        logger.info("Push complete.")
 
 
 def run():
