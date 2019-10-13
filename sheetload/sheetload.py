@@ -9,6 +9,7 @@ from data_tools.google.sheets import Spreadsheet
 from sheetload.config import ConfigLoader
 from sheetload.exceptions import external_errors_to_catch
 from sheetload.flags import args, logger
+from sheetload.yaml_helpers import validate_yaml
 
 
 class SheetBag(ConfigLoader):
@@ -116,6 +117,8 @@ class SheetBag(ConfigLoader):
     def push_sheet(self):
         if not args.dry_run:
             logger.info("Pushing sheet to Snowflake...")
+            if self.sheet_columns is None:
+                self.sheet_columns = dict()
             try:
                 push_pandas_to_snowflake(
                     self.sheet_df,
@@ -139,7 +142,7 @@ class SheetBag(ConfigLoader):
                     logging.error(e)
                 sys.exit(1)
             try:
-                logger.info("Checking table existance...")
+                logger.info("Checking table existence...")
                 columns, rows = self._check_table()
             except Exception as e:
                 raise RuntimeError(e)
@@ -152,6 +155,7 @@ class SheetBag(ConfigLoader):
 
 
 def run():
+    validate_yaml()
     sheetbag = SheetBag()
     sheetbag.load_sheet()
     sheetbag.push_sheet()
