@@ -1,4 +1,7 @@
 import argparse
+import logging
+
+from data_tools.logging import LoggerFactory
 
 from sheetload._version import __version__
 
@@ -20,3 +23,13 @@ parser.add_argument(
 parser.add_argument("--dry_run", action="store_true", default=False)
 parser.add_argument("--i", action="store_true", default=False)
 args = parser.parse_args()
+
+
+# set up logger levels
+if args.log_level in {"debug", "warning", "info", "error"}:
+    logger = LoggerFactory.get_logger(level=getattr(logging, args.log_level.upper()))
+if args.mode == "dev":
+    args.log_level = "debug"
+    logger = LoggerFactory.get_logger(level=getattr(logging, "debug".upper()))
+else:
+    raise NotImplementedError("This level is not supported.")
