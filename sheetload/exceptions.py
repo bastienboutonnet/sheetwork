@@ -1,0 +1,2 @@
+class SheetloadConfigMissingError(Exception):
+    pass
