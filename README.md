@@ -93,6 +93,7 @@ sheetload --sheet_name test_sheet
 
 ### Useful flags
 These flags are valid for both of the execution modes [outlined above](#usage).
+
 **Dry Run**: Dry runs (skipping pushing to the database) can be achieved by adding the `--dry_run` flag.
 
 **Interactive Cleanup**: You may want to see what the file looks like and decide whether you need to apply cleanups at all. You can do this by using the `--i` flag.
