@@ -6,8 +6,9 @@ from data_tools.db import odbc
 from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.google.sheets import Spreadsheet
 
-from sheetload.flags import args, logger
 from sheetload.config import ConfigLoader
+from sheetload.exceptions import external_errors_to_catch
+from sheetload.flags import args, logger
 
 
 class SheetBag(ConfigLoader):
@@ -66,8 +67,9 @@ class SheetBag(ConfigLoader):
 
     @staticmethod
     def _show_dry_run_preview(sheet_df):
-        logger.info("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
-        logger.info("\nDataFrame Preview: \n\n" + str(sheet_df.head(10)))
+
+        print("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
+        print("\nDataFrame Preview: \n\n" + str(sheet_df.head(10)))
 
     def cleanup(self, df):
         clean_up = True
@@ -95,6 +97,7 @@ class SheetBag(ConfigLoader):
                 self._show_dry_run_preview(clean_df)
 
             return clean_df
+        return df
 
     def _check_table(self):
         columns_query = f"""
@@ -113,15 +116,37 @@ class SheetBag(ConfigLoader):
     def push_sheet(self):
         if not args.dry_run:
             logger.info("Pushing sheet to Snowflake...")
-            push_pandas_to_snowflake(
-                self.sheet_df, self.target_schema, self.target_table, create=self.create_table
-            )
+            try:
+                push_pandas_to_snowflake(
+                    self.sheet_df,
+                    self.target_schema,
+                    self.target_table,
+                    create=self.create_table,
+                    overwrite_defaults=self.sheet_columns,
+                )
+            except ValueError as e:
+                if str(e) == external_errors_to_catch["overwrite_cols_data_tools_error"]:
+                    logging.error(
+                        """
+                        Column names in df to be imported seem to differ from the ones provided in
+                        your config. You can check the data frame you're about to upload by doing a
+                        dry run (--dry_run) or using the interactive (--i) mode. This is often due to
+                        cleaning steps that have been skipped.
+                        """
+                    )
+                    logger.warning("Push aborted.")
+                else:
+                    logging.error(e)
+                sys.exit(1)
             try:
                 logger.info("Checking table existance...")
                 columns, rows = self._check_table()
             except Exception as e:
                 raise RuntimeError(e)
-            logger.info(f"Push successful. Columns {columns}, Rows: {rows}")
+            logger.info(
+                f"Push successful for {self.target_schema.upper()}.{self.target_table.upper()}.\n"
+                f"Columns: {columns}, Rows: {rows}."
+            )
         else:
             logger.info("Nothing pushed since you were in --dry_run mode.")
 
