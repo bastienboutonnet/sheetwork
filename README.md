@@ -101,8 +101,8 @@ Down the line we expect this mode to have more functionality
 
 **Create Table**: The target table may not be present on the database. You can create it by adding the `--create_table` flag.
 
-### Other Runtime Flags
-There are a few more flags linked to modes, log level and forcing intented protection measures down. Here is the full list of flags with their use, defaults etc. (You can get that by doing )
+### Other Flags 🤯
+There are a few more flags linked to modes, log level and forcing intented protection measures down. Here is the full list of flags with their use, defaults etc. (You can get that by doing `sheetload -h`)
 ```
 usage: sheetload [-h] [--version] [--mode MODE] [--log_level LOG_LEVEL]
                  [--sheet_name SHEET_NAME] [--sheet_key SHEET_KEY]
