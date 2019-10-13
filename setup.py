@@ -8,6 +8,7 @@ DESCRIPTION = """
                 """
 REQUIRED = [
     # "git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.8.7#egg=data-tools", # TODO:not sure how we can make that work
+    "cerebrus",
     "pandas",
     "pyyaml",
     "snowflake==0.0.3",

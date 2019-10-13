@@ -1,3 +1,4 @@
+cerebrus
 git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.8.7#egg=data-tools
 pandas
 pyyaml
