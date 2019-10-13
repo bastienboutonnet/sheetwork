@@ -13,15 +13,27 @@ parser.add_argument("--sheet_name", help="Name of your sheet from config", type=
 parser.add_argument("--sheet_key", help="Google sheet Key", type=str, default=None)
 parser.add_argument("--schema", help="Target Schema Name", type=str, default=None)
 parser.add_argument("--table", help="Target Table Name", type=str, default=None)
-parser.add_argument("--create_table", action="store_true", default=False)
+parser.add_argument(
+    "--create_table",
+    help="Creates target table before pushing.",
+    action="store_true",
+    default=False,
+)
 parser.add_argument(
     "--force",
     help="Forces target schema to be followed. Even when in DEV mode.",
     action="store_true",
     default=False,
 )
-parser.add_argument("--dry_run", action="store_true", default=False)
-parser.add_argument("--i", action="store_true", default=False)
+parser.add_argument(
+    "--dry_run", help="Skips pushing to database", action="store_true", default=False
+)
+parser.add_argument(
+    "--i",
+    help="Turns on interactive mode, which allows previews and cleanup choices",
+    action="store_true",
+    default=False,
+)
 args = parser.parse_args()
 
 
