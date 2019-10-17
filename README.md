@@ -11,9 +11,8 @@ Performs some cleanups on column names and string (such as removing trailing spa
 
 ## Installation
 1. Activate the virtual environment you might want to use it in (most likely it's going to be the one you set up for `data_etl`.
-2. Sheetload requires funtionality from [`data_tools`](https://github.com/tripactions/data_tooling) but is currently not able to require and install the package as part of its setup since `data_tools` is not hosted on a pypy server. If you do not have `data_tools` installed. Head over to this [README](https://github.com/tripactions/data_tooling/blob/master/README.md) for installation guidance.
-3. Make sure your access tokens and usernames are installed according to TripActions Data Tooling standards in the form of a `data_tools.ini` file. Setup information can be found in [data_tools Credentials](https://github.com/tripactions/data_tooling/blob/master/README.md#credentials).
-
+2. Make sure `pip` is above `v19.1` otherwise one of the required packages by `sheetload` (`data_tools`) will not be installed correctly. If you're not sure you can check by doing `pip --version`. If you're behind, you can upgrade it via `pip install -U pip`.
+3. Make sure your access tokens and usernames are installed according to TripActions Data Tooling standards. Setup information can be found in [data_tools Credentials](https://github.com/tripactions/data_tooling/blob/master/README.md#credentials).
 4. Install Sheetload
 ```bash
 pip install git@github.com:bastienboutonnet/sheetload.git@v1.0.0b1
