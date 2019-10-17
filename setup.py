@@ -10,10 +10,6 @@ REQUIRED = [
     # "git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.8.7#egg=data-tools", # TODO:not sure how we can make that work
     "pandas",
     "pyyaml",
-    "snowflake==0.0.3",
-    "snowflake-ingest==0.9.1",
-    "snowflake-connector-python==1.7.4",
-    "tqdm",
 ]
 REQUIRES_PYTHON = ">=3.6.0"
 
