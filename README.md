@@ -29,3 +29,24 @@ Should display something like this:
 sheetload 1.0.0rc1
 ```
 
+## Usage
+Using `sheeload` is simple. You call it, and provide the following info via the command line:
+- a google sheet key
+- a target schema
+- a target table
+For example:
+```bash
+sheetload --sheet_key 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg --schema sand --table test_table
+```
+This mode will load the content of the sheet into a pandas dataframe, perform default basic [cleanups](#cleanups), and push the dataframe to a Snowflake table. No data type casting is possible in this mode.
+
+## Cleanups
+### Column Names
+To avoid issues with Snowflake column formatting, column names that contain spaces or `/` will be cleaned to snake case.
+For example: `col a` -> `col_a`, `company/account` -> `company_account`
+
+### String Trimming
+Another common issue often found in google sheet are trailing/leading whitespace. This kind of whitespace will be removed. This can cause issues down the line if you have to match strings or perform equality tests between two strings (although it is always safer when doing so to make sure to clean your strings beforehand --but that's beyond the scope of this explanation).
+
+
+
