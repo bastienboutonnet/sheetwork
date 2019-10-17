@@ -7,9 +7,10 @@ DESCRIPTION = """
                 and upload them to snowflake
                 """
 REQUIRED = [
-    # "git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.8.7#egg=data-tools", # TODO:not sure how we can make that work
+    "data_tools @ git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.9.1",
     "pandas",
     "pyyaml",
+    "bumpversion",
 ]
 REQUIRES_PYTHON = ">=3.6.0"
 
