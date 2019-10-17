@@ -15,7 +15,7 @@ Performs some cleanups on column names and string (such as removing trailing spa
 3. Make sure your access tokens and usernames are installed according to TripActions Data Tooling standards. Setup information can be found in [data_tools Credentials](https://github.com/tripactions/data_tooling/blob/master/README.md#credentials).
 4. Install Sheetload
 ```bash
-pip install git@github.com:bastienboutonnet/sheetload.git@v1.0.0rc1
+pip install git+ssh://git@github.com/bastienboutonnet/sheetload.git@v1.0.0rc1
 ```
 Make sure you've setup your GitHub ssh keys, if you don't know how to do it, check [here](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/).
 
