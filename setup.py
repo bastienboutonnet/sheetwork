@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 NAME = "sheetload"
 VERSION = "0.0.0b1"
@@ -24,4 +24,5 @@ setup(
     install_requires=REQUIRED,
     python_requires=REQUIRES_PYTHON,
     entry_points={"console_scripts": ["sheetload=sheetload.sheetload:run"]},
+    packages=find_packages(),
 )
