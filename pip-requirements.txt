@@ -1,5 +1,5 @@
 cerberus
-git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.9.1#egg=data-tools
+git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.9.4#egg=data-tools
 pandas
 pyyaml
 bumpversion

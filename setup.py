@@ -7,7 +7,7 @@ DESCRIPTION = """
                 and upload them to snowflake
                 """
 REQUIRED = [
-    "data_tools @ git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.9.1",
+    "data_tools @ git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.9.4",
     "pandas",
     "pyyaml",
 ]
