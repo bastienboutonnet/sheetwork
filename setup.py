@@ -1,16 +1,14 @@
 from setuptools import find_packages, setup
 
 NAME = "sheetload"
-VERSION = "0.0.0rc2"
+VERSION = "0.0.0rc3"
 DESCRIPTION = """
                 sheetload is a command line tool to load sheets from google
                 and upload them to snowflake
                 """
-REQUIRED = [
-    "data_tools @ git+ssh://git@github.com/tripactions/Data_Tooling.git@v1.9.6",
-    "pandas",
-    "pyyaml",
-]
+
+REQUIRED = [line.strip() for line in open("pip-requirements.txt", "r")]
+
 REQUIRES_PYTHON = ">=3.6.0"
 
 
