@@ -1,0 +1,10 @@
+sheets:
+  - sheet_name: test_sheet
+    sheet_key: 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg
+    target_schema: sand
+    target_table: bb_test_sheetload
+    columns:
+      - name: col_a
+        datatype: int
+      - name: col_b
+        datatype: varchar
