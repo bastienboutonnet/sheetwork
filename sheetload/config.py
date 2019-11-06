@@ -55,7 +55,7 @@ class ConfigLoader(FlagParser):
                 raise SheetConfigParsingError(
                     f"Found more than one config for {self.sheet_name}. Check your sheets.yml file."
                 )
-            elif not sheet_config:
+            if not sheet_config:
                 raise SheetConfigParsingError(
                     f"No configuration was found for {self.sheet_name}. Check your sheets.yml file."
                 )

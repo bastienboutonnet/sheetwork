@@ -117,9 +117,7 @@ class SheetBag(ConfigLoader):
     def push_sheet(self):
         if not args.dry_run:
             logger.info("Pushing sheet to Snowflake...")
-            # TODO: Remove this when change on data_tools is merged.
-            if self.sheet_columns is None:
-                self.sheet_columns = dict()
+
             try:
                 push_pandas_to_snowflake(
                     self.sheet_df,
