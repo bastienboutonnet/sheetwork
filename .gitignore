@@ -77,3 +77,4 @@ local.py
 
 # VsCode Env
 .vscode
+.env
