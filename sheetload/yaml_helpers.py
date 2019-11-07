@@ -27,3 +27,4 @@ def validate_yaml():
     valid_yaml = v.validate(doc, validation_schema)
     if not valid_yaml:
         raise SheetConfigParsingError(f"scheet.yml is not formatted properly. \n {v.errors}")
+    return valid_yaml
