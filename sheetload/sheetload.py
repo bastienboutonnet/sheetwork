@@ -117,7 +117,7 @@ class SheetBag(ConfigLoader):
     def push_sheet(self):
         if not args.dry_run:
             logger.info("Pushing sheet to Snowflake...")
-
+            logger.debug(f"Column override dict is a {type(self.sheet_columns)}")
             try:
                 push_pandas_to_snowflake(
                     self.sheet_df,
@@ -154,7 +154,6 @@ class SheetBag(ConfigLoader):
 
 
 def run():
-    validate_yaml()
     sheetbag = SheetBag()
     sheetbag.load_sheet()
     sheetbag.push_sheet()

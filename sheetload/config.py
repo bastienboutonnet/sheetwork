@@ -4,7 +4,7 @@ import yaml
 
 from sheetload.exceptions import SheetloadConfigMissingError, SheetConfigParsingError
 from sheetload.flags import args, logger
-from sheetload.yaml_helpers import load_yaml
+from sheetload.yaml_helpers import load_yaml, validate_yaml
 
 
 class FlagParser:
@@ -20,7 +20,7 @@ class ConfigLoader(FlagParser):
     def __init__(self):
         self.config_file = None
         self.sheet_config = None
-        self.sheet_columns = None
+        self.sheet_columns = dict()
         FlagParser.__init__(self)
         self.set_config()
 
@@ -39,7 +39,9 @@ class ConfigLoader(FlagParser):
 
     def load_config_from_file(self):
         logger.info("Reading config from config file.")
-        self.config = load_yaml()
+        yml_is_valid = validate_yaml()
+        if yml_is_valid:
+            self.config = load_yaml()
         if self.config:
             self._get_sheet_config()
             self._generate_column_dict()
@@ -70,7 +72,8 @@ class ConfigLoader(FlagParser):
                 column_dict = dict()
                 for column in columns:
                     column_dict.update(dict({column["name"]: column["datatype"]}))
-                self.sheet_columns = column_dict
+                if column_dict:
+                    self.sheet_columns = column_dict
         except KeyError as e:
             logger.warning(
                 f"No {str(e)} data for {self.sheet_name}. But that might be intentional."
