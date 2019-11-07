@@ -1,4 +1,5 @@
 import logging
+import re
 import sys
 
 import pandas
@@ -83,7 +84,20 @@ class SheetBag(ConfigLoader):
         if clean_up is True:
             logger.info("Housekeeping...")
             # clean column names (slashes and spaces to understore), remove trailing whitespace
-            df.columns = [col.replace(" ", "_").replace("/", "_").strip() for col in df.columns]
+            df.columns = [re.sub("^\d+", "", col) for col in df.columns]
+            df.columns = [
+                col.replace(" ", "_")
+                .replace("/", "_")
+                .replace(".", "_")
+                .replace("?", "_")
+                .replace("__", "_")
+                .strip()
+                for col in df.columns
+            ]
+            df.columns = [re.sub("^\_+", "", col) for col in df.columns]
+            df.columns = [re.sub("\_+$", "", col) for col in df.columns]
+            df.columns = [re.sub("[^\w\s]", "", col) for col in df.columns]
+
             # remove empty cols
             if "" in df.columns:
                 df = df.drop([""], axis=1)
