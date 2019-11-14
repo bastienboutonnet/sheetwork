@@ -38,10 +38,13 @@ args = parser.parse_args()
 
 
 # set up logger levels
+if args.mode == "dev":
+    logger = LoggerFactory.get_logger(level=getattr(logging, "debug".upper()))
+elif args.mode == "prod":
+    logger = LoggerFactory.get_logger(level=getattr(logging, "info".upper()))
+else:
+    raise NotImplementedError("This mode is not supported.")
 if args.log_level in {"debug", "warning", "info", "error"}:
     logger = LoggerFactory.get_logger(level=getattr(logging, args.log_level.upper()))
-if args.mode == "dev":
-    args.log_level = "debug"
-    logger = LoggerFactory.get_logger(level=getattr(logging, "debug".upper()))
 else:
     raise NotImplementedError("This level is not supported.")
