@@ -36,7 +36,7 @@ Using `sheeload` is simple. You call it, and provide the following info via the 
 - a target table
 For example:
 ```bash
-sheetload --sheet_key 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg --schema sand --table test_table
+sheetload --sheet_key adkajhsdkajhkajh8768271872613akjsdhaksjd --schema sand --table test_table
 ```
 This mode will load the content of the sheet into a pandas dataframe, perform default basic [cleanups](#cleanups), and push the dataframe to a Snowflake table. No data type casting is possible in this mode.
 
@@ -64,7 +64,7 @@ This is the simplest and quickes useage mode. All you need is to call `sheetload
 - a target schema
 - a target table
 ```bash
-sheetload --sheet_key 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg --schema sand --table test_table
+sheetload --sheet_key adkajhsdkajhkajh8768271872613akjsdhaksjd --schema sand --table test_table
 ```
 This mode will load the content of the sheet into a pandas dataframe, perform default basic cleanups (INSERT DOC LINK LATER), and push the dataframe to a Snowflake table. No data type casting is possible in this mode.
 
