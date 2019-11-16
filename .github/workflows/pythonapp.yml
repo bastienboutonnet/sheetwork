@@ -8,9 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - actions/checkout@v1
+    - uses: webfactory/ssh-agent@v0.1.1
       with:
-        lfs: false
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
