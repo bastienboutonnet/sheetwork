@@ -42,7 +42,12 @@ This mode will load the content of the sheet into a pandas dataframe, perform de
 
 ## Cleanups
 ### Column Names
-To avoid issues with Snowflake column formatting, column names that contain spaces or `/` will be cleaned to snake case.
+To avoid issues with Snowflake column formatting, column names that:
+- contain spaces
+- `/`
+- camelCasing
+- `.`
+will be cleaned to snake case.
 For example: `col a` -> `col_a`, `company/account` -> `company_account`
 
 ### String Trimming
@@ -80,15 +85,45 @@ sheets:
       - name: col_b
         datatype: varchar
 ```
+
 Sheets are referred to by a human readable name (`sheet_name`). This is the name you will need to use later when calling `sheetload`.
-The rest of the information is pretty straighforward. Column datatype casting is achived by adding a `columns` entry listing all the columns for which a specific datatype must be cast.
-- Navigate to the folder containing your `sheet.yml` file:
+The rest of the information is pretty straighforward. Column datatype casting is achived by adding a `columns` entry listing all the columns for which a specific datatype must be cast see [Important notes section below](#Important-notes-on-`Sheets.yml`-formatting) for info on column name formatting.
+- Navigate to the folder containing your `sheets.yml` file:
 ```bash
 cd /path/to/your/yml/folder
 ```
 - Call `sheetload`🧼 providing only a sheet name `--sheet_name` in this example it would be `test_sheet`. So it all should look like this
 ```bash
 sheetload --sheet_name test_sheet
+```
+
+#### Important Notes on `Sheets.yml` formatting
+- **Do you need to list ALL the columns in your sheet?**
+No! You don't have to. You can leave the columns part empty and **you only need to add a column if you want to override its format when it's saved to Snowflake**
+- **Do the column names need to be in the format of the original sheet?**
+No. **Actually they shouldn't!** As mentioned [earlier in the documentation](#column-names) Sheetload needs to convert the name of the columns in a format that works with Snowflake and as such you should write the columns in the `sheets.yml` file as they would end up in Snowflake.
+- **Not sure exactly how the columns will be reformated?**
+Yeah that's kinda expected. Besides checking [the cleanup steps documentation above](#column-names) you should add the `--dry_run` flag to see what would happen to your sheet. This mode will not write to Snowflake, and will display handy information about the look of your data frame:
+
+It first gives you a list of all the columns in the table **formatted for Snowflake** as well as the data type of each of the columns so that you can spot whether you might have to override any of them when writing to Snowflake. **IMPORTANT**: These are *Pandas datatypes*. It will look like this:
+```
+2019-11-16 12:59:15 - data_tools.logging - [INFO] - POST-CLEANING PREVIEW: This is what you would push to the database:
+
+DataFrame DataTypes:
+
+col_a    object
+col_b    object
+dtype: object
+```
+
+Then it will also show you a preview of the dataframe (first few rows). **NOTE: For dataframes with many columns the preview will likely be trucated** (this issue will be addressed in an upcoming release [see issue #39](https://github.com/bastienboutonnet/sheetload/issues/39)). The preview will look like this:
+```
+DataFrame Preview:
+
+  col_a col_b
+0     1  as .
+1     2     b
+2     3     c
 ```
 
 ### Useful flags
