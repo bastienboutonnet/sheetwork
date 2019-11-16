@@ -78,3 +78,6 @@ local.py
 # VsCode Env
 .vscode
 .env
+
+# Pytest Framework
+.coverage
