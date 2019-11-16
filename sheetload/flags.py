@@ -8,7 +8,7 @@ from sheetload._version import __version__
 parser = argparse.ArgumentParser()
 parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 parser.add_argument("--mode", help="Chooses between prod or dev run", type=str, default="dev")
-parser.add_argument("--log_level", help="sets the log level", type=str, default="info")
+parser.add_argument("--log_level", help="sets the log level", type=str, default=None)
 parser.add_argument("--sheet_name", help="Name of your sheet from config", type=str, default=None)
 parser.add_argument("--sheet_key", help="Google sheet Key", type=str, default=None)
 parser.add_argument("--schema", help="Target Schema Name", type=str, default=None)
@@ -44,7 +44,12 @@ elif args.mode == "prod":
     logger = LoggerFactory.get_logger(level=getattr(logging, "info".upper()))
 else:
     raise NotImplementedError("This mode is not supported.")
-if args.log_level in {"debug", "warning", "info", "error"}:
-    logger = LoggerFactory.get_logger(level=getattr(logging, args.log_level.upper()))
+
+# override if a log level is passed to the command line argument
+if args.log_level:
+    if args.log_level in {"debug", "warning", "info", "error"}:
+        logger = LoggerFactory.get_logger(level=getattr(logging, args.log_level.upper()))
+    else:
+        raise NotImplementedError("This level is not supported.")
 else:
-    raise NotImplementedError("This level is not supported.")
+    args.log_level = "debug"
