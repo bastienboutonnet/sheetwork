@@ -1,4 +1,4 @@
-name: Data Tools
+name: Sheetload
 
 on: [push]
 
@@ -21,8 +21,9 @@ jobs:
         pip install -r pip-requirements.txt -r dev-pip-requirements.txt
     - name: Test with pytest
       run: |
-        pytest --cov=data_tools tests/
+        # pytest --cov=data_tools tests/
+        pytest
     - name: Mypy checks
       uses: jpetrucciani/mypy-check@master
       with:
-        path: 'data_tools'
+        path: 'sheetload'
