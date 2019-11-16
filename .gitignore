@@ -81,3 +81,6 @@ local.py
 
 # Pytest Framework
 .coverage
+
+# Secret stuff
+google_sheetkey.txt
