@@ -79,7 +79,7 @@ class SheetBag(ConfigLoader):
         logger.info("Housekeeping...")
         logger.debug(df)
         # clean column names (slashes and spaces to understore), remove trailing whitespace
-        clean_df.columns = [re.sub("^\d+", "", col) for col in clean_df.columns]
+        clean_df.columns = [re.sub(r"^\d+", "", col) for col in clean_df.columns]
         df.columns = [
             col.replace(" ", "_")
             .replace("/", "_")
@@ -89,9 +89,9 @@ class SheetBag(ConfigLoader):
             .strip()
             for col in clean_df.columns
         ]
-        clean_df.columns = [re.sub("^\_+", "", col) for col in clean_df.columns]
-        clean_df.columns = [re.sub("\_+$", "", col) for col in clean_df.columns]
-        clean_df.columns = [re.sub("[^\w\s]", "", col) for col in clean_df.columns]
+        clean_df.columns = [re.sub(r"^\_+", "", col) for col in clean_df.columns]
+        clean_df.columns = [re.sub(r"\_+$", "", col) for col in clean_df.columns]
+        clean_df.columns = [re.sub(r"[^\w\s]", "", col) for col in clean_df.columns]
 
         # remove empty cols
         if "" in clean_df.columns:
