@@ -1,0 +1,4 @@
+bumpversion
+pytest
+pytest-cov
+ipython
