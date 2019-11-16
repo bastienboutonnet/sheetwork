@@ -46,7 +46,7 @@ class SheetBag(ConfigLoader):
         df = Spreadsheet(self.sheet_key).worksheet_to_df()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
-        df = self.cleanup(df)
+        df = self.run_cleanup(df)
         self.sheet_df = df
 
     @staticmethod
@@ -73,7 +73,38 @@ class SheetBag(ConfigLoader):
         print("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
         print("\nDataFrame Preview: \n\n" + str(sheet_df.head(10)))
 
-    def cleanup(self, df):
+    @staticmethod
+    def cleanup(df):
+        clean_df = df.copy(deep=True)
+        logger.info("Housekeeping...")
+        logger.debug(df)
+        # clean column names (slashes and spaces to understore), remove trailing whitespace
+        clean_df.columns = [re.sub("^\d+", "", col) for col in clean_df.columns]
+        df.columns = [
+            col.replace(" ", "_")
+            .replace("/", "_")
+            .replace(".", "_")
+            .replace("?", "_")
+            .replace("__", "_")
+            .strip()
+            for col in clean_df.columns
+        ]
+        clean_df.columns = [re.sub("^\_+", "", col) for col in clean_df.columns]
+        clean_df.columns = [re.sub("\_+$", "", col) for col in clean_df.columns]
+        clean_df.columns = [re.sub("[^\w\s]", "", col) for col in clean_df.columns]
+
+        # remove empty cols
+        if "" in clean_df.columns:
+            clean_df = clean_df.drop([""], axis=1)
+
+        # clean trailing spaces in fields
+        for col in clean_df.columns:
+            if clean_df[col].dtype == "object":
+                clean_df[col] = clean_df[col].str.strip()
+
+        return clean_df
+
+    def run_cleanup(self, df):
         clean_up = True
         # check for interactive mode
         if args.i:
@@ -82,31 +113,7 @@ class SheetBag(ConfigLoader):
             clean_up = self._collect_and_check_answer()
 
         if clean_up is True:
-            logger.info("Housekeeping...")
-            # clean column names (slashes and spaces to understore), remove trailing whitespace
-            df.columns = [re.sub("^\d+", "", col) for col in df.columns]
-            df.columns = [
-                col.replace(" ", "_")
-                .replace("/", "_")
-                .replace(".", "_")
-                .replace("?", "_")
-                .replace("__", "_")
-                .strip()
-                for col in df.columns
-            ]
-            df.columns = [re.sub("^\_+", "", col) for col in df.columns]
-            df.columns = [re.sub("\_+$", "", col) for col in df.columns]
-            df.columns = [re.sub("[^\w\s]", "", col) for col in df.columns]
-
-            # remove empty cols
-            if "" in df.columns:
-                df = df.drop([""], axis=1)
-
-            # clean trailing spaces in fields
-            for col in df.columns:
-                if df[col].dtype == "object":
-                    df[col] = df[col].str.strip()
-            clean_df = df
+            clean_df = self.cleanup(df)
             if args.dry_run or args.i:
                 logger.info("POST-CLEANING PREVIEW: This is what you would push to the database:")
                 self._show_dry_run_preview(clean_df)
