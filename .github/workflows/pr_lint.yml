@@ -1,0 +1,12 @@
+name: PR lint
+
+on: [pull_request]
+
+jobs:
+  pr-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: seferov/pr-lint-action@master
+      with:
+        title-regex: '^Feature:|Fix:|Refactor: '
+        title-regex-flags: 'g'
