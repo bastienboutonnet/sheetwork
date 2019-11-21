@@ -1,5 +1,4 @@
 import logging
-import re
 import sys
 
 import pandas
@@ -7,10 +6,10 @@ from data_tools.db import odbc
 from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.google.sheets import Spreadsheet
 
+from sheetload.cleaner import SheetCleaner
 from sheetload.config import ConfigLoader
 from sheetload.exceptions import external_errors_to_catch
 from sheetload.flags import args, logger
-from sheetload.yaml_helpers import validate_yaml
 
 
 class SheetBag(ConfigLoader):
@@ -73,37 +72,6 @@ class SheetBag(ConfigLoader):
         print("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
         print("\nDataFrame Preview: \n\n" + str(sheet_df.head(10)))
 
-    @staticmethod
-    def cleanup(df):
-        clean_df = df.copy(deep=True)
-        logger.info("Housekeeping...")
-        logger.debug(df)
-        # clean column names (slashes and spaces to understore), remove trailing whitespace
-        clean_df.columns = [re.sub(r"^\d+", "", col) for col in clean_df.columns]
-        df.columns = [
-            col.replace(" ", "_")
-            .replace("/", "_")
-            .replace(".", "_")
-            .replace("?", "_")
-            .replace("__", "_")
-            .strip()
-            for col in clean_df.columns
-        ]
-        clean_df.columns = [re.sub(r"^\_+", "", col) for col in clean_df.columns]
-        clean_df.columns = [re.sub(r"\_+$", "", col) for col in clean_df.columns]
-        clean_df.columns = [re.sub(r"[^\w\s]", "", col) for col in clean_df.columns]
-
-        # remove empty cols
-        if "" in clean_df.columns:
-            clean_df = clean_df.drop([""], axis=1)
-
-        # clean trailing spaces in fields
-        for col in clean_df.columns:
-            if clean_df[col].dtype == "object":
-                clean_df[col] = clean_df[col].str.strip()
-
-        return clean_df
-
     def run_cleanup(self, df):
         clean_up = True
         # check for interactive mode
@@ -113,7 +81,8 @@ class SheetBag(ConfigLoader):
             clean_up = self._collect_and_check_answer()
 
         if clean_up is True:
-            clean_df = self.cleanup(df)
+            logger.info("Housekeeping...")
+            clean_df = SheetCleaner(self.df).cleanup()
             if args.dry_run or args.i:
                 logger.info("POST-CLEANING PREVIEW: This is what you would push to the database:")
                 self._show_dry_run_preview(clean_df)
