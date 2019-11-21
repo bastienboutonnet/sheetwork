@@ -82,5 +82,8 @@ local.py
 # Pytest Framework
 .coverage
 
+Mypy
+.mypy_cache
+
 # Secret stuff
 google_sheetkey.txt
