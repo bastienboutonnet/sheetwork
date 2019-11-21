@@ -85,5 +85,3 @@ local.py
 Mypy
 .mypy_cache
 
-# Secret stuff
-google_sheetkey.txt
