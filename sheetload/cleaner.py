@@ -1,6 +1,6 @@
 import re
 
-import pandas 
+import pandas
 
 
 class SheetCleaner:
