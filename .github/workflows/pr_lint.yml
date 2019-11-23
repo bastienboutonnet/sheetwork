@@ -1,6 +1,6 @@
 name: PR lint
 
-on: 
+on:
   pull_request:
     types: ['opened', 'edited', 'reopened', 'synchronise']
 
