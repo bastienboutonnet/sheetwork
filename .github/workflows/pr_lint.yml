@@ -2,7 +2,7 @@ name: PR lint
 
 on:
   pull_request:
-    types: ['opened', 'edited', 'reopened', 'synchronise']
+    types: ['opened', 'edited', 'reopened', 'synchronize']
 
 jobs:
   pr-lint:
