@@ -21,6 +21,7 @@ validation_schema = {
                                 "type": "string",
                                 "regex": "^(?i)(int|varchar|variant|numeric|boolean|timestamp_ntz)$",
                             },
+                            "identifier": {"required": False, "type": "string"},
                         },
                     },
                 },
