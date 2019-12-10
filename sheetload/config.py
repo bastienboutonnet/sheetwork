@@ -1,15 +1,14 @@
-import os
-
-import yaml
-
 from sheetload.exceptions import SheetloadConfigMissingError, SheetConfigParsingError
 from sheetload.flags import args, logger
 from sheetload.yaml_helpers import load_yaml, validate_yaml
 
 
 class FlagParser:
-    def __init__(self):
-        self.sheet_name = args.sheet_name
+    def __init__(self, test=False):
+        if test:
+            self.sheet_name = "df_renamer"
+        else:
+            self.sheet_name = args.sheet_name
         self.create_table = args.create_table
         self.sheet_key = args.sheet_key
         self.target_schema = args.schema
@@ -17,11 +16,12 @@ class FlagParser:
 
 
 class ConfigLoader(FlagParser):
-    def __init__(self):
+    def __init__(self, test=False):
         self.config_file = None
         self.sheet_config = None
+        self.sheet_column_rename_dict = None
         self.sheet_columns = dict()
-        FlagParser.__init__(self)
+        FlagParser.__init__(self, test)
         self.set_config()
 
     def set_config(self):
@@ -44,7 +44,8 @@ class ConfigLoader(FlagParser):
             self.config = load_yaml()
         if self.config:
             self._get_sheet_config()
-            self._generate_column_dict()
+            self._generate_column_type_override_dict()
+            self.__generate_column_rename_dict()
             self._override_cli_args()
         else:
             raise SheetConfigParsingError("Your sheets.yml file seems empty.")
@@ -65,19 +66,33 @@ class ConfigLoader(FlagParser):
         else:
             raise SheetloadConfigMissingError("No sheet name was provided, cannot fetch config.")
 
-    def _generate_column_dict(self):
+    def _generate_column_type_override_dict(self):
         try:
             if self.sheet_config:
                 columns = self.sheet_config["columns"]
                 column_dict = dict()
                 for column in columns:
-                    column_dict.update(dict({column["name"]: column["datatype"]}))
+                    # column_dict.update(dict({column["name"]: column["datatype"]}))
+                    column_dict.update(
+                        dict({column.get("identifier", column.get("name")): column.get("datatype")})
+                    )
                 if column_dict:
                     self.sheet_columns = column_dict
         except KeyError as e:
             logger.warning(
                 f"No {str(e)} data for {self.sheet_name}. But that might be intentional."
             )
+
+    def __generate_column_rename_dict(self):
+        if self.sheet_config:
+            columns = self.sheet_config.get("columns")
+            if columns:
+                column_rename_dict = dict()
+                for column in columns:
+                    if column.get("identifier"):
+                        column_rename_dict.update(dict({column["identifier"]: column["name"]}))
+                    if column_rename_dict:
+                        self.sheet_column_rename_dict = column_rename_dict
 
     def _override_cli_args(self):
         self.sheet_key = self.sheet_config["sheet_key"]

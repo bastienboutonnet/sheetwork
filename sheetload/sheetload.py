@@ -13,8 +13,8 @@ from sheetload.flags import args, logger
 
 
 class SheetBag(ConfigLoader):
-    def __init__(self):
-        ConfigLoader.__init__(self)
+    def __init__(self, test=False):
+        ConfigLoader.__init__(self, test)
         self.sheet_df = None
         self.consume_config()
 
@@ -45,8 +45,14 @@ class SheetBag(ConfigLoader):
         df = Spreadsheet(self.sheet_key).worksheet_to_df()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
+        df = self.rename_columns(df)
         df = self.run_cleanup(df)
         self.sheet_df = df
+
+    def rename_columns(self, df):
+        if self.sheet_column_rename_dict:
+            df = df.rename(columns=self.sheet_column_rename_dict)
+        return df
 
     @staticmethod
     def _collect_and_check_answer():
@@ -82,7 +88,7 @@ class SheetBag(ConfigLoader):
 
         if clean_up is True:
             logger.info("Housekeeping...")
-            clean_df = SheetCleaner(self.df).cleanup()
+            clean_df = SheetCleaner(df).cleanup()
             if args.dry_run or args.i:
                 logger.info("POST-CLEANING PREVIEW: This is what you would push to the database:")
                 self._show_dry_run_preview(clean_df)

@@ -22,7 +22,7 @@ jobs:
         pip install -r pip-requirements.txt -r dev-pip-requirements.txt
     - name: Test with pytest
       run: |
-        pytest
+        cd tests/ && pytest
     # - name: Mypy checks
     #   uses: jpetrucciani/mypy-check@master
     #   with:
