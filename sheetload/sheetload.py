@@ -6,9 +6,10 @@ from data_tools.db import odbc
 from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.google.sheets import Spreadsheet
 
+from sheetload._version import __version__
 from sheetload.cleaner import SheetCleaner
 from sheetload.config import ConfigLoader
-from sheetload.exceptions import external_errors_to_catch, ColumnNotFoundInDataFrame
+from sheetload.exceptions import ColumnNotFoundInDataFrame, external_errors_to_catch
 from sheetload.flags import args, logger
 
 
@@ -160,6 +161,7 @@ class SheetBag(ConfigLoader):
 
 
 def run():
+    print(f"Sheetload version: {__version__} \n")
     sheetbag = SheetBag()
     sheetbag.load_sheet()
     sheetbag.push_sheet()
