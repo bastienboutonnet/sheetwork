@@ -73,10 +73,9 @@ class ConfigLoader(FlagParser):
                 column_dict = dict()
                 for column in columns:
                     # column_dict.update(dict({column["name"]: column["datatype"]}))
-                    column_dict.update(
-                        dict({column.get("identifier", column.get("name")): column.get("datatype")})
-                    )
+                    column_dict.update(dict({column.get("name"): column.get("datatype")}))
                 if column_dict:
+                    logger.debug(column_dict)
                     self.sheet_columns = column_dict
         except KeyError as e:
             logger.warning(
@@ -92,6 +91,7 @@ class ConfigLoader(FlagParser):
                     if column.get("identifier"):
                         column_rename_dict.update(dict({column["identifier"]: column["name"]}))
                     if column_rename_dict:
+                        logger.debug(column_rename_dict)
                         self.sheet_column_rename_dict = column_rename_dict
 
     def _override_cli_args(self):

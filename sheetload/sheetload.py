@@ -8,7 +8,7 @@ from data_tools.google.sheets import Spreadsheet
 
 from sheetload.cleaner import SheetCleaner
 from sheetload.config import ConfigLoader
-from sheetload.exceptions import external_errors_to_catch
+from sheetload.exceptions import external_errors_to_catch, ColumnNotFoundInDataFrame
 from sheetload.flags import args, logger
 
 
@@ -45,12 +45,20 @@ class SheetBag(ConfigLoader):
         df = Spreadsheet(self.sheet_key).worksheet_to_df()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
+        logger.debug(f"Loaded DF Cols: {df.columns.tolist()}")
         df = self.rename_columns(df)
         df = self.run_cleanup(df)
         self.sheet_df = df
 
     def rename_columns(self, df):
         if self.sheet_column_rename_dict:
+            for column in self.sheet_column_rename_dict.keys():
+                if column not in df.columns:
+                    raise ColumnNotFoundInDataFrame(
+                        f"The column: '{column}' was not found in the sheet, make sure you spelled "
+                        "it correctly in 'identifier' field. If it contains special chars you "
+                        "should wrap it between double quotes."
+                    )
             df = df.rename(columns=self.sheet_column_rename_dict)
         return df
 
@@ -115,6 +123,8 @@ class SheetBag(ConfigLoader):
             logger.info("Pushing sheet to Snowflake...")
             logger.debug(f"Column override dict is a {type(self.sheet_columns)}")
             try:
+                logger.debug(f"Sheet Columns: {self.sheet_columns}")
+                logger.debug(f"Df col list: {self.sheet_df.columns.tolist()}")
                 push_pandas_to_snowflake(
                     self.sheet_df,
                     self.target_schema,
