@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 NAME = "sheetload"
-VERSION = "0.2.0a0"
+VERSION = "0.2.0a1"
 DESCRIPTION = """
                 sheetload is a command line tool to load sheets from google
                 and upload them to snowflake
