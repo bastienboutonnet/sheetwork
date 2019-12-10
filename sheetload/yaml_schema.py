@@ -19,7 +19,7 @@ validation_schema = {
                             "datatype": {
                                 "required": True,
                                 "type": "string",
-                                "regex": "^(?i)(int|varchar|variant|numeric|boolean|timestamp_ntz)$",
+                                "regex": "(?i)^(int|varchar|variant|numeric|boolean|timestamp_ntz)$",
                             },
                             "identifier": {"required": False, "type": "string"},
                         },
