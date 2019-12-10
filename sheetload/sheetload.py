@@ -10,6 +10,7 @@ from sheetload.cleaner import SheetCleaner
 from sheetload.config import ConfigLoader
 from sheetload.exceptions import external_errors_to_catch, ColumnNotFoundInDataFrame
 from sheetload.flags import args, logger
+from sheetload._version import __version__
 
 
 class SheetBag(ConfigLoader):
@@ -160,6 +161,7 @@ class SheetBag(ConfigLoader):
 
 
 def run():
+    print(f"Sheetload version: {__version__} \n")
     sheetbag = SheetBag()
     sheetbag.load_sheet()
     sheetbag.push_sheet()
