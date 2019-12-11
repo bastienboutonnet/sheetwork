@@ -73,7 +73,7 @@ class ConfigLoader(FlagParser):
                 column_dict = dict()
                 for column in columns:
                     # column_dict.update(dict({column["name"]: column["datatype"]}))
-                    column_dict.update(dict({column.get("name"): column.get("datatype")}))
+                    column_dict.update(dict({column.get("name").lower(): column.get("datatype")}))
                 if column_dict:
                     logger.debug(column_dict)
                     self.sheet_columns = column_dict
@@ -89,7 +89,9 @@ class ConfigLoader(FlagParser):
                 column_rename_dict = dict()
                 for column in columns:
                     if column.get("identifier"):
-                        column_rename_dict.update(dict({column["identifier"]: column["name"]}))
+                        column_rename_dict.update(
+                            dict({column["identifier"]: column["name"].lower()})
+                        )
                     if column_rename_dict:
                         logger.debug(column_rename_dict)
                         self.sheet_column_rename_dict = column_rename_dict

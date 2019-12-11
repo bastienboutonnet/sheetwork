@@ -41,6 +41,9 @@ class SheetCleaner:
             df = df.drop([""], axis=1)
         return df
 
+        # make all columns lowercase
+        df.columns = map(str.lower, df.columns)
+
     @staticmethod
     def fields_cleanups(df):
 

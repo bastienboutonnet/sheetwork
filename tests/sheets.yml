@@ -21,6 +21,6 @@ sheets:
         datatype: int
       - name: col_b
         datatype: varchar
-      - name: renamed_col
+      - name: Renamed_col
         identifier: "long ass name"
         datatype: varchar
