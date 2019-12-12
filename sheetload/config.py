@@ -45,7 +45,7 @@ class ConfigLoader(FlagParser):
         if yml_is_valid:
             self.config = load_yaml()
         if self.config:
-            self._get_sheet_config()
+            self.get_sheet_config()
             self._generate_column_type_override_dict()
             self.__generate_column_rename_dict()
             self._override_cli_args()
@@ -53,20 +53,20 @@ class ConfigLoader(FlagParser):
             raise SheetConfigParsingError("Your sheets.yml file seems empty.")
 
     @staticmethod
-    def _lowercase(obj):
+    def lowercase(obj):
         """ Make dictionary lowercase """
         new = dict()
         if isinstance(obj, dict):
             for k, v in obj.items():
                 if isinstance(v, dict):
-                    v = _lowercase(v)
+                    v = lowercase(v)
                 if k == "name":
                     new[k] = v.lower()
                 else:
                     new[k] = v
         return new
 
-    def _get_sheet_config(self):
+    def get_sheet_config(self):
         if self.sheet_name:
             sheets = self.config["sheets"]
             sheet_config = [sheet for sheet in sheets if sheet["sheet_name"] == self.sheet_name]
@@ -81,7 +81,7 @@ class ConfigLoader(FlagParser):
             self.sheet_config = sheet_config[0]
             logger.debug(f"Sheet config dict: {self.sheet_config}")
             self.sheet_config["columns"] = [
-                self._lowercase(column_dict) for column_dict in self.sheet_config["columns"]
+                self.lowercase(column_dict) for column_dict in self.sheet_config["columns"]
             ]
         else:
             raise SheetloadConfigMissingError("No sheet name was provided, cannot fetch config.")
