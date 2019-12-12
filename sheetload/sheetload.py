@@ -49,6 +49,7 @@ class SheetBag(ConfigLoader):
         logger.debug(f"Loaded DF Cols: {df.columns.tolist()}")
         df = self.rename_columns(df)
         df = self.run_cleanup(df)
+        logger.debug(f"Cols should be: {df.columns}")
         self.sheet_df = df
 
     def rename_columns(self, df):

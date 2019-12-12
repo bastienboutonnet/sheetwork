@@ -1,3 +1,5 @@
+import collections
+
 from sheetload.exceptions import SheetloadConfigMissingError, SheetConfigParsingError
 from sheetload.flags import args, logger
 from sheetload.yaml_helpers import load_yaml, validate_yaml
@@ -50,6 +52,20 @@ class ConfigLoader(FlagParser):
         else:
             raise SheetConfigParsingError("Your sheets.yml file seems empty.")
 
+    @staticmethod
+    def _lowercase(obj):
+        """ Make dictionary lowercase """
+        new = dict()
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, dict):
+                    v = _lowercase(v)
+                if k == "name":
+                    new[k] = v.lower()
+                else:
+                    new[k] = v
+        return new
+
     def _get_sheet_config(self):
         if self.sheet_name:
             sheets = self.config["sheets"]
@@ -63,6 +79,10 @@ class ConfigLoader(FlagParser):
                     f"No configuration was found for {self.sheet_name}. Check your sheets.yml file."
                 )
             self.sheet_config = sheet_config[0]
+            logger.debug(f"Sheet config dict: {self.sheet_config}")
+            self.sheet_config["columns"] = [
+                self._lowercase(column_dict) for column_dict in self.sheet_config["columns"]
+            ]
         else:
             raise SheetloadConfigMissingError("No sheet name was provided, cannot fetch config.")
 
@@ -72,8 +92,7 @@ class ConfigLoader(FlagParser):
                 columns = self.sheet_config["columns"]
                 column_dict = dict()
                 for column in columns:
-                    # column_dict.update(dict({column["name"]: column["datatype"]}))
-                    column_dict.update(dict({column.get("name").lower(): column.get("datatype")}))
+                    column_dict.update(dict({column.get("name"): column.get("datatype")}))
                 if column_dict:
                     logger.debug(column_dict)
                     self.sheet_columns = column_dict
@@ -89,9 +108,7 @@ class ConfigLoader(FlagParser):
                 column_rename_dict = dict()
                 for column in columns:
                     if column.get("identifier"):
-                        column_rename_dict.update(
-                            dict({column["identifier"]: column["name"].lower()})
-                        )
+                        column_rename_dict.update(dict({column["identifier"]: column["name"]}))
                     if column_rename_dict:
                         logger.debug(column_rename_dict)
                         self.sheet_column_rename_dict = column_rename_dict
