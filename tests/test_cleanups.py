@@ -16,6 +16,18 @@ CLEAN_DF = {
 RENAME_CANDIDATE = dict(DIRTY_DF, **{"long ass name": ["foo", "bar", "fizz"]})
 RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "renamed_col"]
 
+EXPECTED_CONFIG = {
+    "sheet_name": "df_renamer",
+    "sheet_key": "sample",
+    "target_schema": "sand",
+    "target_table": "bb_test_sheetload",
+    "columns": [
+        {"name": "col_a", "datatype": "int"},
+        {"name": "col_b", "datatype": "varchar"},
+        {"name": "renamed_col", "identifier": "long ass name", "datatype": "varchar"},
+    ],
+}
+
 
 def generate_test_df(df):
     test_df = pandas.DataFrame.from_dict(df)
@@ -40,3 +52,9 @@ def test_rename_columns():
     renamed_df = SheetBag(test=True).rename_columns(dirty_df)
 
     assert renamed_df.columns.tolist() == RENAMED_COLS
+
+
+def test_lowercase():
+    from sheetload.config import ConfigLoader
+
+    assert ConfigLoader(test=True).sheet_config == EXPECTED_CONFIG

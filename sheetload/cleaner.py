@@ -39,6 +39,9 @@ class SheetCleaner:
         # remove empty cols
         if "" in df.columns:
             df = df.drop([""], axis=1)
+
+        # make all columns lowercase
+        df.columns = map(str.lower, df.columns)
         return df
 
     @staticmethod
