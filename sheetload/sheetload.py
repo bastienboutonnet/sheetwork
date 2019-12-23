@@ -10,7 +10,7 @@ from sheetload._version import __version__
 from sheetload.cleaner import SheetCleaner
 from sheetload.config import ConfigLoader
 from sheetload.exceptions import ColumnNotFoundInDataFrame, external_errors_to_catch
-from sheetload.flags import args, logger
+from sheetload.flags import FlagParser, logger
 
 
 class SheetBag(ConfigLoader):

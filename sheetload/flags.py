@@ -34,22 +34,45 @@ parser.add_argument(
     action="store_true",
     default=False,
 )
-args = parser.parse_args()
 
 
-# set up logger levels
-if args.mode == "dev":
-    logger = LoggerFactory.get_logger(level=getattr(logging, "debug".upper()))
-elif args.mode == "prod":
-    logger = LoggerFactory.get_logger(level=getattr(logging, "info".upper()))
-else:
-    raise NotImplementedError("This mode is not supported.")
+class FlagParser:
+    def __init__(self, test=False):
+        if test:
+            self.sheet_name = "df_renamer"
+            self.create_table = False
+            self.sheet_key = parser.get_default("sheet_key")
+            self.target_schema = parser.get_default("schema")
+            self.target_table = parser.get_default("table")
+            self.mode = parser.get_default("mode")
+            self.log_level = parser.get_default("log_level")
+        else:
+            args = parser.parse_args()
+            self.sheet_name = args.sheet_name
+            self.create_table = args.create_table
+            self.sheet_key = args.sheet_key
+            self.target_schema = args.schema
+            self.target_table = args.table
+            self.mode = args.mode
+            self.log_level = args.log_level
 
-# override if a log level is passed to the command line argument
-if args.log_level:
-    if args.log_level in {"debug", "warning", "info", "error"}:
-        logger = LoggerFactory.get_logger(level=getattr(logging, args.log_level.upper()))
-    else:
-        raise NotImplementedError("This level is not supported.")
-else:
-    args.log_level = "debug"
+    def set_logger(self):
+        if self.mode == "dev":
+            logger = LoggerFactory.get_logger(level=getattr(logging, "debug".upper()))
+        elif self.mode == "prod":
+            logger = LoggerFactory.get_logger(level=getattr(logging, "info".upper()))
+        else:
+            raise NotImplementedError(f"Mode {self.mode} is not supported.")
+
+        # Override mode if an explicit log level is passed to the command line
+        if self.log_level:
+            if self.log_level in {"debug", "warning", "info", "error"}:
+                logger = LoggerFactory.get_logger(level=getattr(logging, self.log_level.upper()))
+            else:
+                raise NotImplementedError(f"Level: {self.log_level} is not supported.")
+        else:
+            self.log_level = "debug"
+        return logger
+
+
+logger = FlagParser().set_logger()
