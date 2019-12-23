@@ -2,3 +2,4 @@ bumpversion
 pytest
 pytest-cov
 ipython
+mock
