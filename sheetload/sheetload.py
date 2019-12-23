@@ -33,6 +33,10 @@ class SheetBag(ConfigLoader):
             f"Log level: {args.log_level.upper()}. Writing to: {self.target_schema.upper()}"
         )
 
+    def _obtain_googlesheet(self):
+        df = Spreadsheet(self.sheet_key).worksheet_to_df()
+        return df
+
     def load_sheet(self):
         """Loads a google sheet, and calls clean up steps if applicable.
         Sheet must have been shared with account admin email address used in storage.
@@ -43,7 +47,7 @@ class SheetBag(ConfigLoader):
         """
 
         logger.info(f"Importing data from {self.sheet_key}")
-        df = Spreadsheet(self.sheet_key).worksheet_to_df()
+        df = self._obtain_googlesheet()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
         logger.debug(f"Loaded DF Cols: {df.columns.tolist()}")
