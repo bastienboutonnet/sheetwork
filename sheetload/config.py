@@ -1,15 +1,18 @@
+from typing import Type
+
 from sheetload.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
 from sheetload.flags import FlagParser, logger
 from sheetload.yaml_helpers import load_yaml, validate_yaml
 
 
 class ConfigLoader:
-    def __init__(self, flags: FlagParser):
+    def __init__(self, flags: FlagParser, yml_folder: str = str()):
         self.config_file = None
         self.sheet_config: dict = dict()
         self.sheet_column_rename_dict: dict = dict()
         self.sheet_columns: dict = dict()
-        self.flags = FlagParser()
+        self.flags: FlagParser = flags
+        self.yml_folder: str = yml_folder
         self.set_config()
 
     def set_config(self):
@@ -27,9 +30,9 @@ class ConfigLoader:
 
     def load_config_from_file(self):
         logger.info("Reading config from config file.")
-        yml_is_valid = validate_yaml()
+        yml_is_valid = validate_yaml(self.yml_folder)
         if yml_is_valid:
-            self.config = load_yaml()
+            self.config = load_yaml(self.yml_folder)
         if self.config:
             self.get_sheet_config()
             self._generate_column_type_override_dict()
