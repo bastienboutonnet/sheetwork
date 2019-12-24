@@ -53,6 +53,9 @@ class SheetBag:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
         logger.debug(f"Loaded DF Cols: {df.columns.tolist()}")
+
+        # Perform exclusions, renamings and cleanups before releasing the sheet.
+        df = self.exclude_columns(df)
         df = self.rename_columns(df)
         df = self.run_cleanup(df)
         logger.debug(f"Cols should be: {df.columns}")
@@ -68,6 +71,23 @@ class SheetBag:
                         "should wrap it between double quotes."
                     )
             df = df.rename(columns=self.config.sheet_column_rename_dict)
+        return df
+
+    def exclude_columns(self, df) -> pandas.DataFrame:
+        """Drops columns referred to by their identifier (the exact string in the google sheet) when
+        a list is provided in the "excluded_columns" field of a sheet yml file.
+
+        Args:
+            df (pandas.DataFrame): DataFrame downloaded from google sheet.
+
+        Returns:
+            pandas.DataFrame: Either the same dataframe as originally provided or one with dropped
+            columns as required.
+        """
+
+        if self.config.sheet_config.get("excluded_columns", str()):
+            df = df.drop(self.config.sheet_config["excluded_columns"], axis=1)
+            return df
         return df
 
     @staticmethod

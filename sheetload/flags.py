@@ -37,8 +37,8 @@ parser.add_argument(
 
 
 class FlagParser:
-    def __init__(self):
-        self.sheet_name = "df_renamer"
+    def __init__(self, test_sheet_name: str = str()):
+        self.sheet_name = test_sheet_name
         self.create_table = False
         self.sheet_key = parser.get_default("sheet_key")
         self.target_schema = parser.get_default("schema")
