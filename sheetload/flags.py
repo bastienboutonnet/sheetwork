@@ -20,6 +20,7 @@ parser.add_argument(
     default=False,
 )
 parser.add_argument(
+    "-f",
     "--force",
     help="Forces target schema to be followed. Even when in DEV mode.",
     action="store_true",
@@ -29,6 +30,7 @@ parser.add_argument(
     "--dry_run", help="Skips pushing to database", action="store_true", default=False
 )
 parser.add_argument(
+    "-i",
     "--interactive",
     help="Turns on interactive mode, which allows previews and cleanup choices",
     action="store_true",
