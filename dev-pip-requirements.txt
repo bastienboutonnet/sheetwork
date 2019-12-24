@@ -4,3 +4,4 @@ pytest-cov
 ipython
 mock
 mypy
+pytest-datafiles
