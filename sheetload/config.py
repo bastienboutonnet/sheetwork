@@ -1,33 +1,22 @@
-import collections
+from typing import Type
 
-from sheetload.exceptions import SheetloadConfigMissingError, SheetConfigParsingError
-from sheetload.flags import args, logger
+from sheetload.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
+from sheetload.flags import FlagParser, logger
 from sheetload.yaml_helpers import load_yaml, validate_yaml
 
 
-class FlagParser:
-    def __init__(self, test=False):
-        if test:
-            self.sheet_name = "df_renamer"
-        else:
-            self.sheet_name = args.sheet_name
-        self.create_table = args.create_table
-        self.sheet_key = args.sheet_key
-        self.target_schema = args.schema
-        self.target_table = args.table
-
-
-class ConfigLoader(FlagParser):
-    def __init__(self, test=False):
+class ConfigLoader:
+    def __init__(self, flags: FlagParser, yml_folder: str = str()):
         self.config_file = None
-        self.sheet_config = None
-        self.sheet_column_rename_dict = None
-        self.sheet_columns = dict()
-        FlagParser.__init__(self, test)
+        self.sheet_config: dict = dict()
+        self.sheet_column_rename_dict: dict = dict()
+        self.sheet_columns: dict = dict()
+        self.flags: FlagParser = flags
+        self.yml_folder: str = yml_folder
         self.set_config()
 
     def set_config(self):
-        if self.sheet_name:
+        if self.flags.sheet_name:
             self.load_config_from_file()
         elif self.sheet_key and self.target_schema and self.target_table:
             logger.info("Reading config from command line.")
@@ -41,13 +30,13 @@ class ConfigLoader(FlagParser):
 
     def load_config_from_file(self):
         logger.info("Reading config from config file.")
-        yml_is_valid = validate_yaml()
+        yml_is_valid = validate_yaml(self.yml_folder)
         if yml_is_valid:
-            self.config = load_yaml()
+            self.config = load_yaml(self.yml_folder)
         if self.config:
             self.get_sheet_config()
             self._generate_column_type_override_dict()
-            self.__generate_column_rename_dict()
+            self._generate_column_rename_dict()
             self._override_cli_args()
         else:
             raise SheetConfigParsingError("Your sheets.yml file seems empty.")
@@ -67,16 +56,18 @@ class ConfigLoader(FlagParser):
         return new
 
     def get_sheet_config(self):
-        if self.sheet_name:
+        if self.flags.sheet_name:
             sheets = self.config["sheets"]
-            sheet_config = [sheet for sheet in sheets if sheet["sheet_name"] == self.sheet_name]
+            sheet_config = [
+                sheet for sheet in sheets if sheet["sheet_name"] == self.flags.sheet_name
+            ]
             if len(sheet_config) > 1:
                 raise SheetConfigParsingError(
-                    f"Found more than one config for {self.sheet_name}. Check your sheets.yml file."
+                    f"Found more than one config for {self.flags.sheet_name}. Check your sheets.yml file."
                 )
             if not sheet_config:
                 raise SheetConfigParsingError(
-                    f"No configuration was found for {self.sheet_name}. Check your sheets.yml file."
+                    f"No configuration was found for {self.flags.sheet_name}. Check your sheets.yml file."
                 )
             self.sheet_config = sheet_config[0]
             logger.debug(f"Sheet config dict: {self.sheet_config}")
@@ -87,6 +78,10 @@ class ConfigLoader(FlagParser):
             raise SheetloadConfigMissingError("No sheet name was provided, cannot fetch config.")
 
     def _generate_column_type_override_dict(self):
+        """Generates a dictionary of key, value where key is the name of a column and value is the
+        name of the datatype into that column should be cast on table creation.
+        """
+
         try:
             if self.sheet_config:
                 columns = self.sheet_config["columns"]
@@ -98,10 +93,14 @@ class ConfigLoader(FlagParser):
                     self.sheet_columns = column_dict
         except KeyError as e:
             logger.warning(
-                f"No {str(e)} data for {self.sheet_name}. But that might be intentional."
+                f"No {str(e)} data for {self.flags.sheet_name}. But that might be intentional."
             )
 
-    def __generate_column_rename_dict(self):
+    def _generate_column_rename_dict(self):
+        """Generates a dictionary of key values where key is the original name in the sheet and
+        value is the target name.
+        """
+
         if self.sheet_config:
             columns = self.sheet_config.get("columns")
             if columns:
@@ -114,6 +113,10 @@ class ConfigLoader(FlagParser):
                         self.sheet_column_rename_dict = column_rename_dict
 
     def _override_cli_args(self):
+        """Overrides any CLI argument that may have been passed to sheeload when it reads from a
+        config yaml file, thereby giving precedence to the arguments in the .yml file.
+        """
+
         self.sheet_key = self.sheet_config["sheet_key"]
         self.target_schema = self.sheet_config["target_schema"]
         self.target_table = self.sheet_config["target_table"]
