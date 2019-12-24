@@ -36,7 +36,8 @@ class SheetBag:
         )
 
     def _obtain_googlesheet(self):
-        df = Spreadsheet(self.config.sheet_key).worksheet_to_df()
+        worksheet = self.config.sheet_config.get("worksheet")
+        df = Spreadsheet(self.config.sheet_key).worksheet_to_df(worksheet_name=worksheet)
         return df
 
     def load_sheet(self):

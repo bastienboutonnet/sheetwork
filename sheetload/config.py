@@ -1,5 +1,3 @@
-from typing import Type
-
 from sheetload.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
 from sheetload.flags import FlagParser, logger
 from sheetload.yaml_helpers import load_yaml, validate_yaml
