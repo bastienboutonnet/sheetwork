@@ -11,6 +11,7 @@ class ConfigLoader:
         self.sheet_config: dict = dict()
         self.sheet_column_rename_dict: dict = dict()
         self.sheet_columns: dict = dict()
+        self.excluded_columns: list = list()
         self.flags: FlagParser = flags
         self.yml_folder: str = yml_folder
         self.set_config()

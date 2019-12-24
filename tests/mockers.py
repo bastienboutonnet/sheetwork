@@ -1,7 +1,7 @@
 import pandas
 
 EXPECTED_CONFIG = {
-    "sheet_name": "df_renamer",
+    "sheet_name": "df_dropper",
     "sheet_key": "sample",
     "target_schema": "sand",
     "target_table": "bb_test_sheetload",
@@ -11,6 +11,7 @@ EXPECTED_CONFIG = {
         {"name": "col_one", "datatype": "varchar"},
         {"name": "renamed_col", "identifier": "long ass name", "datatype": "varchar"},
     ],
+    "excluded_columns": ["to_exclude"],
 }
 
 DIRTY_DF = {
@@ -35,7 +36,18 @@ RENAMED_DF = {
     "renamed_col": {0: "foo", 1: "bar", 2: "fizz"},
 }
 
+DROP_COL_DF = {
+    "col_a": [1, 2, 32],
+    "col b": ["as .    ", "b", "   c"],
+    "1. col_one": ["aa", "bb", "cc"],
+    "": ["q", "q", "q"],
+    "long ass name": ["foo", "bar", "fizz"],
+    "to_exclude": ["garbage1", "garbage2", "garbage3"],
+}
+
 RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "renamed_col"]
+
+EXCLUDED_DF_COLS = ["col_a", "col b", "1. col_one", "", "long ass name"]
 
 
 def generate_test_df(df):

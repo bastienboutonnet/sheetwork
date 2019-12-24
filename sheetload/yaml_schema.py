@@ -25,6 +25,11 @@ validation_schema = {
                         },
                     },
                 },
+                "excluded_columns": {
+                    "anyof_type": ["list", "string"],
+                    "required": False,
+                    "schema": {"type": "string"},
+                },
             },
         },
     }
