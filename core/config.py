@@ -1,23 +1,28 @@
-from sheetload.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
-from sheetload.flags import FlagParser, logger
-from sheetload.yaml_helpers import load_yaml, validate_yaml
+from typing import TYPE_CHECKING
+
+from core.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
+from core.logger import GLOBAL_LOGGER as logger
+from core.yaml_helpers import load_yaml, validate_yaml
+
+if TYPE_CHECKING:
+    from core.flags import FlagParser
 
 
 class ConfigLoader:
-    def __init__(self, flags: FlagParser, yml_folder: str = str()):
+    def __init__(self, flags: "FlagParser", yml_folder: str = str()):
         self.config_file = None
-        self.sheet_config: dict = dict()
+        self.sheet_config: dict = dict(sheet_key=flags.sheet_key, target_table=flags.target_table)
         self.sheet_column_rename_dict: dict = dict()
         self.sheet_columns: dict = dict()
         self.excluded_columns: list = list()
-        self.flags: FlagParser = flags
+        self.flags = flags
         self.yml_folder: str = yml_folder
         self.set_config()
 
     def set_config(self):
         if self.flags.sheet_name:
             self.load_config_from_file()
-        elif self.sheet_key and self.target_schema and self.target_table:
+        elif self.flags.sheet_key and self.flags.target_schema and self.flags.target_table:
             logger.info("Reading config from command line.")
         else:
             raise NotImplementedError(
@@ -62,11 +67,13 @@ class ConfigLoader:
             ]
             if len(sheet_config) > 1:
                 raise SheetConfigParsingError(
-                    f"Found more than one config for {self.flags.sheet_name}. Check your sheets.yml file."
+                    f"Found more than one config for {self.flags.sheet_name}. "
+                    "Check your sheets.yml file."
                 )
             if not sheet_config:
                 raise SheetConfigParsingError(
-                    f"No configuration was found for {self.flags.sheet_name}. Check your sheets.yml file."
+                    f"No configuration was found for {self.flags.sheet_name}. "
+                    "Check your sheets.yml file."
                 )
             self.sheet_config = sheet_config[0]
             logger.debug(f"Sheet config dict: {self.sheet_config}")

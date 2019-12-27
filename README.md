@@ -3,7 +3,7 @@
 
 Package Version: `v0.2.1a0`
 
-# sheetload 💩🤦(Not Fully Functional for non members of TripActions Data Team but soon!) 
+# sheetload 💩🤦(Not Fully Functional for non members of TripActions Data Team but soon!)
 A handy package to load Google Sheets to Snowflake
 
 Loads Google sheets from Data Team shared drive and uploads them to Snowflake.
@@ -139,29 +139,34 @@ Down the line we expect this mode to have more functionality
 ### Other Flags 🤯
 There are a few more flags linked to modes, log level and forcing intented protection measures down. Here is the full list of flags with their use, defaults etc. (You can get that by doing `sheetload -h`)
 ```
-usage: sheetload [-h] [--version] [--mode MODE] [--log_level LOG_LEVEL]
-                 [--sheet_name SHEET_NAME] [--sheet_key SHEET_KEY]
-                 [--schema SCHEMA] [--table TABLE] [--create_table] [--force]
-                 [--dry_run] [--i]
+usage: sheetload: a handy tool to load google sheets into your DB.
+       [-h] [--version] {upload} ...
+
+CLI tool to load google sheets onto a DB.
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --version             show program's version number and exit
-  --mode MODE           Chooses between prod or dev run
-  --log_level LOG_LEVEL
-                        sets the log level
-  --sheet_name SHEET_NAME
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+Available sub commands:
+  {upload}
+    upload    Pull, sanitize and upload a google sheet.
+
+    Optional arguments:
+      -sn SHEET_NAME, --sheet_name SHEET_NAME
                         Name of your sheet from config
-  --sheet_key SHEET_KEY
-                        Google sheet Key
-  --schema SCHEMA       Target Schema Name
-  --table TABLE         Target Table Name
-  --create_table        Creates target table before pushing.
-  --force               Forces target schema to be followed. Even when in DEV
-                        mode.
-  --dry_run             Skips pushing to database
-  --i                   Turns on interactive mode, which allows previews and
-                        cleanup choices
+      -sk SHEET_KEY, --sheet_key SHEET_KEY
+                            Google sheet Key
+      --log_level LOG_LEVEL
+                            sets the log level
+      -f, --force           Forces target schema to be followed. Even when in DEV
+                            mode.
+      --dry_run             Skips pushing to database
+      -i, --interactive     Turns on interactive mode, which allows previews and
+                            cleanup choices
+      --schema SCHEMA       Target Schema Name
+      --table TABLE         Target Table Name
+      --create_table        Creates target table before pushing.
 ```
 
 
