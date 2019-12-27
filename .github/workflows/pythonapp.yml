@@ -23,7 +23,7 @@ jobs:
     - name: Mypy checks
       uses: jpetrucciani/mypy-check@master
       with:
-        path: 'sheetload'
+        path: 'core'
     - name: Test with pytest
       run: |
         cd tests/ && pytest
