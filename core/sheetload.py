@@ -1,23 +1,26 @@
 import logging
 import sys
+from typing import TYPE_CHECKING
 
 import pandas
 from data_tools.db import odbc
 from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.google.sheets import Spreadsheet
 
-from sheetload._version import __version__
-from sheetload.cleaner import SheetCleaner
-from sheetload.config import ConfigLoader
-from sheetload.exceptions import ColumnNotFoundInDataFrame, external_errors_to_catch
-from sheetload.flags import FlagParser, logger
+from core.cleaner import SheetCleaner
+from core.config import ConfigLoader
+from core.exceptions import ColumnNotFoundInDataFrame, external_errors_to_catch
+from core.logger import GLOBAL_LOGGER as logger
+
+if TYPE_CHECKING:
+    from core.flags import FlagParser
 
 
 class SheetBag:
-    def __init__(self, config: ConfigLoader, flags: FlagParser):
+    def __init__(self, config: "ConfigLoader", flags: "FlagParser"):
         self.sheet_df: pandas.DataFrame = pandas.DataFrame()
-        self.flags: FlagParser = flags
-        self.config: ConfigLoader = config
+        self.flags = flags
+        self.config = config
         self.target_schema: str = str()
         self.consume_config()
 
@@ -37,7 +40,9 @@ class SheetBag:
 
     def _obtain_googlesheet(self):
         worksheet = self.config.sheet_config.get("worksheet")
-        df = Spreadsheet(self.config.sheet_key).worksheet_to_df(worksheet_name=worksheet)
+        df = Spreadsheet(self.config.sheet_config["sheet_key"]).worksheet_to_df(
+            worksheet_name=worksheet
+        )
         return df
 
     def load_sheet(self):
@@ -49,7 +54,7 @@ class SheetBag:
             DataFrame a type error will be raised.
         """
 
-        logger.info(f"Importing data from {self.config.sheet_key}")
+        logger.info(f"Importing data from {self.config.sheet_config['sheet_key']}")
         df = self._obtain_googlesheet()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
@@ -139,10 +144,12 @@ class SheetBag:
                         from dwh.information_schema.columns
                         where table_catalog = 'DWH'
                         and table_schema = '{self.target_schema.upper()}'
-                        and table_name = '{self.config.target_table.upper()}'
+                        and table_name = '{self.config.sheet_config['target_table'].upper()}'
                         ;
                         """
-        rows_query = f"select count(*) from {self.target_schema}.{self.config.target_table}"
+        rows_query = (
+            f"select count(*) from {self.target_schema}.{self.config.sheet_config['target_table']}"
+        )
         columns = odbc.run_query(odbc.SNOWFLAKE_DSN, columns_query)
         rows = odbc.run_query(odbc.SNOWFLAKE_DSN, rows_query)
         return columns[0][0], rows[0][0]
@@ -157,7 +164,7 @@ class SheetBag:
                 push_pandas_to_snowflake(
                     self.sheet_df,
                     self.target_schema,
-                    self.config.target_table,
+                    self.config.sheet_config["target_table"],
                     create=self.flags.create_table,
                     overwrite_defaults=self.config.sheet_columns,
                 )
@@ -167,8 +174,8 @@ class SheetBag:
                         """
                         Column names in df to be imported seem to differ from the ones provided in
                         your config. You can check the data frame you're about to upload by doing a
-                        dry run (--dry_run) or using the interactive (--i) mode. This is often due to
-                        cleaning steps that have been skipped.
+                        dry run (--dry_run) or using the interactive (-i) mode. This is often due
+                        to cleaning steps that have been skipped.
                         """
                     )
                     logger.warning("Push aborted.")
@@ -181,23 +188,13 @@ class SheetBag:
             except Exception as e:
                 raise RuntimeError(e)
             logger.info(
-                f"Push successful for"
-                f"{self.target_schema.upper()}.{self.config.target_table.upper()}.\n"
-                f"Columns: {columns}, Rows: {rows}."
+                f"Push successful for "
+                f"{self.target_schema.upper()}.{self.config.sheet_config['target_table'].upper()}."
+                f"\nColumns: {columns}, Rows: {rows}."
             )
         else:
             logger.info("Nothing pushed since you were in --dry_run mode.")
 
-
-def run():
-    print(f"Sheetload version: {__version__} \n")
-    flags = FlagParser()
-    flags.consume_cli_arguments()
-    config = ConfigLoader(flags)
-    sheetbag = SheetBag(config, flags)
-    sheetbag.load_sheet()
-    sheetbag.push_sheet()
-
-
-if __name__ == "__main__":
-    run()
+    def run(self):
+        self.load_sheet()
+        self.push_sheet()

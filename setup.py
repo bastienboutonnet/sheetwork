@@ -21,6 +21,6 @@ setup(
     author_email="bastien.b1@gmail.com",
     install_requires=REQUIRED,
     python_requires=REQUIRES_PYTHON,
-    entry_points={"console_scripts": ["sheetload=sheetload.sheetload:run"]},
+    entry_points={"console_scripts": ["sheetload=core.main:main"]},
     packages=find_packages(),
 )
