@@ -1,0 +1,13 @@
+profiles:
+  sheetload_test:
+    outputs:
+      dev:
+        db_type: snowflake
+        account: a
+        user: b
+        password: c
+        role: d
+        database: e
+        warehouse: f
+        schema: g
+        guser: google-sheets@data-team-229114.iam.gserviceaccount.com

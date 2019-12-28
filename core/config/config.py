@@ -1,22 +1,29 @@
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from core.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
 from core.logger import GLOBAL_LOGGER as logger
-from core.yaml_helpers import load_yaml, validate_yaml
+from core.yaml.yaml_helpers import open_yaml, validate_yaml
+from core.yaml.yaml_schema import config_schema
 
 if TYPE_CHECKING:
     from core.flags import FlagParser
 
+DEFAULT_CONFIG_DIR = Path.cwd()
+
 
 class ConfigLoader:
     def __init__(self, flags: "FlagParser", yml_folder: str = str()):
-        self.config_file = None
+        self.config: dict = dict()
         self.sheet_config: dict = dict(sheet_key=flags.sheet_key, target_table=flags.target_table)
         self.sheet_column_rename_dict: dict = dict()
         self.sheet_columns: dict = dict()
         self.excluded_columns: list = list()
         self.flags = flags
-        self.yml_folder: str = yml_folder
+        if yml_folder:
+            self.yml_folder: Path = Path(yml_folder).expanduser()
+        else:
+            self.yml_folder = DEFAULT_CONFIG_DIR
         self.set_config()
 
     def set_config(self):
@@ -34,10 +41,13 @@ class ConfigLoader:
 
     def load_config_from_file(self):
         logger.info("Reading config from config file.")
-        yml_is_valid = validate_yaml(self.yml_folder)
-        if yml_is_valid:
-            self.config = load_yaml(self.yml_folder)
-        if self.config:
+        filename = Path(self.yml_folder, "sheets.yml")
+        if filename.exists():
+            config_yaml = open_yaml(filename)
+        if config_yaml:
+            is_valid_yaml = validate_yaml(config_yaml, config_schema)
+        if is_valid_yaml:
+            self.config = config_yaml
             self.get_sheet_config()
             self._generate_column_type_override_dict()
             self._generate_column_rename_dict()

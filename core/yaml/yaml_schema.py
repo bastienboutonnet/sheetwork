@@ -1,4 +1,4 @@
-validation_schema = {
+config_schema = {
     "sheets": {
         "required": True,
         "type": "list",
@@ -30,6 +30,37 @@ validation_schema = {
                     "anyof_type": ["list", "string"],
                     "required": False,
                     "schema": {"type": "string"},
+                },
+            },
+        },
+    }
+}
+
+profiles_schema = {
+    "profiles": {
+        "required": True,
+        "type": "dict",
+        "valueschema": {
+            "type": "dict",
+            "schema": {
+                "target": {"required": False, "type": "string"},
+                "outputs": {
+                    "required": True,
+                    "type": "dict",
+                    "valueschema": {
+                        "type": "dict",
+                        "schema": {
+                            "db_type": {"required": True, "type": "string"},
+                            "account": {"required": False, "type": "string"},
+                            "user": {"required": True, "type": "string"},
+                            "password": {"required": True, "type": "string"},
+                            "role": {"required": False, "type": "string"},
+                            "database": {"required": False, "type": "string"},
+                            "warehouse": {"required": False, "type": "string"},
+                            "schema": {"required": False, "type": "string"},
+                            "guser": {"required": True, "type": "string"},
+                        },
+                    },
                 },
             },
         },

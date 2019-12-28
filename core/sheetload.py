@@ -5,10 +5,11 @@ from typing import TYPE_CHECKING
 import pandas
 from data_tools.db import odbc
 from data_tools.db.pandas import push_pandas_to_snowflake
-from data_tools.google.sheets import Spreadsheet
 
 from core.cleaner import SheetCleaner
-from core.config import ConfigLoader
+from core.clients.google import GoogleSpreadsheet
+from core.config.config import ConfigLoader
+from core.config.profile import Profile
 from core.exceptions import ColumnNotFoundInDataFrame, external_errors_to_catch
 from core.logger import GLOBAL_LOGGER as logger
 
@@ -17,11 +18,25 @@ if TYPE_CHECKING:
 
 
 class SheetBag:
-    def __init__(self, config: "ConfigLoader", flags: "FlagParser"):
+    """Main object orchestrates sheet loading, cleaning, and db pushing by calling the relevant
+    submodules.
+
+    Raises:
+        TypeError: [description]
+        ColumnNotFoundInDataFrame: If a column on which a rename or casting is asked for cannot be
+        found in the DataFrame resulting from the obtained sheet.
+        RuntimeError: [description]
+
+    Returns:
+        SheetBag: Loaded, and possibly cleaned sheet object with db interaction methods.
+    """
+
+    def __init__(self, config: "ConfigLoader", flags: "FlagParser", profile: "Profile"):
         self.sheet_df: pandas.DataFrame = pandas.DataFrame()
         self.flags = flags
         self.config = config
         self.target_schema: str = str()
+        self.profile = profile
         self.consume_config()
 
     def consume_config(self):
@@ -39,10 +54,10 @@ class SheetBag:
         )
 
     def _obtain_googlesheet(self):
-        worksheet = self.config.sheet_config.get("worksheet")
-        df = Spreadsheet(self.config.sheet_config["sheet_key"]).worksheet_to_df(
-            worksheet_name=worksheet
-        )
+        worksheet = self.config.sheet_config.get("worksheet", str())
+        df = GoogleSpreadsheet(
+            self.profile, self.config.sheet_config["sheet_key"]
+        ).make_df_from_worksheet(worksheet_name=worksheet)
         return df
 
     def load_sheet(self):
@@ -175,7 +190,7 @@ class SheetBag:
                         Column names in df to be imported seem to differ from the ones provided in
                         your config. You can check the data frame you're about to upload by doing a
                         dry run (--dry_run) or using the interactive (-i) mode. This is often due
-                        to cleaning steps that have been skipped.
+                        to cleaning steps that have been skipped or a badly referred column.
                         """
                     )
                     logger.warning("Push aborted.")

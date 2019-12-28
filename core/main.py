@@ -2,9 +2,9 @@ import argparse
 
 import core.sheetload as upload_task
 from core._version import __version__
-from core.config import ConfigLoader
+from core.config.config import ConfigLoader
+from core.config.profile import Profile
 from core.flags import FlagParser
-from core.logger import GLOBAL_LOGGER as logger
 from core.logger import log_manager
 
 parser = argparse.ArgumentParser(
@@ -69,7 +69,8 @@ def handle(parser: argparse.ArgumentParser):
 
     if flag_parser.args.command == "upload":
         config = ConfigLoader(flag_parser)
-        task = upload_task.SheetBag(config, flag_parser)
+        profile = Profile("ta_drive", "dev")  # TODO: Remove this hardcoded value
+        task = upload_task.SheetBag(config, flag_parser, profile)
         return task.run()
 
 
