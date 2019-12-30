@@ -23,7 +23,7 @@ EXPECTED_DEV_TEST_PROFILE = {
     "database": "e",
     "warehouse": "f",
     "schema": "g",
-    "guser": "google-sheets@data-team-229114.iam.gserviceaccount.com",
+    "guser": "sheetload_test@blahh.iam.gserviceaccount.com",
 }
 
 DIRTY_DF = {
