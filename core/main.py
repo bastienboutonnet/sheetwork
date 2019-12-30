@@ -41,6 +41,11 @@ base_subparser.add_argument(
     action="store_true",
     default=False,
 )
+base_subparser.add_argument(
+    "--sheet_config_dir",
+    help="Unusual path to the directory in which the 'sheets.yml' can be found",
+    default=str(),
+)
 
 # Adds sub task parsers
 subs = parser.add_subparsers(title="Available sub commands", dest="command")
@@ -69,7 +74,9 @@ def handle(parser: argparse.ArgumentParser):
 
     if flag_parser.args.command == "upload":
         config = ConfigLoader(flag_parser)
-        profile = Profile("ta_drive", "dev")  # TODO: Remove this hardcoded value
+        profile = Profile(
+            "ta_drive", "dev"
+        )  # TODO: Remove this hardcoded value when implementing project concept
         task = upload_task.SheetBag(config, flag_parser, profile)
         return task.run()
 

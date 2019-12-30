@@ -44,6 +44,13 @@ class ConfigLoader:
         filename = Path(self.yml_folder, "sheets.yml")
         if filename.exists():
             config_yaml = open_yaml(filename)
+        else:
+            raise SheetloadConfigMissingError(
+                """
+                Are you in a sheetload folder? Cannot find 'sheets.yml' to import config from.
+                If you plan to run sheetload from a different folder than current you'll have to
+                provide a custom path to the config files. See --help for arguments."""
+            )
         if config_yaml:
             is_valid_yaml = validate_yaml(config_yaml, config_schema)
         if is_valid_yaml:
@@ -52,8 +59,6 @@ class ConfigLoader:
             self._generate_column_type_override_dict()
             self._generate_column_rename_dict()
             self._override_cli_args()
-        else:
-            raise SheetConfigParsingError("Your sheets.yml file seems empty.")
 
     @staticmethod
     def lowercase(obj):

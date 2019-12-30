@@ -5,6 +5,11 @@ if TYPE_CHECKING:
 
 
 class FlagParser:
+    """Holds flags from args or sets up default ones that are mainly used to testing and delaying
+    argument parsing from CLI so that pytest doesn't steal them and thinks they're for him and
+    ultimately complain. It's one way to do it... There are probably other but I feel ok with it.
+    """
+
     def __init__(self, parser: "parser.ArgumentParser", test_sheet_name: str = str()):
         self.sheet_name = test_sheet_name
         self.create_table = False
@@ -17,6 +22,7 @@ class FlagParser:
         self.interactive = False
         self.dry_run = False
         self.parser = parser
+        self.sheet_config_dir = str()
 
     def consume_cli_arguments(self):
         self.args = self.parser.parse_args()
@@ -30,3 +36,4 @@ class FlagParser:
         self.force = self.args.force
         self.interactive = self.args.interactive
         self.dry_run = self.args.dry_run
+        self.sheet_config_dir = self.args.sheet_config_dir
