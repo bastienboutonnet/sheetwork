@@ -14,6 +14,18 @@ EXPECTED_CONFIG = {
     "excluded_columns": ["to_exclude"],
 }
 
+EXPECTED_DEV_TEST_PROFILE = {
+    "db_type": "snowflake",
+    "account": "a",
+    "user": "b",
+    "password": "c",
+    "role": "d",
+    "database": "e",
+    "warehouse": "f",
+    "schema": "g",
+    "guser": "sheetload_test@blahh.iam.gserviceaccount.com",
+}
+
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],

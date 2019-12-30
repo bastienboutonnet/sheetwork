@@ -2,9 +2,9 @@ import argparse
 
 import core.sheetload as upload_task
 from core._version import __version__
-from core.config import ConfigLoader
+from core.config.config import ConfigLoader
+from core.config.profile import Profile
 from core.flags import FlagParser
-from core.logger import GLOBAL_LOGGER as logger
 from core.logger import log_manager
 
 parser = argparse.ArgumentParser(
@@ -41,6 +41,11 @@ base_subparser.add_argument(
     action="store_true",
     default=False,
 )
+base_subparser.add_argument(
+    "--sheet_config_dir",
+    help="Unusual path to the directory in which the 'sheets.yml' can be found",
+    default=str(),
+)
 
 # Adds sub task parsers
 subs = parser.add_subparsers(title="Available sub commands", dest="command")
@@ -69,7 +74,10 @@ def handle(parser: argparse.ArgumentParser):
 
     if flag_parser.args.command == "upload":
         config = ConfigLoader(flag_parser)
-        task = upload_task.SheetBag(config, flag_parser)
+        profile = Profile(
+            "ta_drive", "dev"
+        )  # TODO: Remove this hardcoded value when implementing project concept
+        task = upload_task.SheetBag(config, flag_parser, profile)
         return task.run()
 
 
