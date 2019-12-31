@@ -3,7 +3,9 @@
 
 Package Version: `v0.2.1a0`
 
-# sheetload 💩🤦(Not Fully Functional for non members of TripActions Data Team but soon!) 
+# sheetload 💩🤦 
+A name inspired by GitLab's tool (https://gitlab.com/gitlab-data/analytics/tree/master/extract/sheetload)
+**(Not Fully Functional for non members of TripActions Data Team but will stand alone soon!)**
 A handy package to load Google Sheets to Snowflake
 
 Loads Google sheets from Data Team shared drive and uploads them to Snowflake.
