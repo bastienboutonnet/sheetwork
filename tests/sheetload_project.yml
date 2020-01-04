@@ -1,5 +1,3 @@
 name: 'sheetload_test'
 target_schema: 'sand'
-paths:
-  sheet_config_dir: ~/Documents/repos/sheetload/tests
 always_create: true
