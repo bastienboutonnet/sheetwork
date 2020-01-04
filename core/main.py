@@ -86,6 +86,7 @@ def handle(parser: argparse.ArgumentParser):
     if flag_parser.args.command == "upload":
         project = Project(flag_parser)
         config = ConfigLoader(flag_parser, project)
+        # TODO: Add target handling and remove this hardcode.
         profile = Profile(project, "dev")
         task = upload_task.SheetBag(config, flag_parser, profile)
         return task.run()

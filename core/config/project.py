@@ -1,9 +1,10 @@
-from core.yaml.yaml_helpers import open_yaml, validate_yaml
-from core.yaml.yaml_schema import project_schema
-from core.utils import PathFinder
 from pathlib import Path
 from typing import TYPE_CHECKING
+
 from core.logger import GLOBAL_LOGGER as logger
+from core.utils import PathFinder
+from core.yaml.yaml_helpers import open_yaml, validate_yaml
+from core.yaml.yaml_schema import project_schema
 
 if TYPE_CHECKING:
     from core.flags import FlagParser
