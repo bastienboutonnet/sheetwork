@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from core.config.project import Project
 from core.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
 from core.logger import GLOBAL_LOGGER as logger
 from core.yaml.yaml_helpers import open_yaml, validate_yaml
@@ -9,21 +10,17 @@ from core.yaml.yaml_schema import config_schema
 if TYPE_CHECKING:
     from core.flags import FlagParser
 
-DEFAULT_CONFIG_DIR = Path.cwd()
-
 
 class ConfigLoader:
-    def __init__(self, flags: "FlagParser", yml_folder: str = str()):
+    def __init__(self, flags: "FlagParser", project: "Project"):
         self.config: dict = dict()
         self.sheet_config: dict = dict(sheet_key=flags.sheet_key, target_table=flags.target_table)
         self.sheet_column_rename_dict: dict = dict()
         self.sheet_columns: dict = dict()
         self.excluded_columns: list = list()
         self.flags = flags
-        if yml_folder:
-            self.yml_folder: Path = Path(yml_folder).expanduser()
-        else:
-            self.yml_folder = DEFAULT_CONFIG_DIR
+        self.yml_folder: Path = project.sheet_config_dir
+        logger.debug(f"SHEET_FOLDER: {project.sheet_config_dir}")
         self.set_config()
 
     def set_config(self):
@@ -42,6 +39,7 @@ class ConfigLoader:
     def load_config_from_file(self):
         logger.info("Reading config from config file.")
         filename = Path(self.yml_folder, "sheets.yml")
+        logger.debug(f"SHEET FILENAME: {filename}")
         if filename.exists():
             config_yaml = open_yaml(filename)
         else:

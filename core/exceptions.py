@@ -30,12 +30,20 @@ class ProfileParserError(Exception):
     "When no dict or an invalid dict came out of the profile reader"
 
 
+class ProjectFileParserError(Exception):
+    "When no dict comes out of loading project or other less specific project parsing related stuff"
+
+
 class ColumnNotFoundInDataFrame(Exception):
     "For cases where renamer is provided the wrong identifier name."
 
 
 class InvalidProfileError(Exception):
     "For when some values in a profile that should not be none are."
+
+
+class NearestFileNotFound(Exception):
+    "When the path finder has reached its max iterations without finding the expected file."
 
 
 external_errors_to_catch = {

@@ -1,11 +1,9 @@
-import os
 from pathlib import Path
 
 import yaml
 from cerberus import Validator
 
-from core.exceptions import SheetConfigParsingError, SheetloadConfigMissingError, YAMLFileEmptyError
-from core.logger import GLOBAL_LOGGER as logger
+from core.exceptions import SheetConfigParsingError, YAMLFileEmptyError
 
 
 def open_yaml(path: "Path"):

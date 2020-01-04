@@ -10,7 +10,14 @@ class FlagParser:
     ultimately complain. It's one way to do it... There are probably other but I feel ok with it.
     """
 
-    def __init__(self, parser: "parser.ArgumentParser", test_sheet_name: str = str()):
+    def __init__(
+        self,
+        parser: "parser.ArgumentParser",
+        test_sheet_name: str = str(),
+        sheet_config_dir: str = str(),
+        profile_dir: str = str(),
+        project_dir: str = str(),
+    ):
         self.sheet_name = test_sheet_name
         self.create_table = False
         self.sheet_key = str()
@@ -22,7 +29,10 @@ class FlagParser:
         self.interactive = False
         self.dry_run = False
         self.parser = parser
-        self.sheet_config_dir = str()
+        self.sheet_config_dir = sheet_config_dir
+        self.profile_dir = profile_dir
+        self.project_dir = project_dir
+        self.target = "test"
 
     def consume_cli_arguments(self):
         self.args = self.parser.parse_args()
@@ -37,3 +47,6 @@ class FlagParser:
         self.interactive = self.args.interactive
         self.dry_run = self.args.dry_run
         self.sheet_config_dir = self.args.sheet_config_dir
+        self.profile_dir = self.args.profile_dir
+        self.project_dir = self.args.project_dir
+        self.target = self.args.target

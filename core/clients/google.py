@@ -14,8 +14,6 @@ from core.exceptions import (
 )
 from core.logger import GLOBAL_LOGGER as logger
 
-# Credential access should also be able to be done via explicit path in CLI.
-CREDENTIALS_PATH = Path("~/.sheetload/google/").expanduser()
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 
@@ -33,7 +31,8 @@ class GoogleSpreadsheet:
     """
 
     def __init__(self, profile: Profile, workbook_key: str = str(), workbook_name: str = str()):
-        p = Path(CREDENTIALS_PATH, profile.profile_name).with_suffix(".json")
+        p = Path(profile.google_credentials_dir, profile.profile_name).with_suffix(".json")
+        logger.debug(f"GOOGLE CREDS FOLDER: {profile.google_credentials_dir}")
         if p.exists():
             self.credentials = ServiceAccountCredentials.from_json_keyfile_name(p, SCOPE)
             self.gc = gspread.authorize(self.credentials)

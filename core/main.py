@@ -4,6 +4,7 @@ import core.sheetload as upload_task
 from core._version import __version__
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
+from core.config.project import Project
 from core.flags import FlagParser
 from core.logger import log_manager
 
@@ -46,6 +47,21 @@ base_subparser.add_argument(
     help="Unusual path to the directory in which the 'sheets.yml' can be found",
     default=str(),
 )
+base_subparser.add_argument(
+    "--profile_dir",
+    help="Unusual path to the directory in which the 'profiles.yml' can be found",
+    default=str(),
+)
+base_subparser.add_argument(
+    "--project_dir",
+    help="Unusual path to the directory in which the 'sheetload_project.yml' can be found",
+    default=str(),
+)
+base_subparser.add_argument(
+    "-t",
+    "--target",
+    help="Specity target profile. When none provided sheetload will use the profile default",
+)
 
 # Adds sub task parsers
 subs = parser.add_subparsers(title="Available sub commands", dest="command")
@@ -73,10 +89,9 @@ def handle(parser: argparse.ArgumentParser):
         log_manager.set_debug()
 
     if flag_parser.args.command == "upload":
-        config = ConfigLoader(flag_parser)
-        profile = Profile(
-            "ta_drive", "dev"
-        )  # TODO: Remove this hardcoded value when implementing project concept
+        project = Project(flag_parser)
+        config = ConfigLoader(flag_parser, project)
+        profile = Profile(project)
         task = upload_task.SheetBag(config, flag_parser, profile)
         return task.run()
 

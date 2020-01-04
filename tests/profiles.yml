@@ -1,5 +1,6 @@
 profiles:
   sheetload_test:
+    target: dev
     outputs:
       dev:
         db_type: snowflake

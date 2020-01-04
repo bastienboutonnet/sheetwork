@@ -43,7 +43,7 @@ profiles_schema = {
         "valueschema": {
             "type": "dict",
             "schema": {
-                "target": {"required": False, "type": "string"},
+                "target": {"required": True, "type": "string"},
                 "outputs": {
                     "required": True,
                     "type": "dict",
@@ -65,4 +65,18 @@ profiles_schema = {
             },
         },
     }
+}
+
+project_schema = {
+    "name": {"required": True, "type": "string"},
+    "target_schema": {"required": False, "type": "string"},
+    "always_create": {"required": False, "type": "boolean"},
+    "paths": {
+        "type": "dict",
+        "required": False,
+        "schema": {
+            "profile_dir": {"required": False, "type": "string"},
+            "sheet_config_dir": {"required": False, "type": "string"},
+        },
+    },
 }
