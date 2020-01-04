@@ -7,8 +7,6 @@ from core.yaml.yaml_helpers import open_yaml, validate_yaml
 from core.yaml.yaml_schema import profiles_schema
 
 
-# TODO: Implement a verification for whether the profile name that is set is the same as
-# the project name.
 class Profile:
     """Load, validate and set profile for sheetload.
 
@@ -39,20 +37,23 @@ class Profile:
             logger.debug(f"YAML_PROFILE: {yaml_dict}")
             is_valid_yaml = validate_yaml(yaml_dict, profiles_schema)
             profile = yaml_dict["profiles"].get(self.profile_name)
-            logger.debug(f"TARGET_PROFILE: {profile}")
+            if profile:
+                logger.debug(f"TARGET_PROFILE: {profile}")
 
-            # set target name from profile unless one was given at init from flags parse.
-            if not self.target_name:
-                self.target_name = profile.get("target")
-            if profile.get("outputs"):
-                target_profile = profile["outputs"].get(self.target_name)
-            if target_profile and is_valid_yaml:
-                is_valid_profile = self._validate_profile(target_profile)
-                if is_valid_profile:
-                    self.profile_dict = target_profile
-                    logger.debug(f"PARSED_PROFILE: {self.profile_dict}")
+                # set target name from profile unless one was given at init from flags parse.
+                if not self.target_name:
+                    self.target_name = profile.get("target")
+                if profile.get("outputs"):
+                    target_profile = profile["outputs"].get(self.target_name)
+                if target_profile and is_valid_yaml:
+                    is_valid_profile = self._validate_profile(target_profile)
+                    if is_valid_profile:
+                        self.profile_dict = target_profile
+                        logger.debug(f"PARSED_PROFILE: {self.profile_dict}")
+                else:
+                    raise ProfileParserError(f"Error finding and entry for {self.target_name}.")
             else:
-                raise ProfileParserError(f"Error finding and entry for {self.target_name}.")
+                raise ProfileParserError(f"Could not find an entry for {self.profile_name}")
         else:
             raise FileNotFoundError(
                 f"Could not open or find {filename.resolve()} check that it exists"

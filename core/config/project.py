@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from core.exceptions import ProjectFileParserError
 from core.logger import GLOBAL_LOGGER as logger
 from core.utils import PathFinder
 from core.yaml.yaml_helpers import open_yaml, validate_yaml
@@ -34,14 +35,13 @@ class Project:
         self.load_project_from_yaml()
         logger.debug(f"Project name: {self.project_name}")
 
-    # TODO: Bake in some post loading verification and throw error if no file is loaded.
     def load_project_from_yaml(self):
         if self.project_file_fullpath == Path("dumpy_path"):
             _, self.project_file_fullpath = PathFinder().find_nearest_dir_and_file(PROJECT_FILENAME)
         project_yaml = open_yaml(self.project_file_fullpath)
         is_valid_yaml = validate_yaml(project_yaml, project_schema)
         logger.debug(f"PROJECT_YAML: {project_yaml}")
-        if is_valid_yaml:
+        if project_yaml and is_valid_yaml:
             self.project_dict = project_yaml
             self.project_name = project_yaml.get("name", self.project_name)
             self.target_schema = project_yaml.get("target_schema", self.target_schema)
@@ -57,6 +57,11 @@ class Project:
                     .resolve()
                 )
             self.always_create = project_yaml.get("always_create", self.always_create)
+        else:
+            raise ProjectFileParserError(
+                f"Error trying to load project config from {self.project_file_fullpath}. "
+                "Check it exists or that it is valid."
+            )
 
     def override_from_flags(self):
         if self.flags.project_dir:
