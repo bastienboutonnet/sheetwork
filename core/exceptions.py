@@ -38,6 +38,10 @@ class InvalidProfileError(Exception):
     "For when some values in a profile that should not be none are."
 
 
+class NearestFileNotFound(Exception):
+    "When the path finder has reached its max iterations without finding the expected file."
+
+
 external_errors_to_catch = {
     "overwrite_cols_data_tools_error": (
         "Looks like you have misspelled the name of at least one column in overwrite_defaults"

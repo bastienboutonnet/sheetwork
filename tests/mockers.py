@@ -26,6 +26,13 @@ EXPECTED_DEV_TEST_PROFILE = {
     "guser": "sheetload_test@blahh.iam.gserviceaccount.com",
 }
 
+EXPECTED_SHEETLOAD_PROJECT = {
+    "name": "sheetload_test",
+    "target_schema": "sand",
+    "paths": {"sheet_config_dir": "~/Documents/repos/sheetload/tests"},
+    "always_create": True,
+}
+
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],

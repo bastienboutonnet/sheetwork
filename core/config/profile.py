@@ -1,13 +1,14 @@
 from pathlib import Path
 
+from core.config.project import Project
 from core.exceptions import InvalidProfileError, ProfileParserError
 from core.logger import GLOBAL_LOGGER as logger
 from core.yaml.yaml_helpers import open_yaml, validate_yaml
 from core.yaml.yaml_schema import profiles_schema
 
-DEFAULT_PROFILE_DIR = Path("~/.sheetload/").expanduser()
 
-
+# TODO: Implement a verification for whether the profile name that is set is the same as
+# the project name.
 class Profile:
     """Load, validate and set profile for sheetload.
 
@@ -20,16 +21,18 @@ class Profile:
         setup.
     """
 
-    def __init__(self, profile_name: str, target_name: str, profile_dir: str = str()):
-        self.profile_name = profile_name
+    def __init__(self, project: Project, target_name: str = str()):
+        self.profile_name = project.project_name
         self.target_name = target_name
         self.profile_dict: dict = dict()
         self.cannot_be_none = {"db_type", "guser"}
-        self.profile_dir: Path = DEFAULT_PROFILE_DIR
-        if profile_dir:
-            self.profile_dir = Path(profile_dir).expanduser().resolve()
+        self.profile_dir: Path = project.profile_dir
+        self.google_credentials_dir = Path(project.profile_dir, "google").resolve()
+        logger.debug(f"PROFILE_DIR {self.profile_dir}")
+        logger.debug(f"PROFILE_NAME: {self.profile_name}")
 
     def read_profile(self):
+        logger.debug(f"Profile Name: {self.profile_name}")
         filename = Path(self.profile_dir, "profiles.yml")
         if filename.exists():
             yaml_dict = open_yaml(filename)
@@ -37,6 +40,10 @@ class Profile:
             is_valid_yaml = validate_yaml(yaml_dict, profiles_schema)
             profile = yaml_dict["profiles"].get(self.profile_name)
             logger.debug(f"TARGET_PROFILE: {profile}")
+
+            # set target name from profile unless one was given at init from flags parse.
+            if not self.target_name:
+                self.target_name = profile.get("target")
             if profile.get("outputs"):
                 target_profile = profile["outputs"].get(self.target_name)
             if target_profile and is_valid_yaml:
