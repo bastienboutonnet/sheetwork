@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Tuple
 
 from core.exceptions import NearestFileNotFound
+from core.logger import GLOBAL_LOGGER as logger
 
 
 class PathFinder:
@@ -41,14 +42,16 @@ class PathFinder:
         """
         filename = Path(current, yaml_file)
         while self.iteration < self.max_iter:
+            logger.debug(f"Looking for {filename}")
             if filename.exists():
                 project_dir = filename.parent
+                logger.debug(f"{filename} exists and was returned")
                 return project_dir, filename
-            else:
-                current = current.parent
-                self.iteration += 1
-                self.find_nearest_dir_and_file(yaml_file, current)
-        raise NearestFileNotFound(
-            f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} "
-            "iterations upwards."
-        )
+            current = current.parent
+            filename = Path(current, yaml_file)
+            self.iteration += 1
+        else:
+            raise NearestFileNotFound(
+                f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} "
+                "iterations upwards."
+            )
