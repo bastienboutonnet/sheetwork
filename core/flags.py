@@ -32,6 +32,7 @@ class FlagParser:
         self.sheet_config_dir = sheet_config_dir
         self.profile_dir = profile_dir
         self.project_dir = project_dir
+        self.target = "test"
 
     def consume_cli_arguments(self):
         self.args = self.parser.parse_args()
@@ -48,3 +49,4 @@ class FlagParser:
         self.sheet_config_dir = self.args.sheet_config_dir
         self.profile_dir = self.args.profile_dir
         self.project_dir = self.args.project_dir
+        self.target = self.args.target

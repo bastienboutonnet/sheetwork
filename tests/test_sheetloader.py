@@ -29,9 +29,10 @@ def test_rename_columns(datafiles):
         test_sheet_name="df_renamer",
         project_dir=str(datafiles),
         sheet_config_dir=str(datafiles),
+        profile_dir=str(datafiles),
     )
     project = Project(flags, "sheetload_test")
-    profile = Profile(project, "dev")
+    profile = Profile(project)
     config = ConfigLoader(flags, project)
     df = generate_test_df(DIRTY_DF)
     renamed_df = SheetBag(config, flags, profile).rename_columns(df)
@@ -49,9 +50,10 @@ def test_exclude_columns(datafiles):
         test_sheet_name="df_dropper",
         project_dir=str(datafiles),
         sheet_config_dir=str(datafiles),
+        profile_dir=str(datafiles),
     )
     project = Project(flags, "sheetload_test")
-    profile = Profile(project, "dev")
+    profile = Profile(project)
     config = ConfigLoader(flags, project)
     df = generate_test_df(DROP_COL_DF)
     excluded_df = SheetBag(config, flags, profile).exclude_columns(df)
@@ -69,10 +71,11 @@ def test_load_sheet(datafiles):
         test_sheet_name="df_renamer",
         project_dir=str(datafiles),
         sheet_config_dir=str(datafiles),
+        profile_dir=str(datafiles),
     )
     project = Project(flags, "sheetload_test")
     config = ConfigLoader(flags, project)
-    profile = Profile(project, "dev")
+    profile = Profile(project)
     with mock.patch.object(
         SheetBag, "_obtain_googlesheet", return_value=generate_test_df(DIRTY_DF)
     ):

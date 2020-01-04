@@ -57,6 +57,11 @@ base_subparser.add_argument(
     help="Unusual path to the directory in which the 'sheetload_project.yml' can be found",
     default=str(),
 )
+base_subparser.add_argument(
+    "-t",
+    "--target",
+    help="Specity target profile. When none provided sheetload will use the profile default",
+)
 
 # Adds sub task parsers
 subs = parser.add_subparsers(title="Available sub commands", dest="command")
@@ -86,8 +91,7 @@ def handle(parser: argparse.ArgumentParser):
     if flag_parser.args.command == "upload":
         project = Project(flag_parser)
         config = ConfigLoader(flag_parser, project)
-        # TODO: Add target handling and remove this hardcode.
-        profile = Profile(project, "dev")
+        profile = Profile(project)
         task = upload_task.SheetBag(config, flag_parser, profile)
         return task.run()
 

@@ -26,6 +26,7 @@ class Profile:
         self.cannot_be_none = {"db_type", "guser"}
         self.profile_dir: Path = project.profile_dir
         self.google_credentials_dir = Path(project.profile_dir, "google").resolve()
+        self.read_profile()
         logger.debug(f"PROFILE_DIR {self.profile_dir}")
         logger.debug(f"PROFILE_NAME: {self.profile_name}")
 
@@ -45,13 +46,16 @@ class Profile:
                     self.target_name = profile.get("target")
                 if profile.get("outputs"):
                     target_profile = profile["outputs"].get(self.target_name)
+                    logger.debug(f"TARGET_PROFILE: {target_profile}")
                 if target_profile and is_valid_yaml:
                     is_valid_profile = self._validate_profile(target_profile)
                     if is_valid_profile:
                         self.profile_dict = target_profile
                         logger.debug(f"PARSED_PROFILE: {self.profile_dict}")
                 else:
-                    raise ProfileParserError(f"Error finding and entry for {self.target_name}.")
+                    raise ProfileParserError(
+                        f"Error finding and entry for {self.target_name}, for {self.profile_name}."
+                    )
             else:
                 raise ProfileParserError(f"Could not find an entry for {self.profile_name}")
         else:

@@ -14,7 +14,6 @@ from core.exceptions import (
 )
 from core.logger import GLOBAL_LOGGER as logger
 
-# Credential access should also be able to be done via explicit path in CLI
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 
