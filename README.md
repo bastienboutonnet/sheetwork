@@ -1,7 +1,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/bastienboutonnet/sheetload/badge)](https://www.codefactor.io/repository/github/bastienboutonnet/sheetload)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-Package Version: `v0.2.1a0`
+Package Version: `v0.2.1a1`
 
 # sheetload 💩🤦 
 A name inspired by GitLab's tool (https://gitlab.com/gitlab-data/analytics/tree/master/extract/sheetload)
@@ -17,7 +17,7 @@ Performs some cleanups on column names and string (such as removing trailing spa
 3. Make sure your access tokens and usernames are installed according to TripActions Data Tooling standards. Setup information can be found in [data_tools Credentials](https://github.com/tripactions/data_tooling/blob/master/README.md#credentials).
 4. Install Sheetload
 ```bash
-pip install git+ssh://git@github.com/bastienboutonnet/sheetload.git@v0.2.1a0
+pip install git+ssh://git@github.com/bastienboutonnet/sheetload.git@v0.2.1a1
 ```
 Make sure you've setup your GitHub ssh keys, if you don't know how to do it, check [here](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/).
 
@@ -28,7 +28,7 @@ sheetload --version
 Should display something like this:
 ```bash
 ➜ sheetload --version
-sheetload 0.2.1a0
+sheetload 0.2.1a1
 ```
 
 ## Usage
