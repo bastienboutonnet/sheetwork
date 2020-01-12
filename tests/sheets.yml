@@ -8,6 +8,8 @@ sheets:
         datatype: int
       - name: col_b
         datatype: varchar
+      - name: col_numeric
+        datatype: numeric
       - name: Renamed_col
         identifier: "Long ass name"
         datatype: varchar

@@ -86,7 +86,14 @@ class ConfigLoader:
                 columns = self.sheet_config["columns"]
                 column_dict = dict()
                 for column in columns:
-                    column_dict.update(dict({column.get("name"): column.get("datatype")}))
+                    # FIXME: This is a temporary fix to make the data_tools function happy.
+                    # And will be removed in a future version as we will have conversion handled
+                    # natively.
+                    if column.get("datatype") == "numeric":
+                        data_type = "numeric(38,18)"
+                    else:
+                        data_type = column.get("datatype")
+                    column_dict.update(dict({column.get("name"): data_type}))
                 if column_dict:
                     logger.debug(column_dict)
                     self.sheet_columns = column_dict
