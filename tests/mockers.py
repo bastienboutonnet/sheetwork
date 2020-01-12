@@ -17,6 +17,7 @@ EXPECTED_CONFIG = {
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],
+    "col_numeric": [12.33, 14.44, 13.33],
     "1. col_one": ["aa", "bb", "cc"],
     "": ["q", "q", "q"],
     "long ass name": ["foo", "bar", "fizz"],
@@ -25,6 +26,7 @@ DIRTY_DF = {
 CLEAN_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
     "col_b": {0: "as .", 1: "b", 2: "c"},
+    "col_numeric": {0: 12.33, 1: 14.44, 2: 13.33},
     "col_one": {0: "aa", 1: "bb", 2: "cc"},
     "long_ass_name": {0: "foo", 1: "bar", 2: "fizz"},
 }
@@ -32,6 +34,7 @@ CLEAN_DF = {
 RENAMED_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
     "col_b": {0: "as .", 1: "b", 2: "c"},
+    "col_numeric": {0: 12.33, 1: 14.44, 2: 13.33},
     "col_one": {0: "aa", 1: "bb", 2: "cc"},
     "renamed_col": {0: "foo", 1: "bar", 2: "fizz"},
 }
@@ -39,15 +42,16 @@ RENAMED_DF = {
 DROP_COL_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],
+    "col_numeric": [12.33, 14.44, 13.33],
     "1. col_one": ["aa", "bb", "cc"],
     "": ["q", "q", "q"],
     "long ass name": ["foo", "bar", "fizz"],
     "to_exclude": ["garbage1", "garbage2", "garbage3"],
 }
 
-RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "renamed_col"]
+RENAMED_COLS = ["col_a", "col b", "col_numeric", "1. col_one", "", "renamed_col"]
 
-EXCLUDED_DF_COLS = ["col_a", "col b", "1. col_one", "", "long ass name"]
+EXCLUDED_DF_COLS = ["col_a", "col b", "col_numeric", "1. col_one", "", "long ass name"]
 
 
 def generate_test_df(df):
