@@ -165,6 +165,3 @@ optional arguments:
   --i                   Turns on interactive mode, which allows previews and
                         cleanup choices
 ```
-
-
-
