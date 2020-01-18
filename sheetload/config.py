@@ -84,22 +84,21 @@ class ConfigLoader:
         """
 
         try:
-            if self.sheet_config:
-                if self.sheet_config.get("columns"):
-                    columns = self.sheet_config.get("columns")
-                    column_dict = dict()
-                    for column in columns:
-                        # FIXME: This is a temporary fix to make the data_tools function happy.
-                        # And will be removed in a future version as we will have conversion handled
-                        # natively.
-                        if column.get("datatype") == "numeric":
-                            data_type = "numeric(38,18)"
-                        else:
-                            data_type = column.get("datatype")
-                        column_dict.update(dict({column.get("name"): data_type}))
-                    if column_dict:
-                        logger.debug(column_dict)
-                        self.sheet_columns = column_dict
+            if self.sheet_config and self.sheet_config.get("columns"):
+                columns = self.sheet_config.get("columns")
+                column_dict = dict()
+                for column in columns:
+                    # FIXME: This is a temporary fix to make the data_tools function happy.
+                    # And will be removed in a future version as we will have conversion handled
+                    # natively.
+                    if column.get("datatype") == "numeric":
+                        data_type = "numeric(38,18)"
+                    else:
+                        data_type = column.get("datatype")
+                    column_dict.update(dict({column.get("name"): data_type}))
+                if column_dict:
+                    logger.debug(column_dict)
+                    self.sheet_columns = column_dict
         except KeyError as e:
             logger.warning(
                 f"No {str(e)} data for {self.flags.sheet_name}. But that might be intentional."
