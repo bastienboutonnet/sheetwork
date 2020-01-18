@@ -70,9 +70,11 @@ class ConfigLoader:
                 )
             self.sheet_config = sheet_config[0]
             logger.debug(f"Sheet config dict: {self.sheet_config}")
-            self.sheet_config["columns"] = [
-                self.lowercase(column_dict) for column_dict in self.sheet_config["columns"]
-            ]
+            if self.sheet_config.get("columns"):
+                self.sheet_config["columns"] = [
+                    self.lowercase(column_dict) for column_dict in self.sheet_config.get("columns")
+                ]
+                logger.debug(f"Cols after casing: {self.sheet_config['columns']}")
         else:
             raise SheetloadConfigMissingError("No sheet name was provided, cannot fetch config.")
 
@@ -82,8 +84,8 @@ class ConfigLoader:
         """
 
         try:
-            if self.sheet_config:
-                columns = self.sheet_config["columns"]
+            if self.sheet_config and self.sheet_config.get("columns"):
+                columns = self.sheet_config.get("columns")
                 column_dict = dict()
                 for column in columns:
                     # FIXME: This is a temporary fix to make the data_tools function happy.

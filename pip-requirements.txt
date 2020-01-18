@@ -1,4 +1,4 @@
 cerberus
-data_tools @ git+ssh://git@github.com/tripactions/Data_Tooling.git@v2.1.7
+data_tools @ git+ssh://git@github.com/tripactions/Data_Tooling.git@v2.1.18
 pandas
-pyyaml
+pyyaml<5.2

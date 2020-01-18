@@ -14,6 +14,13 @@ EXPECTED_CONFIG = {
     "excluded_columns": ["to_exclude"],
 }
 
+NO_COLS_EXPECTED_CONFIG = {
+    "sheet_name": "no_cols",
+    "sheet_key": "sample",
+    "target_schema": "sand",
+    "target_table": "bb_test_sheetload",
+}
+
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],
