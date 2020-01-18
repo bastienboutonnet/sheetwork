@@ -70,9 +70,11 @@ class ConfigLoader:
                 )
             self.sheet_config = sheet_config[0]
             logger.debug(f"Sheet config dict: {self.sheet_config}")
-            self.sheet_config["columns"] = [
-                self.lowercase(column_dict) for column_dict in self.sheet_config["columns"]
-            ]
+            if self.sheet_config.get("columns"):
+                self.sheet_config["columns"] = [
+                    self.lowercase(column_dict) for column_dict in self.sheet_config.get("columns")
+                ]
+                logger.debug(f"Cols after casing: {self.sheet_config['columns']}")
         else:
             raise SheetloadConfigMissingError("No sheet name was provided, cannot fetch config.")
 
@@ -83,20 +85,21 @@ class ConfigLoader:
 
         try:
             if self.sheet_config:
-                columns = self.sheet_config["columns"]
-                column_dict = dict()
-                for column in columns:
-                    # FIXME: This is a temporary fix to make the data_tools function happy.
-                    # And will be removed in a future version as we will have conversion handled
-                    # natively.
-                    if column.get("datatype") == "numeric":
-                        data_type = "numeric(38,18)"
-                    else:
-                        data_type = column.get("datatype")
-                    column_dict.update(dict({column.get("name"): data_type}))
-                if column_dict:
-                    logger.debug(column_dict)
-                    self.sheet_columns = column_dict
+                if self.sheet_config.get("columns"):
+                    columns = self.sheet_config.get("columns")
+                    column_dict = dict()
+                    for column in columns:
+                        # FIXME: This is a temporary fix to make the data_tools function happy.
+                        # And will be removed in a future version as we will have conversion handled
+                        # natively.
+                        if column.get("datatype") == "numeric":
+                            data_type = "numeric(38,18)"
+                        else:
+                            data_type = column.get("datatype")
+                        column_dict.update(dict({column.get("name"): data_type}))
+                    if column_dict:
+                        logger.debug(column_dict)
+                        self.sheet_columns = column_dict
         except KeyError as e:
             logger.warning(
                 f"No {str(e)} data for {self.flags.sheet_name}. But that might be intentional."
