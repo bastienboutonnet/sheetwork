@@ -25,7 +25,6 @@ class SnowflakeAdapter:
     def close_connection(self):
         self.con.close()
 
-    # TODO: Check about making things TZ-less with Tedy.
     def cast_dtypes(self, df: pandas.DataFrame, overwrite_dict: dict = dict()) -> pandas.DataFrame:
         overwrite_dict = overwrite_dict.copy()
         dtypes_map = dict(
