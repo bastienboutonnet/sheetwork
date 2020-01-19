@@ -46,8 +46,17 @@ class NearestFileNotFound(Exception):
     "When the path finder has reached its max iterations without finding the expected file."
 
 
-external_errors_to_catch = {
-    "overwrite_cols_data_tools_error": (
-        "Looks like you have misspelled the name of at least one column in overwrite_defaults"
-    )
-}
+class CredentialsParsingError(Exception):
+    "When the credentials parser cannot find the right keys and other nasties."
+
+
+class UnsupportedDataTypeError(Exception):
+    "When a requested cast isn't supported by the database or mapping enforced by sheetload."
+
+
+class DatabaseError(Exception):
+    "To catch db interaction errors"
+
+
+class TableDoesNotExist(Exception):
+    "When query for rows and cols came back empty or none"

@@ -4,7 +4,7 @@ import pytest
 
 from core.flags import FlagParser
 
-from .mockers import EXPECTED_CONFIG
+from .mockers import EXPECTED_CONFIG, NO_COLS_EXPECTED_CONFIG
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
@@ -24,4 +24,14 @@ def test_set_config(datafiles):
     project = Project(flags)
     config = ConfigLoader(flags, project)
 
+    flags2 = FlagParser(
+        parser,
+        test_sheet_name="no_cols",
+        project_dir=str(datafiles),
+        sheet_config_dir=str(datafiles),
+    )
+    project2 = Project(flags2)
+    config2 = ConfigLoader(flags2, project2)
+
     assert config.sheet_config == EXPECTED_CONFIG
+    assert config2.sheet_config == NO_COLS_EXPECTED_CONFIG

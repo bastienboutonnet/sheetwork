@@ -2,3 +2,5 @@ cerberus
 data_tools @ git+ssh://git@github.com/tripactions/Data_Tooling.git@v2.1.7
 pandas
 pyyaml
+snowflake-sqlalchemy
+sqlalchemy

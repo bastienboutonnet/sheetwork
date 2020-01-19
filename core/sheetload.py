@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple
 
 import pandas
 from data_tools.db import odbc
@@ -10,7 +10,9 @@ from core.cleaner import SheetCleaner
 from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
-from core.exceptions import ColumnNotFoundInDataFrame, external_errors_to_catch
+from core.adapters.connection import Credentials, Connection
+from core.adapters.impl import SnowflakeAdapter
+from core.exceptions import ColumnNotFoundInDataFrame, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
 
 if TYPE_CHECKING:
@@ -153,63 +155,48 @@ class SheetBag:
             return clean_df
         return df
 
-    def _check_table(self):
+    def push_sheet(self):
+        logger.info("Pushing sheet to Snowflake...")
+        logger.debug(f"Column override dict is a {type(self.config.sheet_columns)}")
+        logger.debug(f"Sheet Columns: {self.config.sheet_columns}")
+        logger.debug(f"Df col list: {self.sheet_df.columns.tolist()}")
+        credentials = Credentials(self.profile)
+        connection = Connection(credentials)
+        adapter = SnowflakeAdapter(connection, self.config)
+        adapter.upload(self.sheet_df, self.target_schema)
+
+    def check_table(self):
+        credentials = Credentials(self.profile)
+        connection = Connection(credentials)
+        adapter = SnowflakeAdapter(connection, self.config)
         columns_query = f"""
-                        select count(*)
-                        from dwh.information_schema.columns
-                        where table_catalog = 'DWH'
-                        and table_schema = '{self.target_schema.upper()}'
-                        and table_name = '{self.config.sheet_config['target_table'].upper()}'
-                        ;
-                        """
+                select count(*)
+                from dwh.information_schema.columns
+                where table_catalog = 'DWH'
+                and table_schema = '{self.target_schema.upper()}'
+                and table_name = '{self.config.sheet_config['target_table'].upper()}'
+                ;
+                """
         rows_query = (
             f"select count(*) from {self.target_schema}.{self.config.sheet_config['target_table']}"
         )
-        columns = odbc.run_query(odbc.SNOWFLAKE_DSN, columns_query)
-        rows = odbc.run_query(odbc.SNOWFLAKE_DSN, rows_query)
-        return columns[0][0], rows[0][0]
-
-    def push_sheet(self):
-        if not self.flags.dry_run:
-            logger.info("Pushing sheet to Snowflake...")
-            logger.debug(f"Column override dict is a {type(self.config.sheet_columns)}")
-            try:
-                logger.debug(f"Sheet Columns: {self.config.sheet_columns}")
-                logger.debug(f"Df col list: {self.sheet_df.columns.tolist()}")
-                push_pandas_to_snowflake(
-                    self.sheet_df,
-                    self.target_schema,
-                    self.config.sheet_config["target_table"],
-                    create=self.flags.create_table,
-                    overwrite_defaults=self.config.sheet_columns,
-                )
-            except ValueError as e:
-                if str(e) == external_errors_to_catch["overwrite_cols_data_tools_error"]:
-                    logging.error(
-                        """
-                        Column names in df to be imported seem to differ from the ones provided in
-                        your config. You can check the data frame you're about to upload by doing a
-                        dry run (--dry_run) or using the interactive (-i) mode. This is often due
-                        to cleaning steps that have been skipped or a badly referred column.
-                        """
-                    )
-                    logger.warning("Push aborted.")
-                else:
-                    logging.error(e)
-                sys.exit(1)
-            try:
-                logger.info("Checking table existence...")
-                columns, rows = self._check_table()
-            except Exception as e:
-                raise RuntimeError(e)
+        columns = adapter.execute(columns_query, return_results=True)
+        rows = adapter.execute(rows_query, return_results=True)
+        if columns and rows:
             logger.info(
                 f"Push successful for "
-                f"{self.target_schema.upper()}.{self.config.sheet_config['target_table'].upper()}."
-                f"\nColumns: {columns}, Rows: {rows}."
+                f"{self.target_schema}.{self.config.sheet_config['target_table']}"
+                f"\nColumns: {columns[0][0]}, Rows: {rows[0][0]}."
             )
         else:
-            logger.info("Nothing pushed since you were in --dry_run mode.")
+            raise TableDoesNotExist(
+                f"Table {self.target_schema}.{self.config.sheet_config['target_table']} seems empty"
+            )
 
     def run(self):
         self.load_sheet()
-        self.push_sheet()
+        if not self.flags.dry_run:
+            self.push_sheet_adaptor()
+            self.check_table_adaptor()
+        else:
+            logger.info("Nothing pushed since you were in --dry_run mode.")
