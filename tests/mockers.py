@@ -26,6 +26,13 @@ EXPECTED_DEV_TEST_PROFILE = {
     "guser": "sheetload_test@blahh.iam.gserviceaccount.com",
 }
 
+NO_COLS_EXPECTED_CONFIG = {
+    "sheet_name": "no_cols",
+    "sheet_key": "sample",
+    "target_schema": "sand",
+    "target_table": "bb_test_sheetload",
+}
+
 EXPECTED_SHEETLOAD_PROJECT = {
     "name": "sheetload_test",
     "target_schema": "sand",

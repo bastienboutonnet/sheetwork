@@ -24,6 +24,12 @@ sheets:
       - name: col2
         datatype: varchar
 
+  - sheet_name: test_sheet_3
+    sheet_key: 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg
+    worksheet: Sheet2
+    target_schema: sand
+    target_table: bb_test_sheetload
+
   - sheet_name: df_renamer
     sheet_key: sample
     target_schema: sand
@@ -54,3 +60,8 @@ sheets:
         identifier: "long ass name"
         datatype: varchar
     excluded_columns: ['to_exclude']
+
+  - sheet_name: no_cols
+    sheet_key: sample
+    target_schema: sand
+    target_table: bb_test_sheetload
