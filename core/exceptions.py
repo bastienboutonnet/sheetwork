@@ -58,8 +58,5 @@ class DatabaseError(Exception):
     "To catch db interaction errors"
 
 
-external_errors_to_catch = {
-    "overwrite_cols_data_tools_error": (
-        "Looks like you have misspelled the name of at least one column in overwrite_defaults"
-    )
-}
+class TableDoesNotExist(Exception):
+    "When query for rows and cols came back empty or none"

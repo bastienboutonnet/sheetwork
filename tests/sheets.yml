@@ -6,6 +6,8 @@ sheets:
     columns:
       - name: Col_a
         datatype: int
+      - name: col_numeric
+        datatype: numeric
       - name: col_b
         datatype: varchar
       - name: Renamed_col
