@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine
 from snowflake.sqlalchemy import URL
+from sqlalchemy import create_engine
 
 from core.config.profile import Profile
 from core.exceptions import CredentialsParsingError
