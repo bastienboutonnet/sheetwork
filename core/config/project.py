@@ -40,7 +40,6 @@ class Project:
             _, self.project_file_fullpath = PathFinder().find_nearest_dir_and_file(PROJECT_FILENAME)
         project_yaml = open_yaml(self.project_file_fullpath)
         is_valid_yaml = validate_yaml(project_yaml, project_schema)
-        logger.debug(f"PROJECT_YAML: {project_yaml}")
         if project_yaml and is_valid_yaml:
             self.project_dict = project_yaml
             self.project_name = project_yaml.get("name", self.project_name)

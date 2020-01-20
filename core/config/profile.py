@@ -35,23 +35,18 @@ class Profile:
         filename = Path(self.profile_dir, "profiles.yml")
         if filename.exists():
             yaml_dict = open_yaml(filename)
-            logger.debug(f"YAML_PROFILE: {yaml_dict}")
             is_valid_yaml = validate_yaml(yaml_dict, profiles_schema)
             profile = yaml_dict["profiles"].get(self.profile_name)
             if profile:
-                logger.debug(f"TARGET_PROFILE: {profile}")
-
                 # set target name from profile unless one was given at init from flags parse.
                 if not self.target_name:
                     self.target_name = profile.get("target")
                 if profile.get("outputs"):
                     target_profile = profile["outputs"].get(self.target_name)
-                    logger.debug(f"TARGET_PROFILE: {target_profile}")
                 if target_profile and is_valid_yaml:
                     is_valid_profile = self._validate_profile(target_profile)
                     if is_valid_profile:
                         self.profile_dict = target_profile
-                        logger.debug(f"PARSED_PROFILE: {self.profile_dict}")
                 else:
                     raise ProfileParserError(
                         f"Error finding and entry for {self.target_name}, for {self.profile_name}."

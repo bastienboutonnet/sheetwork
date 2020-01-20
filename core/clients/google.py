@@ -32,7 +32,6 @@ class GoogleSpreadsheet:
 
     def __init__(self, profile: Profile, workbook_key: str = str(), workbook_name: str = str()):
         p = Path(profile.google_credentials_dir, profile.profile_name).with_suffix(".json")
-        logger.debug(f"GOOGLE CREDS FOLDER: {profile.google_credentials_dir}")
         if p.exists():
             self.credentials = ServiceAccountCredentials.from_json_keyfile_name(p, SCOPE)
             self.gc = gspread.authorize(self.credentials)
