@@ -28,7 +28,8 @@ class SnowflakeAdapter:
     def close_connection(self):
         self.con.close()
 
-    def sqlalchemy_dtypes(self, dtypes_dict) -> dict:
+    @staticmethod
+    def sqlalchemy_dtypes(dtypes_dict) -> dict:
         dtypes_dict = dtypes_dict.copy()
         dtypes_map = dict(
             varchar=VARCHAR,
