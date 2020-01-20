@@ -5,3 +5,5 @@ ipython
 mock
 mypy
 pytest-datafiles
+codecov
+coveragepy

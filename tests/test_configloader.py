@@ -12,6 +12,7 @@ FIXTURE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_set_config(datafiles):
     from core.config.config import ConfigLoader
+
     from core.config.project import Project
     from core.main import parser
 

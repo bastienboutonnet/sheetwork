@@ -26,4 +26,12 @@ jobs:
         path: 'core'
     - name: Test with pytest
       run: |
-        cd tests/ && pytest
+        pytest --cov-report=xml:coverage-reports/coverage.cov --cov-report term-missing  --cov=core tests/
+    - uses: actions/checkout@master
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }} #required
+        file: coverage-reports/coverage.xml #optional
+        flags: unittests #optional
+        name: codecov-umbrella #optional
+        fail_ci_if_error: true #optional (default = false)
