@@ -13,6 +13,8 @@ sheets:
       - name: Renamed_col
         identifier: "Long ass name"
         datatype: varchar
+      - name: created_date
+        datatype: date
     excluded_columns: 'to_exclude'
 
   - sheet_name: test_sheet_2

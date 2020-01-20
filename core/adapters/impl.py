@@ -2,11 +2,12 @@ import tempfile
 from typing import TYPE_CHECKING
 
 import pandas
-from sqlalchemy.types import BOOLEAN, INTEGER, TIMESTAMP, VARCHAR, Numeric
+from sqlalchemy.types import BOOLEAN, INTEGER, TIMESTAMP, VARCHAR, Numeric, DATE
 
 from core.config.config import ConfigLoader
 from core.exceptions import ColumnNotFoundInDataFrame, DatabaseError, UnsupportedDataTypeError
 from core.logger import GLOBAL_LOGGER as logger
+from core.utils import cast_pandas_dtypes
 
 if TYPE_CHECKING:
     from core.adapters.connection import Connection
@@ -27,37 +28,6 @@ class SnowflakeAdapter:
     def close_connection(self):
         self.con.close()
 
-    def cast_dtypes(self, df: pandas.DataFrame, overwrite_dict: dict = dict()) -> pandas.DataFrame:
-        overwrite_dict = overwrite_dict.copy()
-        dtypes_map = dict(
-            varchar="object",
-            int="int64",
-            numeric="float64",
-            boolean="bool",
-            timestamp_ntz="datetime64[ns]",
-        )
-
-        # Check for type support
-        unsupported_dtypes = set(overwrite_dict.values()).difference(dtypes_map.keys())
-        if unsupported_dtypes:
-            raise UnsupportedDataTypeError(
-                f"{unsupported_dtypes} are currently not supported for {self.connection.db_type}"
-            )
-
-        # check overwrite col is in df
-        invalid_columns = set(overwrite_dict.keys()).difference(set(df.columns.tolist()))
-        if invalid_columns:
-            raise ColumnNotFoundInDataFrame(f"{invalid_columns} not in DataFrame. Check spelling?")
-
-        # recode dict in pandas terms
-        for col, data_type in overwrite_dict.items():
-            overwrite_dict.update({col: dtypes_map[data_type]})
-
-        # cast
-        df = df.astype(overwrite_dict)
-        logger.debug(f"Head of cast DF:\n {df.head()}")
-        return df
-
     def sqlalchemy_dtypes(self, dtypes_dict) -> dict:
         dtypes_dict = dtypes_dict.copy()
         dtypes_map = dict(
@@ -66,6 +36,7 @@ class SnowflakeAdapter:
             numeric=Numeric(38, 18),
             boolean=BOOLEAN,
             timestamp_ntz=TIMESTAMP,
+            date=DATE,
         )
 
         for col, data_type in dtypes_dict.items():
@@ -74,7 +45,7 @@ class SnowflakeAdapter:
 
     def upload(self, df: pandas.DataFrame, override_schema: str = str()):
         # cast columns
-        df = self.cast_dtypes(df, overwrite_dict=self.config.sheet_columns)
+        df = cast_pandas_dtypes(df, overwrite_dict=self.config.sheet_columns)
         dtypes_dict = self.sqlalchemy_dtypes(self.config.sheet_columns)
 
         # potenfially override target schema from config.
