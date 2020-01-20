@@ -28,7 +28,7 @@ jobs:
       run: |
         pytest --cov-report=xml:coverage-reports/coverage.cov --cov-report term-missing  --cov=core tests/
     - name: Upload coverage report to CodeCov
-    - uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
         file: coverage-reports/coverage.xml #optional
