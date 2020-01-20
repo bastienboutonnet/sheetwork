@@ -40,14 +40,14 @@ profiles_schema = {
     "profiles": {
         "required": True,
         "type": "dict",
-        "valueschema": {
+        "valuesrules": {
             "type": "dict",
             "schema": {
                 "target": {"required": True, "type": "string"},
                 "outputs": {
                     "required": True,
                     "type": "dict",
-                    "valueschema": {
+                    "valuesrules": {
                         "type": "dict",
                         "schema": {
                             "db_type": {"required": True, "type": "string"},

@@ -5,3 +5,4 @@ ipython
 mock
 mypy
 pytest-datafiles
+codecov
