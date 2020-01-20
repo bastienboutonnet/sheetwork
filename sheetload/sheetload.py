@@ -18,7 +18,7 @@ class SheetBag:
         self.sheet_df: pandas.DataFrame = pandas.DataFrame()
         self.flags: FlagParser = flags
         self.config: ConfigLoader = config
-        self.target_schema: str = str()
+        self.target_schema: str = self.config.target_schema
         self.consume_config()
 
     def consume_config(self):
