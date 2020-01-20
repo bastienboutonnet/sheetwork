@@ -3,3 +3,5 @@ pandas
 pyyaml
 snowflake-sqlalchemy
 sqlalchemy
+gspread
+oauth2client
