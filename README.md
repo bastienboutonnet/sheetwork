@@ -2,6 +2,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![codecov](https://codecov.io/gh/bastienboutonnet/sheetload/branch/dev%2Fnicolas_jaar/graph/badge.svg)](https://codecov.io/gh/bastienboutonnet/sheetload)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bastienboutonnet_sheetload&metric=alert_status)](https://sonarcloud.io/dashboard?id=bastienboutonnet_sheetload)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 
 Package Version: `v0.2.1a0`
 
