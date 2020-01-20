@@ -8,6 +8,7 @@ Package Version: `v0.2.1a0`
 
 # sheetload 💩🤦
 *A name inspired by [GitLab Data Team](https://gitlab.com/gitlab-data/analytics/tree/master/extract/sheetload)*
+
 A handy package to load Google Sheets to Snowflake
 
 Loads Google sheets from Data Team shared drive and uploads them to Snowflake.
