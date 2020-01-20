@@ -1,13 +1,16 @@
 import logging
+from pathlib import Path
 
 
 class LogManager:
-    def __init__(self):
+    def __init__(self, log_file_path: Path = Path(Path.cwd(), "sheetload_logs")):
+        Path(log_file_path).mkdir(parents=True, exist_ok=True)
+        log_filename = Path(log_file_path, "sheetload_log.log")
         logger = logging.getLogger("Sheetload Logger")
         logger.setLevel(logging.INFO)
         # Create handlers
         c_handler = logging.StreamHandler()
-        f_handler = logging.FileHandler("file.log")
+        f_handler = logging.FileHandler(log_filename)
         c_handler.setLevel(logging.INFO)
         f_handler.setLevel(logging.INFO)
 
