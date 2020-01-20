@@ -24,10 +24,10 @@ jobs:
       uses: jpetrucciani/mypy-check@master
       with:
         path: 'core'
-    - name: Test with pytest
+    - name: Run Tests and Coverage Report
       run: |
         pytest --cov-report=xml:coverage-reports/coverage.cov --cov-report term-missing  --cov=core tests/
-    - uses: actions/checkout@master
+    - name: Upload coverage report to CodeCov
     - uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
