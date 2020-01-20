@@ -3,15 +3,13 @@ import sys
 from typing import TYPE_CHECKING, Tuple
 
 import pandas
-from data_tools.db import odbc
-from data_tools.db.pandas import push_pandas_to_snowflake
 
+from core.adapters.connection import Connection, Credentials
+from core.adapters.impl import SnowflakeAdapter
 from core.cleaner import SheetCleaner
 from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
-from core.adapters.connection import Credentials, Connection
-from core.adapters.impl import SnowflakeAdapter
 from core.exceptions import ColumnNotFoundInDataFrame, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
 
