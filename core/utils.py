@@ -1,7 +1,14 @@
 from pathlib import Path
 from typing import Tuple
 
-from core.exceptions import NearestFileNotFound
+import pandas
+
+from core.exceptions import (
+    ColumnNotFoundInDataFrame,
+    DatabaseError,
+    NearestFileNotFound,
+    UnsupportedDataTypeError,
+)
 from core.logger import GLOBAL_LOGGER as logger
 
 
@@ -55,3 +62,34 @@ class PathFinder:
                 f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} "
                 "iterations upwards."
             )
+
+
+def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> pandas.DataFrame:
+    overwrite_dict = overwrite_dict.copy()
+    dtypes_map = dict(
+        varchar="object",
+        int="int64",
+        numeric="float64",
+        boolean="bool",
+        timestamp_ntz="datetime64[ns]",
+        date="datetime64[ns]",  # this intentional pandas doesn't really have just dates.
+    )
+
+    # Check for type support
+    unsupported_dtypes = set(overwrite_dict.values()).difference(dtypes_map.keys())
+    if unsupported_dtypes:
+        raise UnsupportedDataTypeError(f"{unsupported_dtypes} are currently not supported")
+
+    # check overwrite col is in df
+    invalid_columns = set(overwrite_dict.keys()).difference(set(df.columns.tolist()))
+    if invalid_columns:
+        raise ColumnNotFoundInDataFrame(f"{invalid_columns} not in DataFrame. Check spelling?")
+
+    # recode dict in pandas terms
+    for col, data_type in overwrite_dict.items():
+        overwrite_dict.update({col: dtypes_map[data_type]})
+
+    # cast
+    df = df.astype(overwrite_dict)
+    logger.debug(f"Head of cast DF:\n {df.head()}")
+    return df

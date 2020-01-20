@@ -1,4 +1,5 @@
 import pandas
+from pandas import Timestamp
 
 EXPECTED_CONFIG = {
     "sheet_name": "df_dropper",
@@ -46,6 +47,18 @@ DIRTY_DF = {
     "": ["q", "q", "q"],
     "long ass name": ["foo", "bar", "fizz"],
 }
+
+TO_CAST_DF = {
+    "col_int": ["1", "2", "32"],
+    "col_varchar": ["foo", "bar", "fizz"],
+    "created_date": ["2019/01/01", "2019/01/01", "2019/01/01"],
+}
+
+CAST_DF = {'col_int': {0: 1, 1: 2, 2: 32},
+ 'col_varchar': {0: 'foo', 1: 'bar', 2: 'fizz'},
+ 'created_date': {0: Timestamp('2019-01-01 00:00:00'),
+  1: Timestamp('2019-01-01 00:00:00'),
+  2: Timestamp('2019-01-01 00:00:00')}}
 
 CLEAN_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
