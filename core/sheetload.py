@@ -194,7 +194,7 @@ class SheetBag:
     def run(self):
         self.load_sheet()
         if not self.flags.dry_run:
-            self.push_sheet_adaptor()
-            self.check_table_adaptor()
+            self.push_sheet()
+            self.check_table()
         else:
             logger.info("Nothing pushed since you were in --dry_run mode.")
