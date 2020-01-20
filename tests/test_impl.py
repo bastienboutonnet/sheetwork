@@ -11,4 +11,3 @@ FIXTURE_DIR = Path(__file__).resolve().parent
 
 def test_sqlalchemy_dtypes():
     pass
-

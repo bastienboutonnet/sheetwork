@@ -16,4 +16,3 @@ def test_cast_pandas_dtypes():
     expected_cast = generate_test_df(CAST_DF)
 
     assert cast_df.to_dict() == expected_cast.to_dict()
-
