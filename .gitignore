@@ -86,3 +86,4 @@ local.py
 Mypy
 .mypy_cache
 
+.sheetload_logs

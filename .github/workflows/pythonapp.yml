@@ -26,12 +26,12 @@ jobs:
         path: 'core'
     - name: Run Tests and Coverage Report
       run: |
-        pytest --cov-report=xml:coverage-reports/coverage.cov --cov-report term-missing  --cov=core tests/
+        pytest --cov-report=xml:coverage-reports/coverage.xml --cov-report term-missing  --cov=core tests/
     - name: Upload coverage report to CodeCov
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
-        file: coverage-reports/coverage.cov #optional
+        file: coverage-reports/coverage.xml #optional
         flags: unittests #optional
         name: codecov-umbrella #optional
         fail_ci_if_error: true #optional (default = false)
