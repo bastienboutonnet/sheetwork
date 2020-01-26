@@ -3,6 +3,7 @@ sheets:
     sheet_key: 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg
     target_schema: sand
     target_table: bb_test_sheetload
+    snake_case_camel: True
     columns:
       - name: Col_a
         datatype: int
