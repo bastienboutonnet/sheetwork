@@ -86,6 +86,7 @@ coverage.xml
 .pytest_cache
 
 **/sheetload_logs/**
+sheetload_logs/
 
 #Mypy
 .mypy_cache

@@ -51,7 +51,7 @@ DIRTY_DF = {
 TO_CAST_DF = {
     "col_int": ["1", "2", "32"],
     "col_varchar": ["foo", "bar", "fizz"],
-    "created_date": ["2019/01/01", "2019/01/01", "2019/01/01"],
+    "created_date": ["2019/01/01", "2019/01/02", "2019/01/03"],
 }
 
 CAST_DF = {
@@ -59,8 +59,8 @@ CAST_DF = {
     "col_varchar": {0: "foo", 1: "bar", 2: "fizz"},
     "created_date": {
         0: Timestamp("2019-01-01 00:00:00"),
-        1: Timestamp("2019-01-01 00:00:00"),
-        2: Timestamp("2019-01-01 00:00:00"),
+        1: Timestamp("2019-01-02 00:00:00"),
+        2: Timestamp("2019-01-03 00:00:00"),
     },
 }
 
