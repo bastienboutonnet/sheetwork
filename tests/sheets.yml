@@ -15,6 +15,8 @@ sheets:
         datatype: varchar
       - name: created_date
         datatype: date
+      - name: camel_cased_col
+        datatype: int
     excluded_columns: 'to_exclude'
 
   - sheet_name: test_sheet_2
@@ -69,3 +71,12 @@ sheets:
     sheet_key: sample
     target_schema: sand
     target_table: bb_test_sheetload
+
+  - sheet_name: df_snake_casing
+    sheet_key: sample
+    target_schema: sand
+    target_table: bb_test_sheetload
+    snake_case_camel: True
+    columns:
+      - name: CamelCasedCol
+        datatype: int
