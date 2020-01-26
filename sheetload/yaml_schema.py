@@ -10,6 +10,7 @@ validation_schema = {
                 "worksheet": {"required": False, "type": "string"},
                 "target_schema": {"required": True, "type": "string"},
                 "target_table": {"required": True, "type": "string"},
+                "snake_case_camel": {"required": False, "type": "boolean"},
                 "columns": {
                     "type": "list",
                     "required": False,

@@ -38,6 +38,11 @@ CLEAN_DF = {
     "long_ass_name": {0: "foo", 1: "bar", 2: "fizz"},
 }
 
+CASING_DF = {
+    "CamelCasedCol": [1, 2, 3],
+    "snake_cased_col": [1, 2, 3],
+}
+
 RENAMED_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
     "col_b": {0: "as .", 1: "b", 2: "c"},
@@ -59,6 +64,10 @@ DROP_COL_DF = {
 RENAMED_COLS = ["col_a", "col b", "col_numeric", "1. col_one", "", "renamed_col"]
 
 EXCLUDED_DF_COLS = ["col_a", "col b", "col_numeric", "1. col_one", "", "long ass name"]
+
+SNAKE_CASED_COLS = ['camel_cased_col', 'snake_cased_col']
+
+CAMEL_CASED_COLS = ['CamelCasedCol', 'SnakeCasedCol']
 
 
 def generate_test_df(df):
