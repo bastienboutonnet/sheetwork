@@ -2,11 +2,10 @@ import tempfile
 from typing import TYPE_CHECKING
 
 import pandas
-from sqlalchemy.types import BOOLEAN, INTEGER, TIMESTAMP, VARCHAR, Numeric, DATE
+from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
 
 from core.config.config import ConfigLoader
-from core.exceptions import ColumnNotFoundInDataFrame, DatabaseError, UnsupportedDataTypeError
-from core.logger import GLOBAL_LOGGER as logger
+from core.exceptions import DatabaseError
 from core.utils import cast_pandas_dtypes
 
 if TYPE_CHECKING:

@@ -3,12 +3,7 @@ from typing import Tuple
 
 import pandas
 
-from core.exceptions import (
-    ColumnNotFoundInDataFrame,
-    DatabaseError,
-    NearestFileNotFound,
-    UnsupportedDataTypeError,
-)
+from core.exceptions import ColumnNotFoundInDataFrame, NearestFileNotFound, UnsupportedDataTypeError
 from core.logger import GLOBAL_LOGGER as logger
 
 

@@ -1,6 +1,5 @@
-import logging
 import sys
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 import pandas
 
