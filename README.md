@@ -2,6 +2,8 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Actions Status](https://github.com/bastienboutonnet/sheetload/workflows/Sheetload/badge.svg?branch=dev/daft_punk)](https://github.com/bastienboutonnet/sheetload/actions)
 
+**IMPORTANT:** Support for Sheetload versions < 0.2.1 has **stopped**. We are currenlty working on 0.3.0 which will break most current behaviour to allow for a truely open source and extensible tool. Development for this version is currently happening in `dev/nicolas_jaar`. 
+
 Package Version: `v0.2.1b2`
 
 # sheetload 💩🤦 
