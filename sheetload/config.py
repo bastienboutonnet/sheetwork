@@ -12,6 +12,7 @@ class ConfigLoader:
         self.excluded_columns: list = list()
         self.flags: FlagParser = flags
         self.yml_folder: str = yml_folder
+        self.columns_casing: str = str()
         self.set_config()
 
     def set_config(self):

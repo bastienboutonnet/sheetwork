@@ -47,6 +47,15 @@ sheets:
         identifier: "long ass name"
         datatype: varchar
 
+  - sheet_name: df_snake_casing
+    sheet_key: sample
+    target_schema: sand
+    target_table: bb_test_sheetload
+    snake_case_camel: True
+    columns:
+      - name: CamelCasedCol
+        datatype: int
+
   - sheet_name: df_dropper
     sheet_key: sample
     target_schema: sand
