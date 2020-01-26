@@ -81,11 +81,13 @@ local.py
 
 # Pytest Framework
 .coverage
-coverage-reports/**
+coverage-reports/
 coverage.xml
 .pytest_cache
 
-Mypy
+**/sheetload_logs/**
+
+#Mypy
 .mypy_cache
 
 .sheetload_logs
