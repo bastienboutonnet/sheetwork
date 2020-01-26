@@ -81,6 +81,8 @@ local.py
 
 # Pytest Framework
 .coverage
+coverage-reports/**
+coverage.xml
 .pytest_cache
 
 Mypy
