@@ -54,11 +54,24 @@ TO_CAST_DF = {
     "created_date": ["2019/01/01", "2019/01/01", "2019/01/01"],
 }
 
-CAST_DF = {'col_int': {0: 1, 1: 2, 2: 32},
- 'col_varchar': {0: 'foo', 1: 'bar', 2: 'fizz'},
- 'created_date': {0: Timestamp('2019-01-01 00:00:00'),
-  1: Timestamp('2019-01-01 00:00:00'),
-  2: Timestamp('2019-01-01 00:00:00')}}
+CAST_DF = {
+    "col_int": {0: 1, 1: 2, 2: 32},
+    "col_varchar": {0: "foo", 1: "bar", 2: "fizz"},
+    "created_date": {
+        0: Timestamp("2019-01-01 00:00:00"),
+        1: Timestamp("2019-01-01 00:00:00"),
+        2: Timestamp("2019-01-01 00:00:00"),
+    },
+}
+
+CASING_DF = {
+    "CamelCasedCol": [1, 2, 3],
+    "snake_cased_col": [1, 2, 3],
+}
+
+SNAKE_CASED_COLS = ["camel_cased_col", "snake_cased_col"]
+
+CAMEL_CASED_COLS = ["CamelCasedCol", "SnakeCasedCol"]
 
 CLEAN_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},

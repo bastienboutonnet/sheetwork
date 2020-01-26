@@ -145,7 +145,7 @@ class SheetBag:
 
         if clean_up is True:
             logger.info("Housekeeping...")
-            clean_df = SheetCleaner(df).cleanup()
+            clean_df = SheetCleaner(df, self.config.sheet_config.get("snake_case_camel")).cleanup()
             if self.flags.dry_run or self.flags.interactive:
                 logger.info("POST-CLEANING PREVIEW: This is what you would push to the database:")
                 self._show_dry_run_preview(clean_df)
