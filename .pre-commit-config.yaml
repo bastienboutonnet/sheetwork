@@ -1,7 +1,19 @@
 repos:
   - repo: https://github.com/ambv/black
-    rev: stable
+    rev: 19.10b0
     hooks:
     - id: black
       language_version: python3
-      args: [--line-length=100]
+      args: [--line-length=100, --target-version=py37]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+  - repo: git://github.com/luismayta/pre-commit-mypy
+    rev: "aad0a7b"
+    hooks:
+    - id: mypy
+      exclude_types: [python]
+      always_run: true
+      args: [--ignore-missing-imports, "core"]
