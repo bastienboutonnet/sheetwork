@@ -75,6 +75,10 @@ When the time comes to merge your code back on the original repo (here). Go to y
 - Don't leave trailing whitespace lying around (also easy to knock off or hightlight automatically in your IDE).
 - Don't forget an empty line at the end of all files (yes, your IDE or an extention can do it for you!).
 
+#### Linting
+
+- It is recommended to use Type Hinting and have [`mypy`](http://mypy-lang.org/) enabled as your linter. Most IDE's have an extension or a way to help with this. Typing isn't necessary but **really, really** preferred.
+
 ### Development
 
 1. It is highly recommended to make a virtual environment **just** for developing the app so you have a clean slate and don't end up messing your previously working version of it.
