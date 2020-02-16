@@ -1,11 +1,13 @@
 import re
 
+import inflection
 import pandas
 
 
 class SheetCleaner:
-    def __init__(self, df):
-        self.df = df
+    def __init__(self, df, casing: bool = False):
+        self.df: pandas.DataFrame = df
+        self.casing: bool = casing
         assert isinstance(
             self.df, pandas.DataFrame
         ), f"SheetCleaner can only process a pandas.DataFrame. You are feeding a {type(self.df)}."
@@ -13,9 +15,10 @@ class SheetCleaner:
     def cleanup(self):
         clean_df = self.df.copy(deep=True)
 
+        if self.casing:
+            clean_df = self.camel_to_snake(clean_df)
         clean_df = self.columns_cleanups(clean_df)
         clean_df = self.fields_cleanups(clean_df)
-
         return clean_df
 
     @staticmethod
@@ -39,6 +42,9 @@ class SheetCleaner:
         # remove empty cols
         if "" in df.columns:
             df = df.drop([""], axis=1)
+
+        # make all columns lowercase
+        df.columns = map(str.lower, df.columns)
         return df
 
     @staticmethod
@@ -49,4 +55,9 @@ class SheetCleaner:
             if df[col].dtype == "object":
                 df[col] = df[col].str.strip()
 
+        return df
+
+    @staticmethod
+    def camel_to_snake(df: pandas.DataFrame) -> pandas.DataFrame:
+        df.columns = [inflection.underscore(col) for col in df.columns]
         return df

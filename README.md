@@ -1,9 +1,14 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/bastienboutonnet/sheetload/badge)](https://www.codefactor.io/repository/github/bastienboutonnet/sheetload)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![Actions Status](https://github.com/bastienboutonnet/sheetload/workflows/Sheetload/badge.svg?branch=dev/daft_punk)](https://github.com/bastienboutonnet/sheetload/actions)
 
-Package Version: `v0.1.0`
+**IMPORTANT:** Support for Sheetload versions < 0.2.1 has **stopped**. We are currenlty working on 0.3.0 which will break most current behaviour to allow for a truely open source and extensible tool. Development for this version is currently happening in `dev/nicolas_jaar`. 
 
-# sheetload 💩🤦
+Package Version: `v0.2.1`
+
+# sheetload 💩🤦 
+A name inspired by GitLab's tool (https://gitlab.com/gitlab-data/analytics/tree/master/extract/sheetload).
+**(Not Fully Functional for non members of TripActions Data Team but will stand alone soon!)**
 A handy package to load Google Sheets to Snowflake
 
 Loads Google sheets from Data Team shared drive and uploads them to Snowflake.
@@ -15,7 +20,7 @@ Performs some cleanups on column names and string (such as removing trailing spa
 3. Make sure your access tokens and usernames are installed according to TripActions Data Tooling standards. Setup information can be found in [data_tools Credentials](https://github.com/tripactions/data_tooling/blob/master/README.md#credentials).
 4. Install Sheetload
 ```bash
-pip install git+ssh://git@github.com/bastienboutonnet/sheetload.git@v0.1.0
+pip install git+ssh://git@github.com/bastienboutonnet/sheetload.git@v0.2.1
 ```
 Make sure you've setup your GitHub ssh keys, if you don't know how to do it, check [here](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/).
 
@@ -26,7 +31,7 @@ sheetload --version
 Should display something like this:
 ```bash
 ➜ sheetload --version
-sheetload 0.1.0
+sheetload 0.2.1
 ```
 
 ## Usage
@@ -163,6 +168,3 @@ optional arguments:
   --i                   Turns on interactive mode, which allows previews and
                         cleanup choices
 ```
-
-
-

@@ -7,22 +7,30 @@ validation_schema = {
             "schema": {
                 "sheet_name": {"required": True, "type": "string"},
                 "sheet_key": {"required": True, "type": "string"},
+                "worksheet": {"required": False, "type": "string"},
                 "target_schema": {"required": True, "type": "string"},
                 "target_table": {"required": True, "type": "string"},
+                "snake_case_camel": {"required": False, "type": "boolean"},
                 "columns": {
                     "type": "list",
                     "required": False,
                     "schema": {
                         "type": "dict",
                         "schema": {
-                            "name": {"required": True, "type": "string"},
+                            "name": {"required": True, "type": "string", "maxlength": 255},
                             "datatype": {
                                 "required": True,
                                 "type": "string",
-                                "regex": "^(?i)(int|varchar|variant|numeric|boolean|timestamp_ntz)$",
+                                "regex": "(?i)^(int|varchar|variant|numeric|boolean|timestamp_ntz)$",
                             },
+                            "identifier": {"required": False, "type": "string"},
                         },
                     },
+                },
+                "excluded_columns": {
+                    "anyof_type": ["list", "string"],
+                    "required": False,
+                    "schema": {"type": "string"},
                 },
             },
         },

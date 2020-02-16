@@ -1,21 +1,11 @@
-import pandas
-
-DIRTY_DF = {
-    "col_a": [1, 2, 32],
-    "col b": ["as .    ", "b", "   c"],
-    "1. col_one": ["aa", "bb", "cc"],
-    "": ["q", "q", "q"],
-}
-CLEAN_DF = {
-    "col_a": {0: 1, 1: 2, 2: 32},
-    "col_b": {0: "as .", 1: "b", 2: "c"},
-    "col_one": {0: "aa", 1: "bb", 2: "cc"},
-}
-
-
-def generate_test_df(df):
-    test_df = pandas.DataFrame.from_dict(df)
-    return test_df
+from .mockers import (
+    CAMEL_CASED_COLS,
+    CASING_DF,
+    CLEAN_DF,
+    DIRTY_DF,
+    SNAKE_CASED_COLS,
+    generate_test_df,
+)
 
 
 def test_cleanup():
@@ -26,3 +16,13 @@ def test_cleanup():
     expected_df = generate_test_df(CLEAN_DF)
 
     assert clean_df.equals(expected_df)
+
+
+def test_snake_to_camel():
+    from sheetload.cleaner import SheetCleaner
+
+    cased_df = generate_test_df(CASING_DF)
+    recased_df = SheetCleaner(cased_df, True).cleanup()
+    print(recased_df.columns.tolist())
+
+    assert recased_df.columns.tolist() == SNAKE_CASED_COLS

@@ -6,16 +6,19 @@ from data_tools.db import odbc
 from data_tools.db.pandas import push_pandas_to_snowflake
 from data_tools.google.sheets import Spreadsheet
 
+from sheetload._version import __version__
 from sheetload.cleaner import SheetCleaner
 from sheetload.config import ConfigLoader
-from sheetload.exceptions import external_errors_to_catch
-from sheetload.flags import args, logger
+from sheetload.exceptions import ColumnNotFoundInDataFrame, external_errors_to_catch
+from sheetload.flags import FlagParser, logger
 
 
-class SheetBag(ConfigLoader):
-    def __init__(self):
-        ConfigLoader.__init__(self)
-        self.sheet_df = None
+class SheetBag:
+    def __init__(self, config: ConfigLoader, flags: FlagParser):
+        self.sheet_df: pandas.DataFrame = pandas.DataFrame()
+        self.flags: FlagParser = flags
+        self.config: ConfigLoader = config
+        self.target_schema: str = self.config.target_schema
         self.consume_config()
 
     def consume_config(self):
@@ -24,13 +27,18 @@ class SheetBag(ConfigLoader):
         logger.info("Reading configuration...")
 
         # overrides target schema
-        if args.mode == "dev" and not args.force:
+        if self.flags.mode == "dev" and not self.flags.force:
             self.target_schema = "sand"
 
         logger.info(
-            f"Running in {args.mode.upper()} mode."
-            f"Log level: {args.log_level.upper()}. Writing to: {self.target_schema.upper()}"
+            f"Running in {self.flags.mode.upper()} mode."
+            f"Log level: {self.flags.log_level.upper()}. Writing to: {self.target_schema.upper()}"
         )
+
+    def _obtain_googlesheet(self):
+        worksheet = self.config.sheet_config.get("worksheet")
+        df = Spreadsheet(self.config.sheet_key).worksheet_to_df(worksheet_name=worksheet)
+        return df
 
     def load_sheet(self):
         """Loads a google sheet, and calls clean up steps if applicable.
@@ -41,17 +49,52 @@ class SheetBag(ConfigLoader):
             DataFrame a type error will be raised.
         """
 
-        logger.info(f"Importing data from {self.sheet_key}")
-        df = Spreadsheet(self.sheet_key).worksheet_to_df()
+        logger.info(f"Importing data from {self.config.sheet_key}")
+        df = self._obtain_googlesheet()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
+        logger.debug(f"Loaded DF Cols: {df.columns.tolist()}")
+
+        # Perform exclusions, renamings and cleanups before releasing the sheet.
+        df = self.exclude_columns(df)
+        df = self.rename_columns(df)
         df = self.run_cleanup(df)
+        logger.debug(f"Cols should be: {df.columns}")
         self.sheet_df = df
+
+    def rename_columns(self, df):
+        if self.config.sheet_column_rename_dict:
+            for column in self.config.sheet_column_rename_dict.keys():
+                if column not in df.columns:
+                    raise ColumnNotFoundInDataFrame(
+                        f"The column: '{column}' was not found in the sheet, make sure you spelled "
+                        "it correctly in 'identifier' field. If it contains special chars you "
+                        "should wrap it between double quotes."
+                    )
+            df = df.rename(columns=self.config.sheet_column_rename_dict)
+        return df
+
+    def exclude_columns(self, df) -> pandas.DataFrame:
+        """Drops columns referred to by their identifier (the exact string in the google sheet) when
+        a list is provided in the "excluded_columns" field of a sheet yml file.
+
+        Args:
+            df (pandas.DataFrame): DataFrame downloaded from google sheet.
+
+        Returns:
+            pandas.DataFrame: Either the same dataframe as originally provided or one with dropped
+            columns as required.
+        """
+
+        if self.config.sheet_config.get("excluded_columns", str()):
+            df = df.drop(self.config.sheet_config["excluded_columns"], axis=1)
+            return df
+        return df
 
     @staticmethod
     def _collect_and_check_answer():
         acceptable_answers = ["y", "n", "a"]
-        user_input = None
+        user_input = str()
         while user_input not in acceptable_answers:
             if user_input is not None:
                 logger.info(
@@ -75,15 +118,15 @@ class SheetBag(ConfigLoader):
     def run_cleanup(self, df):
         clean_up = True
         # check for interactive mode
-        if args.i:
+        if self.flags.interactive:
             logger.info("PRE-CLEANING PREVIEW: This is what you would push to the database.")
             self._show_dry_run_preview(df)
             clean_up = self._collect_and_check_answer()
 
         if clean_up is True:
             logger.info("Housekeeping...")
-            clean_df = SheetCleaner(self.df).cleanup()
-            if args.dry_run or args.i:
+            clean_df = SheetCleaner(df, self.config.sheet_config.get("snake_case_camel")).cleanup()
+            if self.flags.dry_run or self.flags.interactive:
                 logger.info("POST-CLEANING PREVIEW: This is what you would push to the database:")
                 self._show_dry_run_preview(clean_df)
 
@@ -96,25 +139,27 @@ class SheetBag(ConfigLoader):
                         from dwh.information_schema.columns
                         where table_catalog = 'DWH'
                         and table_schema = '{self.target_schema.upper()}'
-                        and table_name = '{self.target_table.upper()}'
+                        and table_name = '{self.config.target_table.upper()}'
                         ;
                         """
-        rows_query = f"select count(*) from {self.target_schema}.{self.target_table}"
+        rows_query = f"select count(*) from {self.target_schema}.{self.config.target_table}"
         columns = odbc.run_query(odbc.SNOWFLAKE_DSN, columns_query)
         rows = odbc.run_query(odbc.SNOWFLAKE_DSN, rows_query)
         return columns[0][0], rows[0][0]
 
     def push_sheet(self):
-        if not args.dry_run:
+        if not self.flags.dry_run:
             logger.info("Pushing sheet to Snowflake...")
-            logger.debug(f"Column override dict is a {type(self.sheet_columns)}")
+            logger.debug(f"Column override dict is a {type(self.config.sheet_columns)}")
             try:
+                logger.debug(f"Sheet Columns: {self.config.sheet_columns}")
+                logger.debug(f"Df col list: {self.sheet_df.columns.tolist()}")
                 push_pandas_to_snowflake(
                     self.sheet_df,
                     self.target_schema,
-                    self.target_table,
-                    create=self.create_table,
-                    overwrite_defaults=self.sheet_columns,
+                    self.config.target_table,
+                    create=self.flags.create_table,
+                    overwrite_defaults=self.config.sheet_columns,
                 )
             except ValueError as e:
                 if str(e) == external_errors_to_catch["overwrite_cols_data_tools_error"]:
@@ -136,7 +181,8 @@ class SheetBag(ConfigLoader):
             except Exception as e:
                 raise RuntimeError(e)
             logger.info(
-                f"Push successful for {self.target_schema.upper()}.{self.target_table.upper()}.\n"
+                f"Push successful for"
+                f"{self.target_schema.upper()}.{self.config.target_table.upper()}.\n"
                 f"Columns: {columns}, Rows: {rows}."
             )
         else:
@@ -144,7 +190,11 @@ class SheetBag(ConfigLoader):
 
 
 def run():
-    sheetbag = SheetBag()
+    print(f"Sheetload version: {__version__} \n")
+    flags = FlagParser()
+    flags.consume_cli_arguments()
+    config = ConfigLoader(flags)
+    sheetbag = SheetBag(config, flags)
     sheetbag.load_sheet()
     sheetbag.push_sheet()
 
