@@ -1,6 +1,6 @@
 bumpversion
 pytest
-pytest-cov
+pytest-cov==2.8.1
 ipython
 mock
 mypy
