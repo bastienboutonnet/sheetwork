@@ -2,6 +2,6 @@ bumpversion
 pytest
 pytest-cov
 ipython
-mock
+mock==4.0.1
 mypy
 pytest-datafiles
