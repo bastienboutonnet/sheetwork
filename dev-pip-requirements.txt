@@ -3,5 +3,5 @@ pytest
 pytest-cov
 ipython
 mock
-mypy
+mypy==0.761
 pytest-datafiles
