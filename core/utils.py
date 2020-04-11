@@ -1,6 +1,6 @@
 import collections
 from pathlib import Path
-from typing import Tuple, Union, Optional
+from typing import Optional, Tuple, Union
 
 import pandas
 
