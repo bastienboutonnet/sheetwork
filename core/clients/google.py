@@ -1,3 +1,4 @@
+import collections
 from pathlib import Path
 
 import gspread
@@ -7,6 +8,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 from core.config.profile import Profile
 from core.exceptions import (
+    DuplicatedColumnsInSheet,
     GoogleCredentialsFileMissingError,
     GoogleSpreadSheetNotFound,
     NoWorkbookLoadedError,
@@ -75,6 +77,7 @@ class GoogleSpreadsheet:
             logger.info("Sheet loaded successfully")
             if grab_header:
                 values = worksheet.get_all_values()
+                self._check_dupe_cols(values[0])
                 df = pandas.DataFrame(values[1:], columns=values[0])
             else:
                 df = pandas.DataFrame(worksheet.get_all_values())
@@ -83,4 +86,14 @@ class GoogleSpreadsheet:
             raise WorksheetNotFoundError(
                 f"Could not find {worksheet_name} in workbook. "
                 "If 'default sheet' not found all sheets in the workbook may be empty."
+            )
+
+    @staticmethod
+    def _check_dupe_cols(columns: list) -> None:
+        """checks dupes in a list
+        """
+        dupes = [item for item, count in collections.Counter(columns).items() if count > 1]
+        if dupes:
+            raise DuplicatedColumnsInSheet(
+                f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
             )
