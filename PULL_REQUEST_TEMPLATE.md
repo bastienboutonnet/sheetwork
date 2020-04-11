@@ -1,6 +1,4 @@
 ## Description
-**IMPORTANT:** Use your own judgement on the level of detail to provide, feel free to delete any part that is not relevant or useful in your PR. These are just guidelines to help you think of what to cover it is not intended to force you to write a novel.
-
 Include a summary of the changes this PR is bringing. Bring in any relevant context or motivation for the change that you deem useful to have in this PR description.
 
 Example:
@@ -11,9 +9,11 @@ The aim of the PR is achieved by:
 - changing this thing
 
 ## How has this change been tested?
-Example: Ran dbt models on my dev environment with success, implemented `unique` test on `col_A` and dbt test passed.
+Example:
+- unitest test developed and passing
+- executed against db successfully etc.
 
-## Supporting doc, tickets, issues (Optional)
+## Supporting doc, tickets, issues
 
 ## Merge Instructions (Optional)
 This PR should be merged, after PR #<PR_NUMBER> on repo X because it assumes usage of the new functionality I am about to merge here.
@@ -23,8 +23,8 @@ I'd like the reviewer to focus especially on ...
 
 ## Checklist
 (At least go through this list mentally or put an `x` between the brackets)
-- [] The PR is named correctly according to team standards.
-- [] My code follows the style guidelines (SQL style, black formatting, dbt design patterns)
+- [] The PR is named correctly according CONTRIBUTE.md standards.
+- [] My code follows the style guidelines (black formatting, typing etc.)
 - [] I have performed a self-review of my own code
 - [] I have commented my code, particularly in hard-to-understand areas
 - [] I have made corresponding changes to the documentation
