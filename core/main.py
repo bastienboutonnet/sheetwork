@@ -9,7 +9,7 @@ from core.flags import FlagParser
 from core.logger import log_manager
 
 parser = argparse.ArgumentParser(
-    prog="sheetload: a handy tool to load google sheets into your DB.",
+    prog="sheetload",
     formatter_class=argparse.RawTextHelpFormatter,
     description="CLI tool to load google sheets onto a DB.",
     epilog="Select one of these sub-commands to find specific help for those.",
