@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, Union
 
 import pandas
 
@@ -88,3 +88,30 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
     df = df.astype(overwrite_dict)
     logger.debug(f"Head of cast DF:\n {df.head()}")
     return df
+
+
+def check_columns_in_df(
+    df: pandas.DataFrame,
+    columns: Union[list, str],
+    warn_only: bool = False,
+    suppress_warning: bool = False,
+) -> Tuple[bool, list]:
+    if isinstance(columns, str):
+        columns = [columns]
+    is_subset = set(columns).issubset(df.columns)
+    if is_subset:
+        return True, columns
+    # else reduce columms, provide filtered list set bool to false and warn or raise
+    cols_not_in_df = [x for x in columns if x not in df.columns.tolist()]
+    reduced_cols = [x for x in columns if x in df.columns.tolist()]
+    if warn_only and not suppress_warning:
+        logger.warning(
+            f"""
+            The following columns were not found in the sheet: {cols_not_in_df} and were thus ignored.
+            Consider cleaning your sheets.yml file"""
+        )
+    elif not warn_only and not suppress_warning:
+        raise ColumnNotFoundInDataFrame(
+            f"{cols_not_in_df} not in DataFrame. Check spelling or clean up your sheets.yml"
+        )
+    return False, reduced_cols

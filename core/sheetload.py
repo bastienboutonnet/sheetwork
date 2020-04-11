@@ -11,6 +11,7 @@ from core.config.config import ConfigLoader
 from core.config.profile import Profile
 from core.exceptions import ColumnNotFoundInDataFrame, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
+from core.utils import check_columns_in_df
 
 if TYPE_CHECKING:
     from core.flags import FlagParser
@@ -93,7 +94,7 @@ class SheetBag:
             df = df.rename(columns=self.config.sheet_column_rename_dict)
         return df
 
-    def exclude_columns(self, df) -> pandas.DataFrame:
+    def exclude_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
         """Drops columns referred to by their identifier (the exact string in the google sheet) when
         a list is provided in the "excluded_columns" field of a sheet yml file.
 
@@ -105,8 +106,11 @@ class SheetBag:
             columns as required.
         """
 
-        if self.config.sheet_config.get("excluded_columns", str()):
-            df = df.drop(self.config.sheet_config["excluded_columns"], axis=1)
+        cols_to_exclude = self.config.sheet_config.get("excluded_columns", list())
+        if cols_to_exclude:
+            _, filtered_columns = check_columns_in_df(df, cols_to_exclude, warn_only=True)
+            if filtered_columns:
+                df = df.drop(filtered_columns, axis=1)
             return df
         return df
 
