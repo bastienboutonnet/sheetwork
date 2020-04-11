@@ -13,6 +13,7 @@ from core.exceptions import (
     WorksheetNotFoundError,
 )
 from core.logger import GLOBAL_LOGGER as logger
+from core.utils import check_dupe_cols
 
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
@@ -75,6 +76,7 @@ class GoogleSpreadsheet:
             logger.info("Sheet loaded successfully")
             if grab_header:
                 values = worksheet.get_all_values()
+                check_dupe_cols(values[0])
                 df = pandas.DataFrame(values[1:], columns=values[0])
             else:
                 df = pandas.DataFrame(worksheet.get_all_values())

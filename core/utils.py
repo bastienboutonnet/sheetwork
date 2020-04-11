@@ -1,9 +1,15 @@
+import collections
 from pathlib import Path
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import pandas
 
-from core.exceptions import ColumnNotFoundInDataFrame, NearestFileNotFound, UnsupportedDataTypeError
+from core.exceptions import (
+    ColumnNotFoundInDataFrame,
+    DuplicatedColumnsInSheet,
+    NearestFileNotFound,
+    UnsupportedDataTypeError,
+)
 from core.logger import GLOBAL_LOGGER as logger
 
 
@@ -115,3 +121,14 @@ def check_columns_in_df(
             f"{cols_not_in_df} not in DataFrame. Check spelling or clean up your sheets.yml"
         )
     return False, reduced_cols
+
+
+def check_dupe_cols(columns: list, suppress_warning: bool = False) -> Optional[list]:
+    """checks dupes in a list
+    """
+    dupes = [item for item, count in collections.Counter(columns).items() if count > 1]
+    if dupes and not suppress_warning:
+        raise DuplicatedColumnsInSheet(
+            f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
+        )
+    return dupes

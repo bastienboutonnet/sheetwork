@@ -60,3 +60,7 @@ class DatabaseError(Exception):
 
 class TableDoesNotExist(Exception):
     "When query for rows and cols came back empty or none"
+
+
+class DuplicatedColumnsInSheet(Exception):
+    "when a google sheet contains the same column name twice"
