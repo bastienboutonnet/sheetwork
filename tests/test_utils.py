@@ -28,3 +28,12 @@ def test_check_columns_in_df():
 
     assert is_subset is False
     assert columns == [cols[1]]
+
+
+def test_check_dupe_cols():
+    from core.utils import check_dupe_cols
+
+    list_with_dupe = ["a", "a", "b"]
+    dupes = check_dupe_cols(list_with_dupe, suppress_warning=True)
+
+    assert dupes == ["a"]
