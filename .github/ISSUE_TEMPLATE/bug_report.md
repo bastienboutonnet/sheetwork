@@ -24,7 +24,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment information:**
- - Are you on a vemv?
+ - Are you on a venv?
  - Which Python?
  - Which version are you running (`sheetload --version`)
 
