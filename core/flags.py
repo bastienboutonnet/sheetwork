@@ -23,9 +23,7 @@ class FlagParser:
         self.sheet_key = str()
         self.target_schema = str()
         self.target_table = str()
-        self.mode = "dev"
         self.log_level = str()
-        self.force = False
         self.interactive = False
         self.dry_run = False
         self.parser = parser
@@ -41,9 +39,7 @@ class FlagParser:
         self.sheet_key = self.args.sheet_key
         self.target_schema = self.args.schema
         self.target_table = self.args.table
-        self.mode = self.args.mode
         self.log_level = self.args.log_level
-        self.force = self.args.force
         self.interactive = self.args.interactive
         self.dry_run = self.args.dry_run
         self.sheet_config_dir = self.args.sheet_config_dir

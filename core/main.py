@@ -18,20 +18,10 @@ parser.add_argument("--version", action="version", version=f"%(prog)s Running v{
 
 base_subparser = argparse.ArgumentParser(add_help=False)
 base_subparser.add_argument(
-    "--mode", help="Chooses between prod or dev run", type=str, default="dev"
-)
-base_subparser.add_argument(
     "-sn", "--sheet_name", help="Name of your sheet from config", type=str, default=None
 )
 base_subparser.add_argument("-sk", "--sheet_key", help="Google sheet Key", type=str, default=None)
 base_subparser.add_argument("--log_level", help="sets the log level", type=str, default=str())
-base_subparser.add_argument(
-    "-f",
-    "--force",
-    help="Forces target schema to be followed. Even when in DEV mode.",
-    action="store_true",
-    default=False,
-)
 base_subparser.add_argument(
     "--dry_run", help="Skips pushing to database", action="store_true", default=False
 )
