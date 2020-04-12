@@ -75,13 +75,7 @@ class SheetBag:
 
     def rename_columns(self, df):
         if self.config.sheet_column_rename_dict:
-            for column in self.config.sheet_column_rename_dict.keys():
-                if column not in df.columns:
-                    raise ColumnNotFoundInDataFrame(
-                        f"The column: '{column}' was not found in the sheet, make sure you spelled "
-                        "it correctly in 'identifier' field. If it contains special chars you "
-                        "should wrap it between double quotes."
-                    )
+            _, _ = check_columns_in_df(df, self.config.sheet_column_rename_dict.keys())
             df = df.rename(columns=self.config.sheet_column_rename_dict)
         return df
 
