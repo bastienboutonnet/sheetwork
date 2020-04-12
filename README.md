@@ -15,34 +15,10 @@ A handy package to load Google Sheets to Snowflake
 Loads Google sheets from Data Team shared drive and uploads them to Snowflake.
 Performs some cleanups on column names and string (such as removing trailing spaces etc.)
 
-## Installation
+** BIG DISCLAIMER ** Sheetload is still very early. Do not use in production jobs unless you tested it extensively and know whether it does what you want it to do!
 
-1. Activate the virtual environment you might want to use it in (most likely it's going to be the one you set up for `data_etl`.
-2. Make sure `pip` is above `v19.1` otherwise one of the required packages by `sheetload` (`data_tools`) will not be installed correctly. If you're not sure you can check by doing `pip --version`. If you're behind, you can upgrade it via `pip install -U pip`.
-3. Make sure your access tokens and usernames are installed according to TripActions Data Tooling standards. Setup information can be found in [data_tools Credentials](https://github.com/tripactions/data_tooling/blob/master/README.md#credentials).
-
-4. Install Sheetload
-
-```bash
-pip install git+ssh://git@github.com/bastienboutonnet/sheetload.git@v0.2.1a0
-```
-
-Make sure you've setup your GitHub ssh keys, if you don't know how to do it, check [here](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/).
-
-5. Check your installation:
-
-```bash
-sheetload --version
-```
-
-Should display something like this:
-
-```bash
-➜ sheetload --version
-sheetload 0.2.1a0
-```
-
-This mode will load the content of the sheet into a pandas dataframe, perform default basic [cleanups](#cleanups), and push the dataframe to a Snowflake table. No data type casting is possible in this mode.
+## Documentation
+Head over to the [official documentation](https://bastienboutonnet.gitbook.io/sheetload/) to learn how to set up and use sheetload
 
 ## Cleanups
 
