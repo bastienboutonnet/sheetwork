@@ -24,7 +24,6 @@ class ConfigLoader:
             target_schema=flags.target_schema,
             target_table=flags.target_table,
         )
-        print(self.sheet_config)
         self.target_schema = flags.target_schema
         self.target_table = flags.target_table
         self.sheet_column_rename_dict: dict = dict()
@@ -102,7 +101,6 @@ class ConfigLoader:
                     "Check your sheets.yml file."
                 )
             self.sheet_config = sheet_config[0]
-            print(self.sheet_config)
             logger.debug(f"Sheet config dict: {self.sheet_config}")
             if self.sheet_config.get("columns"):
                 self.sheet_config["columns"] = [
