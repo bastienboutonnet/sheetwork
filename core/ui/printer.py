@@ -13,8 +13,7 @@ CL_RESET_ALL = COLOURS["reset_all"]
 def colour(message: str, colour: str) -> str:
     if USE_COLOURS:
         return f"{colour}{message}{CL_RESET_ALL}"
-    else:
-        return message
+    return message
 
 
 def green(message: str):
