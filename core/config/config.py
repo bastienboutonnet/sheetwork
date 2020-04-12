@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from core.config.project import Project
 from core.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
 from core.logger import GLOBAL_LOGGER as logger
+from core.ui.printer import yellow
 from core.yaml.yaml_helpers import open_yaml, validate_yaml
 from core.yaml.yaml_schema import config_schema
 
@@ -27,7 +28,7 @@ class ConfigLoader:
         if self.flags.sheet_name:
             self.load_config_from_file()
         elif self.flags.sheet_key and self.flags.target_schema and self.flags.target_table:
-            logger.info("Reading config from command line.")
+            logger.debug("Reading config from command line.")
         else:
             raise NotImplementedError(
                 """
@@ -37,7 +38,7 @@ class ConfigLoader:
             )
 
     def load_config_from_file(self):
-        logger.info("Reading config from config file.")
+        logger.debug("Reading config from config file.")
         filename = Path(self.yml_folder, "sheets.yml")
         logger.debug(f"SHEET FILENAME: {filename}")
         if filename.exists():
@@ -110,11 +111,13 @@ class ConfigLoader:
                 for column in columns:
                     column_dict.update(dict({column.get("name"): column.get("datatype")}))
                 if column_dict:
-                    logger.debug(column_dict)
+                    logger.debug(f"colums operations dict: {column_dict}")
                     self.sheet_columns = column_dict
         except KeyError as e:
             logger.warning(
-                f"No {str(e)} data for {self.flags.sheet_name}. But that might be intentional."
+                yellow(
+                    f"No {str(e)} data for {self.flags.sheet_name}. But that might be intentional."
+                )
             )
 
     def _generate_column_rename_dict(self):
@@ -130,7 +133,7 @@ class ConfigLoader:
                     if column.get("identifier"):
                         column_rename_dict.update(dict({column["identifier"]: column["name"]}))
                     if column_rename_dict:
-                        logger.debug(column_rename_dict)
+                        logger.debug(f"column renaming dict {column_rename_dict}")
                         self.sheet_column_rename_dict = column_rename_dict
 
     def _override_cli_args(self):
