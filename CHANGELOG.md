@@ -7,6 +7,12 @@
 This release is the first release that is usable as a fully open source package. That being said **it is still a beta!**
 To celebrate its idependence, we have named it after extremely independent artist **"Nicolas Jaar**.
 
+**IMPORTANT!**
+
+- This release got a huge version bump and breaks **all** functionality of previously installed `sheetload`
+- Check documentation for **Installation** INSERT LINK TO DOC and **Configuration** INSERT LINK TO DOC
+- Refactor your jobs according to **Usage** INSERT LINK TO DOC
+
 ### Features
 
 - Solid management of credentials, target schemas, database interaction with `Project`, `Config`, and `Profile` concepts. INSERT LINK TO DOC. (#81, #76, #91, #80, #73)
