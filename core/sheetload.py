@@ -11,7 +11,7 @@ from core.config.config import ConfigLoader
 from core.config.profile import Profile
 from core.exceptions import ColumnNotFoundInDataFrame, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import green, yellow
+from core.ui.printer import green, yellow, red
 from core.utils import check_columns_in_df
 
 if TYPE_CHECKING:
@@ -106,34 +106,39 @@ class SheetBag:
         return df
 
     @staticmethod
-    def _collect_and_check_answer():
+    def _collect_and_check_answer(post_cleanup: bool = False):
         acceptable_answers = ["y", "n", "a"]
         user_input = str()
         while user_input not in acceptable_answers:
             if user_input is not None:
-                logger.info(
-                    "Your response cannot be interpreted.Choose 'y':yes, 'n':no, 'a':abort'"
-                )
-            user_input = input("Would you like to perform cleanup? (y/n/a): ")
+                logger.info("Choose 'y':yes, 'n':no, 'a':abort'")
+            if post_cleanup:
+                user_input = input("Would you like to push to db? (y/n):")
+            else:
+                user_input = input("Would you like to perform cleanup? (y/n/a): ")
         if user_input.lower() == "y":
             return True
         if user_input.lower() == "n":
             return False
         if user_input.lower() == "a":
-            logger.info("User aborted.")
+            logger.info(red("User aborted."))
             sys.exit(1)
 
     @staticmethod
     def _show_dry_run_preview(sheet_df):
 
         print("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
-        print("\nDataFrame Preview: \n\n" + str(sheet_df.head(10)))
+        print("\nDataFrame Header: \n\n" + str(sheet_df.head(10)))
 
     def run_cleanup(self, df):
         clean_up = True
         # check for interactive mode
         if self.flags.interactive:
-            logger.info("PRE-CLEANING PREVIEW: This is what you would push to the database.")
+            logger.info(
+                yellow(
+                    "PRE-CLEANING PREVIEW: The DataFrame you would push to the database would look like this:"
+                )
+            )
             self._show_dry_run_preview(df)
             clean_up = self._collect_and_check_answer()
 
@@ -141,9 +146,12 @@ class SheetBag:
             logger.debug("Performing clean ups")
             clean_df = SheetCleaner(df, self.config.sheet_config.get("snake_case_camel")).cleanup()
             if self.flags.dry_run or self.flags.interactive:
-                logger.info("POST-CLEANING PREVIEW: This is what you would push to the database:")
+                logger.info(yellow("\nPOST-CLEANING PREVIEW:"))
                 self._show_dry_run_preview(clean_df)
-
+                carry_on = self._collect_and_check_answer(post_cleanup=True)
+                if not carry_on:
+                    logger.info(red("User Aborted."))
+                    sys.exit(1)
             return clean_df
         return df
 

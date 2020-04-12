@@ -1,9 +1,6 @@
 coverage:
   status:
     project:
-      default: false  # disable the default status that measures entire project
-      tests:  # declare a new status context "tests"
-        target: 66%
-        paths: "tests/"  # only include coverage in "tests/" folder
-      app:  # declare a new status context "app"
-        paths: "!tests/"  # remove all files in "tests/"
+      default:
+        threshold: 3%
+    patch: off
