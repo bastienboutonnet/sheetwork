@@ -59,7 +59,6 @@ class Profile:
             )
 
     def _validate_profile(self, profile_dict: dict) -> bool:
-        logger.debug(profile_dict)
         if isinstance(profile_dict, dict):
             keys_with_nones = {k for k, v in profile_dict.items() if not v}
             keys_with_nones.intersection_update(self.cannot_be_none)

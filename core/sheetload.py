@@ -11,6 +11,7 @@ from core.config.config import ConfigLoader
 from core.config.profile import Profile
 from core.exceptions import ColumnNotFoundInDataFrame, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
+from core.ui.printer import green, yellow
 from core.utils import check_columns_in_df
 
 if TYPE_CHECKING:
@@ -42,16 +43,13 @@ class SheetBag:
     def consume_config(self):
         """Sets up overriding of config when needed.
         """
-        logger.info("Reading configuration...")
+        logger.debug("Reading configuration...")
 
         # overrides target schema
         if self.flags.mode == "dev" and not self.flags.force:
             self.target_schema = "sand"
 
-        logger.info(
-            f"Running in {self.flags.mode.upper()} mode."
-            f"Log level: {self.flags.log_level.upper()}. Writing to: {self.target_schema.upper()}"
-        )
+        logger.info(yellow(f"Running in {self.flags.mode.upper()} mode."))
 
     def _obtain_googlesheet(self):
         worksheet = self.config.sheet_config.get("worksheet", str())
@@ -69,17 +67,21 @@ class SheetBag:
             DataFrame a type error will be raised.
         """
 
-        logger.info(f"Importing data from {self.config.sheet_config['sheet_key']}")
+        if self.flags.sheet_name:
+            logger.info(f"Importing: {self.flags.sheet_name}")
+            logger.debug(f"Importing data from: {self.config.sheet_config['sheet_key']}")
+        else:
+            logger.info(f"Importing data from: {self.config.sheet_config.get('sheet_key')}")
         df = self._obtain_googlesheet()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
-        logger.debug(f"Loaded DF Cols: {df.columns.tolist()}")
+        logger.debug(f"Columns imported from sheet: {df.columns.tolist()}")
 
         # Perform exclusions, renamings and cleanups before releasing the sheet.
         df = self.exclude_columns(df)
         df = self.rename_columns(df)
         df = self.run_cleanup(df)
-        logger.debug(f"Cols should be: {df.columns}")
+        logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
         self.sheet_df = df
 
     def rename_columns(self, df):
@@ -147,7 +149,7 @@ class SheetBag:
             clean_up = self._collect_and_check_answer()
 
         if clean_up is True:
-            logger.info("Housekeeping...")
+            logger.debug("Performing clean ups")
             clean_df = SheetCleaner(df, self.config.sheet_config.get("snake_case_camel")).cleanup()
             if self.flags.dry_run or self.flags.interactive:
                 logger.info("POST-CLEANING PREVIEW: This is what you would push to the database:")
@@ -157,10 +159,10 @@ class SheetBag:
         return df
 
     def push_sheet(self):
-        logger.info("Pushing sheet to Snowflake...")
+        logger.info("Pushing sheet to database...")
         logger.debug(f"Column override dict is a {type(self.config.sheet_columns)}")
-        logger.debug(f"Sheet Columns: {self.config.sheet_columns}")
-        logger.debug(f"Df col list: {self.sheet_df.columns.tolist()}")
+        logger.debug(f"Sheet columns: {self.config.sheet_columns}")
+        logger.debug(f"Columns in final df: {self.sheet_df.columns.tolist()}")
         credentials = Credentials(self.profile)
         connection = Connection(credentials)
         adapter = SnowflakeAdapter(connection, self.config)
@@ -185,9 +187,11 @@ class SheetBag:
         rows = adapter.execute(rows_query, return_results=True)
         if columns and rows:
             logger.info(
-                f"Push successful for "
-                f"{self.target_schema}.{self.config.sheet_config['target_table']}"
-                f"\nColumns: {columns[0][0]}, Rows: {rows[0][0]}."
+                green(
+                    f"Push successful for "
+                    f"{self.target_schema}.{self.config.sheet_config['target_table']}"
+                    f"\nColumns: {columns[0][0]}, Rows: {rows[0][0]}."
+                )
             )
         else:
             raise TableDoesNotExist(
@@ -200,4 +204,4 @@ class SheetBag:
             self.push_sheet()
             self.check_table()
         else:
-            logger.info("Nothing pushed since you were in --dry_run mode.")
+            logger.info(yellow("Nothing pushed since you were in --dry_run mode."))

@@ -11,6 +11,7 @@ from core.exceptions import (
     UnsupportedDataTypeError,
 )
 from core.logger import GLOBAL_LOGGER as logger
+from core.ui.printer import yellow
 
 
 class PathFinder:
@@ -92,7 +93,7 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
 
     # cast
     df = df.astype(overwrite_dict)
-    logger.debug(f"Head of cast DF:\n {df.head()}")
+    logger.debug(f"Head of cast dataframe:\n {df.head()}")
     return df
 
 
@@ -110,16 +111,13 @@ def check_columns_in_df(
     # else reduce columms, provide filtered list set bool to false and warn or raise
     cols_not_in_df = [x for x in columns if x not in df.columns.tolist()]
     reduced_cols = [x for x in columns if x in df.columns.tolist()]
+    message = f"The following columns were not found in the sheet: {cols_not_in_df} "
     if warn_only and not suppress_warning:
         logger.warning(
-            f"""
-            The following columns were not found in the sheet: {cols_not_in_df} and were thus ignored.
-            Consider cleaning your sheets.yml file"""
+            yellow(message + "they were ignored. Consider cleaning your sheets.yml file")
         )
     elif not warn_only and not suppress_warning:
-        raise ColumnNotFoundInDataFrame(
-            f"{cols_not_in_df} not in DataFrame. Check spelling or clean up your sheets.yml"
-        )
+        raise ColumnNotFoundInDataFrame(message + "Google Sheet or sheets.yml needs to be cleaned")
     return False, reduced_cols
 
 
