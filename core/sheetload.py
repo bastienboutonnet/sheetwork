@@ -36,20 +36,9 @@ class SheetBag:
         self.sheet_df: pandas.DataFrame = pandas.DataFrame()
         self.flags = flags
         self.config = config
-        self.target_schema: str = str()
+        self.target_schema = config.target_schema
+        self.target_table = config.target_table
         self.profile = profile
-        self.consume_config()
-
-    def consume_config(self):
-        """Sets up overriding of config when needed.
-        """
-        logger.debug("Reading configuration...")
-
-        # overrides target schema
-        if self.flags.mode == "dev" and not self.flags.force:
-            self.target_schema = "sand"
-
-        logger.info(yellow(f"Running in {self.flags.mode.upper()} mode."))
 
     def _obtain_googlesheet(self):
         worksheet = self.config.sheet_config.get("worksheet", str())
@@ -180,23 +169,19 @@ class SheetBag:
                 and table_name = '{self.config.sheet_config['target_table'].upper()}'
                 ;
                 """
-        rows_query = (
-            f"select count(*) from {self.target_schema}.{self.config.sheet_config['target_table']}"
-        )
+        rows_query = f"select count(*) from {self.target_schema}.{self.target_table}"
         columns = adapter.execute(columns_query, return_results=True)
         rows = adapter.execute(rows_query, return_results=True)
         if columns and rows:
             logger.info(
                 green(
                     f"Push successful for "
-                    f"{self.target_schema}.{self.config.sheet_config['target_table']}"
+                    f"{self.target_schema}.{self.target_table}"
                     f"\nColumns: {columns[0][0]}, Rows: {rows[0][0]}."
                 )
             )
         else:
-            raise TableDoesNotExist(
-                f"Table {self.target_schema}.{self.config.sheet_config['target_table']} seems empty"
-            )
+            raise TableDoesNotExist(f"Table {self.target_schema}.{self.target_table} seems empty")
 
     def run(self):
         self.load_sheet()

@@ -72,3 +72,7 @@ class TableDoesNotExist(SheetLoadError):
 
 class DuplicatedColumnsInSheet(SheetLoadError):
     "when a google sheet contains the same column name twice"
+
+
+class TargetSchemaMissing(SheetLoadError):
+    "when no target schema whatsoever can be found"

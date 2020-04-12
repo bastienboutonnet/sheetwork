@@ -8,7 +8,7 @@ config_schema = {
                 "sheet_name": {"required": True, "type": "string"},
                 "sheet_key": {"required": True, "type": "string"},
                 "worksheet": {"required": False, "type": "string"},
-                "target_schema": {"required": True, "type": "string"},
+                "target_schema": {"required": False, "type": "string"},
                 "target_table": {"required": True, "type": "string"},
                 "snake_case_camel": {"required": False, "type": "boolean"},
                 "columns": {

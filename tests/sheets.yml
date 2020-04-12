@@ -81,3 +81,7 @@ sheets:
     columns:
       - name: CamelCasedCol
         datatype: int
+
+  - sheet_name: sheet_with_no_schema
+    sheet_key: sample
+    target_table: sample

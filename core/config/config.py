@@ -2,7 +2,11 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from core.config.project import Project
-from core.exceptions import SheetConfigParsingError, SheetloadConfigMissingError
+from core.exceptions import (
+    SheetConfigParsingError,
+    SheetloadConfigMissingError,
+    TargetSchemaMissing,
+)
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import yellow
 from core.yaml.yaml_helpers import open_yaml, validate_yaml
@@ -15,11 +19,19 @@ if TYPE_CHECKING:
 class ConfigLoader:
     def __init__(self, flags: "FlagParser", project: "Project"):
         self.config: dict = dict()
-        self.sheet_config: dict = dict(sheet_key=flags.sheet_key, target_table=flags.target_table)
+        self.sheet_config: dict = dict(
+            sheet_key=flags.sheet_key,
+            target_schema=flags.target_schema,
+            target_table=flags.target_table,
+        )
+        print(self.sheet_config)
+        self.target_schema = flags.target_schema
+        self.target_table = flags.target_table
         self.sheet_column_rename_dict: dict = dict()
         self.sheet_columns: dict = dict()
         self.excluded_columns: list = list()
         self.flags = flags
+        self.project = project
         self.yml_folder: Path = project.sheet_config_dir
         logger.debug(f"SHEET_FOLDER: {project.sheet_config_dir}")
         self.set_config()
@@ -90,6 +102,7 @@ class ConfigLoader:
                     "Check your sheets.yml file."
                 )
             self.sheet_config = sheet_config[0]
+            print(self.sheet_config)
             logger.debug(f"Sheet config dict: {self.sheet_config}")
             if self.sheet_config.get("columns"):
                 self.sheet_config["columns"] = [
@@ -142,5 +155,11 @@ class ConfigLoader:
         """
 
         self.sheet_key = self.sheet_config["sheet_key"]
-        self.target_schema = self.sheet_config["target_schema"]
-        self.target_table = self.sheet_config["target_table"]
+        if not self.target_table:
+            self.target_table = self.sheet_config.get("target_table")
+        if not self.target_schema:
+            self.target_schema = self.sheet_config.get("target_schema", self.project.target_schema)
+        if not self.target_schema:
+            raise TargetSchemaMissing(
+                "No target schema found. You must provide one either in the project, sheet or CLI"
+            )
