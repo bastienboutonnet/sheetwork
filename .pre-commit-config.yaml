@@ -9,6 +9,7 @@ repos:
     rev: v2.4.0
     hooks:
     - id: end-of-file-fixer
+      exclude: ^.bumpversion.cfg
     - id: trailing-whitespace
       exclude: ^.bumpversion.cfg
   - repo: git://github.com/luismayta/pre-commit-mypy
