@@ -9,9 +9,8 @@ from core.cleaner import SheetCleaner
 from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
-from core.exceptions import ColumnNotFoundInDataFrame, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import green, yellow, red
+from core.ui.printer import yellow, red
 from core.utils import check_columns_in_df
 
 if TYPE_CHECKING:
@@ -163,27 +162,7 @@ class SheetBag:
         credentials = Credentials(self.profile)
         connection = Connection(credentials)
         adapter = SnowflakeAdapter(connection, self.config)
-        columns_query = f"""
-                select count(*)
-                from dwh.information_schema.columns
-                where table_catalog = 'DWH'
-                and table_schema = '{self.target_schema.upper()}'
-                and table_name = '{self.config.sheet_config['target_table'].upper()}'
-                ;
-                """
-        rows_query = f"select count(*) from {self.target_schema}.{self.target_table}"
-        columns = adapter.execute(columns_query, return_results=True)
-        rows = adapter.execute(rows_query, return_results=True)
-        if columns and rows:
-            logger.info(
-                green(
-                    f"Push successful for "
-                    f"{self.target_schema}.{self.target_table}"
-                    f"\nColumns: {columns[0][0]}, Rows: {rows[0][0]}."
-                )
-            )
-        else:
-            raise TableDoesNotExist(f"Table {self.target_schema}.{self.target_table} seems empty")
+        adapter.check_table(self.target_schema, self.target_table)
 
     def run(self):
         self.load_sheet()
