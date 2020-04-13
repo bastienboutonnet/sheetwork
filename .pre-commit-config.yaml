@@ -10,6 +10,7 @@ repos:
     hooks:
     - id: end-of-file-fixer
     - id: trailing-whitespace
+      exclude: ^.bumpversion.cfg
   - repo: git://github.com/luismayta/pre-commit-mypy
     rev: "aad0a7b"
     hooks:
