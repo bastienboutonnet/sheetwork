@@ -3,9 +3,9 @@ from setuptools import find_packages, setup
 NAME = "sheetload"
 VERSION = "1.0.0a0"
 DESCRIPTION = """
-                sheetload is a command line tool to load sheets from google
-                and upload them to snowflake
-                """
+    sheetload is a command line tool to load sheets from google
+    and upload them to snowflake
+    """
 
 REQUIRED = [line.strip() for line in open("pip-requirements.txt", "r")]
 
@@ -23,4 +23,14 @@ setup(
     python_requires=REQUIRES_PYTHON,
     entry_points={"console_scripts": ["sheetload=core.main:main"]},
     packages=find_packages(),
+    license="MIT",
+    url="https://github.com/bastienboutonnet/sheetload",
+    download_url="",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Build Tools",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3.6",
+    ],
 )

@@ -6,3 +6,4 @@ mock
 mypy
 pytest-datafiles
 codecov
+twine

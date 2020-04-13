@@ -92,3 +92,5 @@ sheetload_logs/
 .mypy_cache
 
 .sheetload_logs
+
+.pypirc
