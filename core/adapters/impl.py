@@ -5,7 +5,9 @@ import pandas
 from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
 
 from core.config.config import ConfigLoader
-from core.exceptions import DatabaseError
+from core.exceptions import DatabaseError, TableDoesNotExist
+from core.logger import GLOBAL_LOGGER as logger
+from core.ui.printer import green
 from core.utils import cast_pandas_dtypes
 
 if TYPE_CHECKING:
@@ -95,3 +97,26 @@ class SnowflakeAdapter:
             return result_set
         self.close_connection()
         return None
+
+    def check_table(self, target_schema: str, target_table: str):
+        columns_query = f"""
+                select count(*)
+                from dwh.information_schema.columns
+                where table_catalog = 'DWH'
+                and table_schema = '{target_schema.upper()}'
+                and table_name = '{target_table.upper()}'
+                ;
+                """
+        rows_query = rows_query = f"select count(*) from {target_schema}.{target_table}"
+        columns = self.execute(columns_query, return_results=True)
+        rows = self.execute(rows_query, return_results=True)
+        if columns and rows:
+            logger.info(
+                green(
+                    f"Push successful for "
+                    f"{target_schema}.{target_table}"
+                    f"\nColumns: {columns[0][0]}, Rows: {rows[0][0]}."
+                )
+            )
+        else:
+            raise TableDoesNotExist(f"Table {target_schema}.{target_table} seems empty")
