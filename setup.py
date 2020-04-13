@@ -8,13 +8,14 @@ DESCRIPTION = """
     and upload them to snowflake
     """
 
-REQUIRED = [line.strip() for line in open("pip-requirements.txt", "r")]
-
 REQUIRES_PYTHON = ">=3.6.0"
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, "README.md")) as f:
     long_description = f.read()
+
+# with open("pip-requirements.txt") as f:
+#     required = f.read().splitlines()
 
 setup(
     name=NAME,
@@ -24,7 +25,18 @@ setup(
     long_description_content_type="text/markdown",
     author="Bastien Boutonnet",
     author_email="bastien.b1@gmail.com",
-    install_requires=REQUIRED,
+    install_requires=[
+        "requests<2.23.0",
+        "gspread==3.3.0",
+        "sqlalchemy==1.3.16",
+        "cerberus==1.3.2",
+        "pandas==1.0.3",
+        "pyyaml==5.3.1",
+        "snowflake-sqlalchemy==1.2.3",
+        "oauth2client==4.1.3",
+        "inflection==0.3.1",
+        "colorama==0.4.3",
+    ],
     python_requires=REQUIRES_PYTHON,
     entry_points={"console_scripts": ["sheetload=core.main:main"]},
     packages=find_packages(),
