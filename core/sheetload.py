@@ -1,5 +1,5 @@
 import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple
 
 import pandas
 
@@ -38,6 +38,7 @@ class SheetBag:
         self.target_schema = config.target_schema
         self.target_table = config.target_table
         self.profile = profile
+        self.push_anyway = False
 
     def _obtain_googlesheet(self):
         worksheet = self.config.sheet_config.get("worksheet", str())
@@ -68,7 +69,7 @@ class SheetBag:
         # Perform exclusions, renamings and cleanups before releasing the sheet.
         df = self.exclude_columns(df)
         df = self.rename_columns(df)
-        df = self.run_cleanup(df)
+        self.push_anyway, df = self.run_cleanup(df)
         logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
         self.sheet_df = df
 
@@ -123,7 +124,7 @@ class SheetBag:
         print("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
         print("\nDataFrame Header: \n\n" + str(sheet_df.head(10)))
 
-    def run_cleanup(self, df):
+    def run_cleanup(self, df) -> Tuple[bool, pandas.DataFrame]:
         clean_up = True
         # check for interactive mode
         if self.flags.interactive:
@@ -137,7 +138,9 @@ class SheetBag:
 
         if clean_up is True:
             logger.debug("Performing clean ups")
-            clean_df = SheetCleaner(df, self.config.sheet_config.get("snake_case_camel")).cleanup()
+            clean_df = SheetCleaner(
+                df, self.config.sheet_config.get("snake_case_camel", False)
+            ).cleanup()
             if self.flags.dry_run or self.flags.interactive:
                 logger.info(yellow("\nPOST-CLEANING PREVIEW:"))
                 self._show_dry_run_preview(clean_df)
@@ -145,8 +148,8 @@ class SheetBag:
                 if not carry_on:
                     logger.info(red("User Aborted."))
                     sys.exit(1)
-            return clean_df
-        return df
+            return True, clean_df
+        return True, df
 
     def push_sheet(self):
         logger.info("Pushing sheet to database...")
@@ -166,7 +169,7 @@ class SheetBag:
 
     def run(self):
         self.load_sheet()
-        if not self.flags.dry_run:
+        if self.push_anyway:
             self.push_sheet()
             self.check_table()
         else:
