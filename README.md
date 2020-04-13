@@ -5,7 +5,7 @@
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Actions Status](https://github.com/bastienboutonnet/sheetload/workflows/Sheetload/badge.svg?branch=dev/nicolas_jaar)](https://github.com/bastienboutonnet/sheetload/actions)
 
-Package Version: `v0.2.1a0`
+Package Version: `v1.0.0a0`
 
 # sheetload 💩🤦
 *A name inspired by [GitLab Data Team](https://gitlab.com/gitlab-data/analytics/tree/master/extract/sheetload)*
