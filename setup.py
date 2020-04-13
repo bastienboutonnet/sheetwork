@@ -25,7 +25,7 @@ setup(
     packages=find_packages(),
     license="MIT",
     url="https://github.com/bastienboutonnet/sheetload",
-    download_url="",
+    download_url="https://github.com/bastienboutonnet/sheetload/archive/v1.0.0a1.tar.gz",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
