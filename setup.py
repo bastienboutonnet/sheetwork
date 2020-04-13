@@ -14,8 +14,6 @@ this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, "README.md")) as f:
     long_description = f.read()
 
-# with open("pip-requirements.txt") as f:
-#     required = f.read().splitlines()
 
 setup(
     name=NAME,
