@@ -9,9 +9,8 @@ from core.cleaner import SheetCleaner
 from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
-from core.exceptions import TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import green, yellow, red
+from core.ui.printer import yellow, red
 from core.utils import check_columns_in_df
 
 if TYPE_CHECKING:
