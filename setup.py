@@ -2,7 +2,7 @@ import os
 from setuptools import find_packages, setup
 
 NAME = "sheetload"
-VERSION = "1.0.0a3"
+VERSION = "1.0.0a4"
 DESCRIPTION = """
     sheetload is a command line tool to load sheets from google
     and upload them to snowflake
@@ -40,7 +40,7 @@ setup(
     packages=find_packages(),
     license="MIT",
     url="https://github.com/bastienboutonnet/sheetload",
-    download_url="https://github.com/bastienboutonnet/sheetload/archive/v1.0.0a3.tar.gz",
+    download_url="https://github.com/bastienboutonnet/sheetload/archive/v1.0.0a4.tar.gz",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
