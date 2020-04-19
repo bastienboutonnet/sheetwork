@@ -5,7 +5,7 @@
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Actions Status](https://github.com/bastienboutonnet/sheetwork/workflows/sheetwork/badge.svg?branch=dev/nicolas_jaar)](https://github.com/bastienboutonnet/sheetwork/actions)
 
-Package Version: `v1.0.0a5`
+Package Version: `v1.0.0a6`
 
 # sheetwork 💩🤦
 
