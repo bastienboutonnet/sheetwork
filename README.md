@@ -4,7 +4,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bastienboutonnet_sheetload&metric=alert_status)](https://sonarcloud.io/dashboard?id=bastienboutonnet_sheetload)
 ![Sheetwork](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork/badge.svg)
 
-Package Version: `v1.0.0a6`
+Package Version: `v1.0.0a7`
 
 # sheetwork 💩🤦
 
