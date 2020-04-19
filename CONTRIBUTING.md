@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for looking into making `sheetload` better! We have some loosely defined rules, preferences etc. to make the process a bit smoother but above all, don't let that deter you from contributing.
+Thanks for looking into making `sheetwork` better! We have some loosely defined rules, preferences etc. to make the process a bit smoother but above all, don't let that deter you from contributing.
 
 ## How can you contribute?
 
@@ -51,7 +51,7 @@ In most cases it's pretty easy
 2. Clone your fork via ssh or http depending on how you like to authenticate and all that. For example:
 
     ```bash
-    git clone git@github.com:<your_username>/sheetload.git
+    git clone git@github.com:<your_username>/sheetwork.git
     ```
 
 3. Modify your code locally
@@ -64,7 +64,7 @@ When the time comes to merge your code back on the original repo (here). Go to y
 5. If you need to ingest changes from the fork. Say, you want to update or pull the origial repo you can add the original repo as another remote called `upstream` (actually you can name if whatever you want but usually that's how people name this) to your config like so:
 
     ```bash
-    git remote add upstream https://github.com/bastienboutonnet/sheetload.git
+    git remote add upstream https://github.com/bastienboutonnet/sheetwork.git
     ```
 
 ### Python Stuff
@@ -107,6 +107,6 @@ Have a look into the `tests/` folder for how the tests are written and if you wa
 pytests tests/
 ```
 
-## Wow you're still reading!? Thanks a lot for taking the time to make sheetload better!
+## Wow you're still reading!? Thanks a lot for taking the time to make sheetwork better!
 
 Thanks for your interest in contributing. I really appreciate it and I hope those guidelines don't sound too much.

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from core.config.project import Project
 from core.exceptions import (
     SheetConfigParsingError,
-    SheetloadConfigMissingError,
+    SheetWorkConfigMissingError,
     TargetSchemaMissing,
 )
 from core.logger import GLOBAL_LOGGER as logger
@@ -55,10 +55,10 @@ class ConfigLoader:
         if filename.exists():
             config_yaml = open_yaml(filename)
         else:
-            raise SheetloadConfigMissingError(
+            raise SheetWorkConfigMissingError(
                 """
-                Are you in a sheetload folder? Cannot find 'sheets.yml' to import config from.
-                If you plan to run sheetload from a different folder than current you'll have to
+                Are you in a sheetwork folder? Cannot find 'sheets.yml' to import config from.
+                If you plan to run sheetwork from a different folder than current you'll have to
                 provide a custom path to the config files. See --help for arguments."""
             )
         if config_yaml:
@@ -108,7 +108,7 @@ class ConfigLoader:
                 ]
                 logger.debug(f"Cols after lowercasing: {self.sheet_config.get('columns')}")
         else:
-            raise SheetloadConfigMissingError("No sheet name was provided, cannot fetch config.")
+            raise SheetWorkConfigMissingError("No sheet name was provided, cannot fetch config.")
 
     def _generate_column_type_override_dict(self):
         """Generates a dictionary of key, value where key is the name of a column and value is the

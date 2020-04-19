@@ -85,8 +85,8 @@ coverage-reports/
 coverage.xml
 .pytest_cache
 
-**/sheetload_logs/**
-sheetload_logs/
+**/sheetwork_logs/**
+sheetwork_logs/
 
 #Mypy
 .mypy_cache

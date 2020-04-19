@@ -21,7 +21,7 @@ FIXTURE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_rename_columns(datafiles):
-    from core.sheetload import SheetBag
+    from core.sheetwork import SheetBag
     from core.main import parser
 
     flags = FlagParser(
@@ -31,7 +31,7 @@ def test_rename_columns(datafiles):
         sheet_config_dir=str(datafiles),
         profile_dir=str(datafiles),
     )
-    project = Project(flags, "sheetload_test")
+    project = Project(flags, "sheetwork_test")
     profile = Profile(project)
     config = ConfigLoader(flags, project)
     df = generate_test_df(DIRTY_DF)
@@ -42,7 +42,7 @@ def test_rename_columns(datafiles):
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_exclude_columns(datafiles):
-    from core.sheetload import SheetBag
+    from core.sheetwork import SheetBag
     from core.main import parser
 
     flags = FlagParser(
@@ -52,7 +52,7 @@ def test_exclude_columns(datafiles):
         sheet_config_dir=str(datafiles),
         profile_dir=str(datafiles),
     )
-    project = Project(flags, "sheetload_test")
+    project = Project(flags, "sheetwork_test")
     profile = Profile(project)
     config = ConfigLoader(flags, project)
     df = generate_test_df(DROP_COL_DF)
@@ -63,7 +63,7 @@ def test_exclude_columns(datafiles):
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_load_sheet(datafiles):
-    from core.sheetload import SheetBag
+    from core.sheetwork import SheetBag
     from core.main import parser
 
     flags = FlagParser(
@@ -73,7 +73,7 @@ def test_load_sheet(datafiles):
         sheet_config_dir=str(datafiles),
         profile_dir=str(datafiles),
     )
-    project = Project(flags, "sheetload_test")
+    project = Project(flags, "sheetwork_test")
     config = ConfigLoader(flags, project)
     profile = Profile(project)
     with mock.patch.object(

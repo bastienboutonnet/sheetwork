@@ -1,10 +1,10 @@
 import os
 from setuptools import find_packages, setup
 
-NAME = "sheetload"
-VERSION = "1.0.0a4"
+NAME = "sheetwork"
+VERSION = "1.0.0a6"
 DESCRIPTION = """
-    sheetload is a command line tool to load sheets from google
+    sheetwork is a command line tool to load sheets from google
     and upload them to snowflake
     """
 
@@ -36,11 +36,11 @@ setup(
         "colorama==0.4.3",
     ],
     python_requires=REQUIRES_PYTHON,
-    entry_points={"console_scripts": ["sheetload=core.main:main"]},
+    entry_points={"console_scripts": ["sheetwork=core.main:main"]},
     packages=find_packages(),
     license="MIT",
-    url="https://github.com/bastienboutonnet/sheetload",
-    download_url="https://github.com/bastienboutonnet/sheetload/archive/v1.0.0a4.tar.gz",
+    url="https://github.com/bastienboutonnet/sheetwork",
+    download_url="https://github.com/bastienboutonnet/sheetwork/archive/v1.0.0a6.tar.gz",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",

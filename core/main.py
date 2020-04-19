@@ -1,6 +1,6 @@
 import argparse
 
-import core.sheetload as upload_task
+import core.sheetwork as upload_task
 from core._version import __version__
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
@@ -9,7 +9,7 @@ from core.flags import FlagParser
 from core.logger import log_manager
 
 parser = argparse.ArgumentParser(
-    prog="sheetload",
+    prog="sheetwork",
     formatter_class=argparse.RawTextHelpFormatter,
     description="CLI tool to load google sheets onto a DB.",
     epilog="Select one of these sub-commands to find specific help for those.",
@@ -44,13 +44,13 @@ base_subparser.add_argument(
 )
 base_subparser.add_argument(
     "--project_dir",
-    help="Unusual path to the directory in which the 'sheetload_project.yml' can be found",
+    help="Unusual path to the directory in which the 'sheetwork_project.yml' can be found",
     default=str(),
 )
 base_subparser.add_argument(
     "-t",
     "--target",
-    help="Specity target profile. When none provided sheetload will use the profile default",
+    help="Specity target profile. When none provided sheetwork will use the profile default",
 )
 
 # Adds sub task parsers
@@ -87,13 +87,13 @@ def handle(parser: argparse.ArgumentParser):
 
 
 def main(parser: argparse.ArgumentParser = parser):
-    print(f"Sheetload version: {__version__} \n")
+    print(f"Sheetwork version: {__version__} \n")
     if parser:
         handle(parser)
     else:
         NotImplementedError(
-            """You did not parse any args to sheetload.
-            If you are not sure how to use it consult the help by doing: sheetload --help
+            """You did not parse any args to sheetwork.
+            If you are not sure how to use it consult the help by doing: sheetwork --help
             """
         )
 

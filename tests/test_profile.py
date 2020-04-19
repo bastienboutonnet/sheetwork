@@ -16,7 +16,7 @@ def test_read_profile(datafiles):
 
     print(FIXTURE_DIR)
     flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
-    project = Project(flags, "sheetload_test")
+    project = Project(flags, "sheetwork_test")
     profile = Profile(project, "dev")
     profile.read_profile()
 

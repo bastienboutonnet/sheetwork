@@ -5,7 +5,7 @@ EXPECTED_CONFIG = {
     "sheet_name": "df_dropper",
     "sheet_key": "sample",
     "target_schema": "sand",
-    "target_table": "bb_test_sheetload",
+    "target_table": "bb_test_sheetwork",
     "columns": [
         {"name": "col_a", "datatype": "int"},
         {"name": "col_b", "datatype": "varchar"},
@@ -24,18 +24,18 @@ EXPECTED_DEV_TEST_PROFILE = {
     "database": "e",
     "warehouse": "f",
     "schema": "g",
-    "guser": "sheetload_test@blahh.iam.gserviceaccount.com",
+    "guser": "sheetwork_test@blahh.iam.gserviceaccount.com",
 }
 
 NO_COLS_EXPECTED_CONFIG = {
     "sheet_name": "no_cols",
     "sheet_key": "sample",
     "target_schema": "sand",
-    "target_table": "bb_test_sheetload",
+    "target_table": "bb_test_sheetwork",
 }
 
-EXPECTED_SHEETLOAD_PROJECT = {
-    "name": "sheetload_test",
+EXPECTED_SHEETWORK_PROJECT = {
+    "name": "sheetwork_test",
     "target_schema": "sand",
     "always_create": True,
 }
