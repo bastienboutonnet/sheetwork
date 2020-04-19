@@ -1,78 +1,78 @@
 from colorama import Fore
 
 
-class SheetLoadError(Exception):
+class SheetWorkError(Exception):
     def __init__(self, message):
         super().__init__(Fore.RED + message)
 
 
-class SheetloadConfigMissingError(SheetLoadError):
+class SheetWorkConfigMissingError(SheetWorkError):
     "When a sheet config cannot be found"
 
 
-class GoogleCredentialsFileMissingError(SheetLoadError):
+class GoogleCredentialsFileMissingError(SheetWorkError):
     "When the google credentials file could not be located."
 
 
-class GoogleSpreadSheetNotFound(SheetLoadError):
+class GoogleSpreadSheetNotFound(SheetWorkError):
     "When a referred spreadsheet cannot be found"
 
 
-class NoWorkbookLoadedError(SheetLoadError):
+class NoWorkbookLoadedError(SheetWorkError):
     "When the workbook object is None"
 
 
-class WorksheetNotFoundError(SheetLoadError):
+class WorksheetNotFoundError(SheetWorkError):
     "when a referred worksheet cannot be found in the workbook"
 
 
-class YAMLFileEmptyError(SheetLoadError):
+class YAMLFileEmptyError(SheetWorkError):
     "When a yaml that exists returns nothing"
 
 
-class SheetConfigParsingError(SheetLoadError):
+class SheetConfigParsingError(SheetWorkError):
     "For cases where sheet was found but content could not be parsed."
 
 
-class ProfileParserError(SheetLoadError):
+class ProfileParserError(SheetWorkError):
     "When no dict or an invalid dict came out of the profile reader"
 
 
-class ProjectFileParserError(SheetLoadError):
+class ProjectFileParserError(SheetWorkError):
     "When no dict comes out of loading project or other less specific project parsing related stuff"
 
 
-class ColumnNotFoundInDataFrame(SheetLoadError):
+class ColumnNotFoundInDataFrame(SheetWorkError):
     "For cases where renamer is provided the wrong identifier name."
 
 
-class InvalidProfileError(SheetLoadError):
+class InvalidProfileError(SheetWorkError):
     "For when some values in a profile that should not be none are."
 
 
-class NearestFileNotFound(SheetLoadError):
+class NearestFileNotFound(SheetWorkError):
     "When the path finder has reached its max iterations without finding the expected file."
 
 
-class CredentialsParsingError(SheetLoadError):
+class CredentialsParsingError(SheetWorkError):
     "When the credentials parser cannot find the right keys and other nasties."
 
 
-class UnsupportedDataTypeError(SheetLoadError):
-    "When a requested cast isn't supported by the database or mapping enforced by sheetload."
+class UnsupportedDataTypeError(SheetWorkError):
+    "When a requested cast isn't supported by the database or mapping enforced by SheetWork."
 
 
-class DatabaseError(SheetLoadError):
+class DatabaseError(SheetWorkError):
     "To catch db interaction errors"
 
 
-class TableDoesNotExist(SheetLoadError):
+class TableDoesNotExist(SheetWorkError):
     "When query for rows and cols came back empty or none"
 
 
-class DuplicatedColumnsInSheet(SheetLoadError):
+class DuplicatedColumnsInSheet(SheetWorkError):
     "when a google sheet contains the same column name twice"
 
 
-class TargetSchemaMissing(SheetLoadError):
+class TargetSchemaMissing(SheetWorkError):
     "when no target schema whatsoever can be found"

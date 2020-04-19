@@ -8,7 +8,7 @@ from core.yaml.yaml_schema import profiles_schema
 
 
 class Profile:
-    """Load, validate and set profile for sheetload.
+    """Load, validate and set profile for sheetwork.
 
     Raises:
         FileNotFoundError: If no profiles.yml can be found in the expected location.

@@ -10,7 +10,7 @@ from core.yaml.yaml_schema import project_schema
 if TYPE_CHECKING:
     from core.flags import FlagParser
 
-PROJECT_FILENAME = "sheetload_project.yml"
+PROJECT_FILENAME = "sheetwork_project.yml"
 
 
 class Project:
@@ -27,7 +27,7 @@ class Project:
         # directories (first overwritten by flags, then by project) This may not always be able to
         # be like this we might wanna give prio to CLI but for now this removes some complication.
         self.project_file_fullpath: Path = Path("dumpy_path")
-        self.profile_dir: Path = Path("~/.sheetload/").expanduser()
+        self.profile_dir: Path = Path("~/.sheetwork/").expanduser()
         self.sheet_config_dir: Path = Path.cwd()
 
         # override defaults

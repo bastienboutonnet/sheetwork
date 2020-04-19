@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from .mockers import EXPECTED_SHEETLOAD_PROJECT
+from .mockers import EXPECTED_SHEETWORK_PROJECT
 
 FIXTURE_DIR = Path(__file__).resolve().parent
 
@@ -17,4 +17,4 @@ def test_load_project_from_yaml(datafiles):
     project = Project(flags)
     project.load_project_from_yaml()
 
-    assert project.project_dict == EXPECTED_SHEETLOAD_PROJECT
+    assert project.project_dict == EXPECTED_SHEETWORK_PROJECT

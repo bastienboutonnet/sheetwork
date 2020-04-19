@@ -4,11 +4,11 @@ from pathlib import Path
 
 class LogManager:
     def __init__(
-        self, log_file_path: Path = Path(Path.cwd(), "sheetload_logs"), log_to_console: bool = True
+        self, log_file_path: Path = Path(Path.cwd(), "sheetwork_logs"), log_to_console: bool = True
     ):
         Path(log_file_path).mkdir(parents=True, exist_ok=True)
-        log_filename = Path(log_file_path, "sheetload_log.log")
-        logger = logging.getLogger("Sheetload Logger")
+        log_filename = Path(log_file_path, "sheetwork_log.log")
+        logger = logging.getLogger("Sheetwork Logger")
         logger.setLevel(logging.INFO)
         # Create handlers
         f_handler = logging.FileHandler(log_filename)

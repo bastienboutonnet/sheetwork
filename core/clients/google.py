@@ -39,8 +39,8 @@ class GoogleSpreadsheet:
             self.gc = gspread.authorize(self.credentials)
         else:
             raise GoogleCredentialsFileMissingError(
-                "Sheetload could not find a credentials file for your "
-                f"'{profile.profile_name}' profile in the ~/.sheetload/google/ folder. "
+                "Sheetwork could not find a credentials file for your "
+                f"'{profile.profile_name}' profile in the ~/.sheetwork/google/ folder. "
                 "Check installation instructions if you do not know how to set this up."
             )
         self.workbook_key = workbook_key
