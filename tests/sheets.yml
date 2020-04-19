@@ -2,7 +2,7 @@ sheets:
   - sheet_name: test_sheet
     sheet_key: 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg
     target_schema: sand
-    target_table: bb_test_sheetload
+    target_table: bb_test_sheetwork
     snake_case_camel: True
     columns:
       - name: Col_a
@@ -24,7 +24,7 @@ sheets:
     sheet_key: 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg
     worksheet: Sheet2
     target_schema: sand
-    target_table: bb_test_sheetload
+    target_table: bb_test_sheetwork
     columns:
       - name: col1
         datatype: int
@@ -35,12 +35,12 @@ sheets:
     sheet_key: 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg
     worksheet: Sheet2
     target_schema: sand
-    target_table: bb_test_sheetload
+    target_table: bb_test_sheetwork
 
   - sheet_name: df_renamer
     sheet_key: sample
     target_schema: sand
-    target_table: bb_test_sheetload
+    target_table: bb_test_sheetwork
     columns:
       - name: col_a
         datatype: int
@@ -55,7 +55,7 @@ sheets:
   - sheet_name: df_dropper
     sheet_key: sample
     target_schema: sand
-    target_table: bb_test_sheetload
+    target_table: bb_test_sheetwork
     columns:
       - name: col_a
         datatype: int
@@ -71,12 +71,12 @@ sheets:
   - sheet_name: no_cols
     sheet_key: sample
     target_schema: sand
-    target_table: bb_test_sheetload
+    target_table: bb_test_sheetwork
 
   - sheet_name: df_snake_casing
     sheet_key: sample
     target_schema: sand
-    target_table: bb_test_sheetload
+    target_table: bb_test_sheetwork
     snake_case_camel: True
     columns:
       - name: CamelCasedCol

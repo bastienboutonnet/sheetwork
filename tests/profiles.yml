@@ -1,5 +1,5 @@
 profiles:
-  sheetload_test:
+  sheetwork_test:
     target: dev
     outputs:
       dev:
@@ -11,4 +11,4 @@ profiles:
         database: e
         warehouse: f
         schema: g
-        guser: sheetload_test@blahh.iam.gserviceaccount.com
+        guser: sheetwork_test@blahh.iam.gserviceaccount.com

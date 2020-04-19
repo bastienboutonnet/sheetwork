@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **Environment information:**
  - Are you on a venv?
  - Which Python?
- - Which version are you running (`sheetload --version`)
+ - Which version are you running (`sheetwork --version`)
 
 
 **Additional context**
