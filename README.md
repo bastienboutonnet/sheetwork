@@ -1,4 +1,4 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/bastienboutonnet/sheetload/badge)](https://www.codefactor.io/repository/github/bastienboutonnet/sheetload)
+[![CodeFactor](https://www.codefactor.io/repository/github/bastienboutonnet/sheetwork/badge)](https://www.codefactor.io/repository/github/bastienboutonnet/sheetload)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![codecov](https://codecov.io/gh/bastienboutonnet/sheetload/branch/dev%2Fnicolas_jaar/graph/badge.svg)](https://codecov.io/gh/bastienboutonnet/sheetload)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bastienboutonnet_sheetload&metric=alert_status)](https://sonarcloud.io/dashboard?id=bastienboutonnet_sheetload)
