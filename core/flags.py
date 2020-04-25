@@ -17,6 +17,7 @@ class FlagParser:
         sheet_config_dir: str = str(),
         profile_dir: str = str(),
         project_dir: str = str(),
+        project_name: str = str(),
     ):
         self.sheet_name = test_sheet_name
         self.create_table = False
@@ -31,6 +32,7 @@ class FlagParser:
         self.profile_dir = profile_dir
         self.project_dir = project_dir
         self.target = "test"
+        self.project_name = project_name
 
     def consume_cli_arguments(self):
         self.args = self.parser.parse_args()
@@ -46,3 +48,4 @@ class FlagParser:
         self.profile_dir = self.args.profile_dir
         self.project_dir = self.args.project_dir
         self.target = self.args.target
+        self.project_name = self.args.project_name

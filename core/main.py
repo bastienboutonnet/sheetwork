@@ -1,6 +1,7 @@
 import argparse
 
 import core.sheetwork as upload_task
+from core.task.init import InitTask
 from core._version import __version__
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
