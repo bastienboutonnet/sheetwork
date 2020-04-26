@@ -50,8 +50,9 @@ class FlagParser:
             self.dry_run = self.args.dry_run
             self.sheet_config_dir = self.args.sheet_config_dir
             self.target = self.args.target
+        if self.task == "init":
+            self.project_name = self.args.project_name
 
         self.log_level = self.args.log_level
         self.profile_dir = self.args.profile_dir
         self.project_dir = self.args.project_dir
-        self.project_name = self.args.project_name
