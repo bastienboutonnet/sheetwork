@@ -60,7 +60,9 @@ class SheetBag:
             logger.info(timed_message(f"Importing: {self.flags.sheet_name}"))
             logger.debug(f"Importing data from: {self.config.sheet_config['sheet_key']}")
         else:
-            logger.info(f"Importing data from: {self.config.sheet_config.get('sheet_key')}")
+            logger.info(
+                timed_message(f"Importing data from: {self.config.sheet_config.get('sheet_key')}")
+            )
         df = self._obtain_googlesheet()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
@@ -146,13 +148,13 @@ class SheetBag:
                 self._show_dry_run_preview(clean_df)
                 carry_on = self._collect_and_check_answer(post_cleanup=True)
                 if not carry_on:
-                    logger.info(red("User Aborted."))
+                    logger.info(timed_message(red("User Aborted.")))
                     sys.exit(1)
             return True, clean_df
         return True, df
 
     def push_sheet(self):
-        logger.info("Pushing sheet to database...")
+        logger.info(timed_message("Pushing sheet to database..."))
         logger.debug(f"Column override dict is a {type(self.config.sheet_columns)}")
         logger.debug(f"Sheet columns: {self.config.sheet_columns}")
         logger.debug(f"Columns in final df: {self.sheet_df.columns.tolist()}")

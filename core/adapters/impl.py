@@ -7,7 +7,7 @@ from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
 from core.config.config import ConfigLoader
 from core.exceptions import DatabaseError, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import green
+from core.ui.printer import green, timed_message
 from core.utils import cast_pandas_dtypes
 
 if TYPE_CHECKING:
@@ -112,10 +112,12 @@ class SnowflakeAdapter:
         rows = self.execute(rows_query, return_results=True)
         if columns and rows:
             logger.info(
-                green(
-                    f"Push successful for "
-                    f"{target_schema}.{target_table}"
-                    f"\nColumns: {columns[0][0]}, Rows: {rows[0][0]}."
+                timed_message(
+                    green(
+                        f"Push successful for "
+                        f"{target_schema}.{target_table}. "
+                        f"Found {columns[0][0]} columns and {rows[0][0]} rows."
+                    )
                 )
             )
         else:
