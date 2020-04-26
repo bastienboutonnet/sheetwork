@@ -10,7 +10,7 @@ from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
 from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import yellow, red
+from core.ui.printer import yellow, red, timed_message
 from core.utils import check_columns_in_df
 
 if TYPE_CHECKING:
@@ -57,7 +57,7 @@ class SheetBag:
         """
 
         if self.flags.sheet_name:
-            logger.info(f"Importing: {self.flags.sheet_name}")
+            logger.info(timed_message(f"Importing: {self.flags.sheet_name}"))
             logger.debug(f"Importing data from: {self.config.sheet_config['sheet_key']}")
         else:
             logger.info(f"Importing data from: {self.config.sheet_config.get('sheet_key')}")
