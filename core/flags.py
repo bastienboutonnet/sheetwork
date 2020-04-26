@@ -36,16 +36,22 @@ class FlagParser:
 
     def consume_cli_arguments(self):
         self.args = self.parser.parse_args()
-        self.sheet_name = self.args.sheet_name
-        self.create_table = self.args.create_table
-        self.sheet_key = self.args.sheet_key
-        self.target_schema = self.args.schema
-        self.target_table = self.args.table
+        self.task = self.args.command
+
+        # these only come into the flags if task is upload so we have to jump over.
+        # there might be a more clever way to do this but we'll see when we add some other tasks.
+        if self.task == "upload":
+            self.sheet_name = self.args.sheet_name
+            self.create_table = self.args.create_table
+            self.sheet_key = self.args.sheet_key
+            self.target_schema = self.args.schema
+            self.target_table = self.args.table
+            self.interactive = self.args.interactive
+            self.dry_run = self.args.dry_run
+            self.sheet_config_dir = self.args.sheet_config_dir
+            self.target = self.args.target
+
         self.log_level = self.args.log_level
-        self.interactive = self.args.interactive
-        self.dry_run = self.args.dry_run
-        self.sheet_config_dir = self.args.sheet_config_dir
         self.profile_dir = self.args.profile_dir
         self.project_dir = self.args.project_dir
-        self.target = self.args.target
         self.project_name = self.args.project_name

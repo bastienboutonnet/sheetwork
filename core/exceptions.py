@@ -76,3 +76,7 @@ class DuplicatedColumnsInSheet(SheetWorkError):
 
 class TargetSchemaMissing(SheetWorkError):
     "when no target schema whatsoever can be found"
+
+
+class ProjectIsAlreadyCreated(SheetWorkError):
+    "when using sheetwork init and a project is found"
