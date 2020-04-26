@@ -23,22 +23,38 @@ class SheetCleaner:
         return clean_df
 
     @staticmethod
-    def columns_cleanups(df):
+    def columns_cleanups(
+        df,
+        characters_to_replace=[
+            "*",
+            "/",
+            ".",
+            "?",
+            "_",
+            "%",
+            "s",
+            "\\",
+            "#",
+            "&",
+            "$",
+            "|",
+            "<",
+            ">",
+            "=",
+            "+",
+            "-",
+            "'",
+            '"',
+        ],
+        default_replacement="_",
+    ):
 
-        # clean column names (slashes and spaces to understore), remove trailing whitespace
-        df.columns = [re.sub(r"^\d+", "", col) for col in df.columns]
+        # clean column names by replacing characters_to_replace with default_replacement, remove trailing whitespace and consecutive default_replacement
+        regex_expression = r"[" + "\\".join(characters_to_replace) + "]+"
         df.columns = [
-            col.replace(" ", "_")
-            .replace("/", "_")
-            .replace(".", "_")
-            .replace("?", "_")
-            .replace("__", "_")
-            .strip()
+            re.sub(regex_expression, default_replacement, col).strip().strip(default_replacement)
             for col in df.columns
         ]
-        df.columns = [re.sub(r"^\_+", "", col) for col in df.columns]
-        df.columns = [re.sub(r"\_+$", "", col) for col in df.columns]
-        df.columns = [re.sub(r"[^\w\s]", "", col) for col in df.columns]
 
         # remove empty cols
         if "" in df.columns:
