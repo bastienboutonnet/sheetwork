@@ -1,7 +1,6 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![CodeFactor](https://www.codefactor.io/repository/github/bastienboutonnet/sheetwork/badge)](https://www.codefactor.io/repository/github/bastienboutonnet/sheetwork)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Coverage Status](https://coveralls.io/repos/github/bastienboutonnet/sheetwork/badge.svg?branch=dev/nicolas_jaar)](https://coveralls.io/github/bastienboutonnet/sheetwork?branch=dev/nicolas_jaar)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 
