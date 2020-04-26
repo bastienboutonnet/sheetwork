@@ -7,3 +7,5 @@ mypy
 pytest-datafiles
 codecov
 twine
+coveralls
+coverage
