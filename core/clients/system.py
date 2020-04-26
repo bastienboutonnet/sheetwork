@@ -22,7 +22,7 @@ def make_dir(path: "Path"):
     path.mkdir()
 
 
-def make_file(path: Path, contents=None):
+def make_file(path: "Path", contents: str = str()):
     logger.debug(f"Making file: {path}")
     path.touch()
     if contents:

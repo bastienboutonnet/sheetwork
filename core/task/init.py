@@ -61,10 +61,10 @@ always_create: true
 class InitTask:
     def __init__(self, flags: "FlagParser"):
         self.flags = flags
-        self.project_name = flags.project_name
-        self.profiles_path = PROFILES_PATH
-        self.project_path = PROJECT_PATH
-        self.google_path = str()
+        self.project_name: str = flags.project_name
+        self.profiles_path: Path = PROFILES_PATH
+        self.project_path: Path = PROJECT_PATH
+        self.google_path: Path = Path()
         self.assert_project_name()
 
     def assert_project_name(self):
