@@ -1,3 +1,4 @@
+import time
 from core.ui.colours import COLOURS
 
 
@@ -26,3 +27,9 @@ def yellow(message: str):
 
 def red(message: str):
     return colour(message, CL_RED)
+
+
+def timed_message(message: str) -> str:
+    t = time.localtime()
+    now = time.strftime("%H:%M:%S", t)
+    return f"{now} ---- {message}"
