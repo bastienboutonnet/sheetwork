@@ -10,7 +10,6 @@ Package Version: `v1.0.0a7`
 
 A handy package to load Google Sheets to Snowflake
 
-Loads Google sheets from Data Team shared drive and uploads them to Snowflake.
 Performs some cleanups on column names and string (such as removing trailing spaces etc.)
 
 **BIG DISCLAIMER** sheetwork is still very early. Do not use in production jobs unless you tested it extensively and know whether it does what you want it to do!
