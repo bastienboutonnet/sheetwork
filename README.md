@@ -1,6 +1,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/bastienboutonnet/sheetwork/badge)](https://www.codefactor.io/repository/github/bastienboutonnet/sheetwork)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
-[![Coverage Status](https://coveralls.io/repos/github/bastienboutonnet/sheetwork/badge.svg?branch=fix/use_other_codecov_platform)](https://coveralls.io/github/bastienboutonnet/sheetwork?branch=fix/use_other_codecov_platform)
+[![Coverage Status](https://coveralls.io/repos/github/bastienboutonnet/sheetwork/badge.svg?branch=dev/nicolas_jaar)](https://coveralls.io/github/bastienboutonnet/sheetwork?branch=dev/nicolas_jaar)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bastienboutonnet_sheetload&metric=alert_status)](https://sonarcloud.io/dashboard?id=bastienboutonnet_sheetload)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 
