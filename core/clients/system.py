@@ -11,7 +11,7 @@ def open_dir_cmd() -> str:
     if sys.platform == "win32":
         return "start"
 
-    elif sys.platform == "darwin":
+    if sys.platform == "darwin":
         return "open"
 
     return "xdg-open"
