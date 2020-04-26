@@ -14,11 +14,10 @@ def open_dir_cmd() -> str:
     elif sys.platform == "darwin":
         return "open"
 
-    else:
-        return "xdg-open"
+    return "xdg-open"
 
 
-def make_dir(path: Path):
+def make_dir(path: "Path"):
     logger.debug(f"Making folder: {path}")
     path.mkdir()
 
