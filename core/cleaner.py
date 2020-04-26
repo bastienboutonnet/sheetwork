@@ -23,17 +23,22 @@ class SheetCleaner:
         return clean_df
 
     @staticmethod
-    def columns_cleanups(df, default_replacement="_", characters_to_replace=None):
+    def columns_cleanups(
+        df: pandas.DataFrame, default_replacement: str = "_", characters_to_replace: list = None
+    ):
 
         # only keep letters (default) or replace a given list of characters
         if not characters_to_replace:
             regex_expression = "[^a-zA-Z]+"
         else:
-            regex_expression = r"[" + "\\".join(characters_to_replace) + "]+"
+            if len(characters_to_replace) > 1:
+                regex_expression = r"[" + "\\" + "\\".join(characters_to_replace) + "]+"
+            else:
+                regex_expression = r"[" + "\\" + characters_to_replace[0] + "]+"
 
         # replace specified characters with the default_replacement and remove consecutive and trailing whitespace and default_replacement
         df.columns = [
-            re.sub(regex_expression, default_replacement, col).strip().strip(default_replacement)
+            re.sub(regex_expression, default_replacement, col).strip(default_replacement).strip()
             for col in df.columns
         ]
 
