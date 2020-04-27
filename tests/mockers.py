@@ -77,7 +77,7 @@ CAMEL_CASED_COLS = ["CamelCasedCol", "SnakeCasedCol"]
 CLEAN_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
     "col_b": {0: "as .", 1: "b", 2: "c"},
-    "col_one": {0: "aa", 1: "bb", 2: "cc"},
+    "1_col_one": {0: "aa", 1: "bb", 2: "cc"},
     "col_1": {0: 1, 1: 2, 2: 33},
     "long_ass_name": {0: "foo", 1: "bar", 2: "fizz"},
 }
@@ -85,7 +85,7 @@ CLEAN_DF = {
 RENAMED_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
     "col_b": {0: "as .", 1: "b", 2: "c"},
-    "col_one": {0: "aa", 1: "bb", 2: "cc"},
+    "1_col_one": {0: "aa", 1: "bb", 2: "cc"},
     "col_1": {0: 1, 1: 2, 2: 33},
     "renamed_col": {0: "foo", 1: "bar", 2: "fizz"},
 }
