@@ -7,12 +7,14 @@ from core.config.config import ConfigLoader
 from core.exceptions import DatabaseError, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import green, timed_message
+from core.utils import cast_pandas_dtypes
+from core.adapters.base.impl import BaseAdapter
 
 if TYPE_CHECKING:
     from core.adapters.connection import Connection
 
 
-class SnowflakeAdapter:
+class SnowflakeAdapter(BaseAdapter):
     """Interacts with snowflake via SQLAlchemy"""
 
     def __init__(self, connection: "Connection", config: ConfigLoader):
