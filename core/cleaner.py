@@ -2,6 +2,7 @@ import re
 
 import inflection
 import pandas
+from typing import List, Union
 
 
 class SheetCleaner:
@@ -24,22 +25,30 @@ class SheetCleaner:
 
     @staticmethod
     def columns_cleanups(
-        df: pandas.DataFrame, default_replacement: str = "_", characters_to_replace: list = None
+        df: pandas.DataFrame,
+        default_replacement: str = "_",
+        characters_to_replace: Union[List[str], str] = list(),
     ):
+        # when provided, ensure characters_to_replace is a list
+        if isinstance(characters_to_replace, str):
+            characters_to_replace = [characters_to_replace]
 
-        # only keep letters (default) or replace a given list of characters
-        if not characters_to_replace:
-            regex_expression = "[^a-zA-Z0-9]+"
-        else:
+        # only keep alphanumeric by default
+        regex_string = "[^a-zA-Z0-9]+"
+
+        # or, replace a given list of characters when specified
+        if characters_to_replace:
+            escaped_slash = "\\"
             if len(characters_to_replace) > 1:
-                regex_expression = r"[" + "\\" + "\\".join(characters_to_replace) + "]+"
+                characters_to_replace = escaped_slash.join(characters_to_replace)
             else:
-                regex_expression = r"[" + "\\" + characters_to_replace[0] + "]+"
+                characters_to_replace = characters_to_replace[0]
+            regex_string = r"[{0}{1}]+".format(escaped_slash, characters_to_replace)
 
         # replace specified characters with the default_replacement and remove consecutive and
         # trailing whitespace and default_replacement
         df.columns = [
-            re.sub(regex_expression, default_replacement, col).strip(default_replacement).strip()
+            re.sub(regex_string, default_replacement, col).strip(default_replacement).strip()
             for col in df.columns
         ]
 
