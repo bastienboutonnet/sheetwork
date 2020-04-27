@@ -32,6 +32,21 @@ config_schema = {
                     "required": False,
                     "schema": {"type": "string"},
                 },
+                "custom_column_name_cleanup": {
+                    "type": "list",
+                    "required": False,
+                    "schema": {
+                        "type": "dict",
+                        "schema": {
+                            "default_replacement": {"type": "string", "required": False},
+                            "characters_to_replace": {
+                                "anyof_type": ["list", "string"],
+                                "required": False,
+                                "schema": {"type": "string"},
+                            },
+                        },
+                    },
+                },
             },
         },
     }
