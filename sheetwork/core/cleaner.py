@@ -1,10 +1,10 @@
 """Cleaning module. Holds SheetCleaner which holds df kinds of cleanings."""
 import re
+from typing import List, Union
 
 import inflection
 import numpy as np
 import pandas
-from typing import List, Union
 
 
 class SheetCleaner:
@@ -39,7 +39,7 @@ class SheetCleaner:
         df: pandas.DataFrame,
         default_replacement: str = "_",
         characters_to_replace: Union[List[str], str] = list(),
-    ):
+    ) -> pandas.DataFrame:
         # when provided, ensure characters_to_replace is a list
         if isinstance(characters_to_replace, str):
             characters_to_replace = [characters_to_replace]
