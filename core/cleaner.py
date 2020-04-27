@@ -1,8 +1,8 @@
 import re
+from typing import List, Union
 
 import inflection
 import pandas
-from typing import List, Union
 
 
 class SheetCleaner:
@@ -13,7 +13,7 @@ class SheetCleaner:
             self.df, pandas.DataFrame
         ), f"SheetCleaner can only process a pandas.DataFrame. You are feeding a {type(self.df)}."
 
-    def cleanup(self):
+    def cleanup(self) -> pandas.DataFrame:
         clean_df = self.df.copy(deep=True)
 
         if self.casing:
@@ -28,7 +28,7 @@ class SheetCleaner:
         df: pandas.DataFrame,
         default_replacement: str = "_",
         characters_to_replace: Union[List[str], str] = list(),
-    ):
+    ) -> pandas.DataFrame:
         # when provided, ensure characters_to_replace is a list
         if isinstance(characters_to_replace, str):
             characters_to_replace = [characters_to_replace]
@@ -61,7 +61,7 @@ class SheetCleaner:
         return df
 
     @staticmethod
-    def fields_cleanups(df):
+    def fields_cleanups(df: pandas.DataFrame) -> pandas.DataFrame:
 
         # clean trailing spaces in fields
         for col in df.columns:
