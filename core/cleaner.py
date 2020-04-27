@@ -2,6 +2,7 @@ import re
 
 import inflection
 import pandas
+from typing import List, Union
 
 
 class SheetCleaner:
@@ -23,22 +24,33 @@ class SheetCleaner:
         return clean_df
 
     @staticmethod
-    def columns_cleanups(df):
+    def columns_cleanups(
+        df: pandas.DataFrame,
+        default_replacement: str = "_",
+        characters_to_replace: Union[List[str], str] = list(),
+    ):
+        # when provided, ensure characters_to_replace is a list
+        if isinstance(characters_to_replace, str):
+            characters_to_replace = [characters_to_replace]
 
-        # clean column names (slashes and spaces to understore), remove trailing whitespace
-        df.columns = [re.sub(r"^\d+", "", col) for col in df.columns]
+        # only keep alphanumeric by default
+        regex_string = "[^a-zA-Z0-9]+"
+
+        # or, replace a given list of characters when specified
+        if characters_to_replace:
+            escaped_slash = "\\"
+            if len(characters_to_replace) > 1:
+                characters_to_replace = escaped_slash.join(characters_to_replace)
+            else:
+                characters_to_replace = characters_to_replace[0]
+            regex_string = r"[{0}{1}]+".format(escaped_slash, characters_to_replace)
+
+        # replace specified characters with the default_replacement and remove consecutive and
+        # trailing whitespace and default_replacement
         df.columns = [
-            col.replace(" ", "_")
-            .replace("/", "_")
-            .replace(".", "_")
-            .replace("?", "_")
-            .replace("__", "_")
-            .strip()
+            re.sub(regex_string, default_replacement, col).strip(default_replacement).strip()
             for col in df.columns
         ]
-        df.columns = [re.sub(r"^\_+", "", col) for col in df.columns]
-        df.columns = [re.sub(r"\_+$", "", col) for col in df.columns]
-        df.columns = [re.sub(r"[^\w\s]", "", col) for col in df.columns]
 
         # remove empty cols
         if "" in df.columns:
