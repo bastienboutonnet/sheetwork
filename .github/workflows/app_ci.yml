@@ -9,9 +9,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: webfactory/ssh-agent@v0.1.1
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
@@ -35,7 +32,3 @@ jobs:
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: false
-    - name: Run Tests and Send Coverage to Coveralls
-      run: |
-        coverage run --source=core -m pytest tests/
-        COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_TOKEN }} coveralls
