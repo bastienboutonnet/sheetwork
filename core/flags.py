@@ -1,6 +1,3 @@
-from typing import TYPE_CHECKING
-
-
 class FlagParser:
     """Holds flags from args or sets up default ones that are mainly used to testing and delaying
     argument parsing from CLI so that pytest doesn't steal them and thinks they're for him and
