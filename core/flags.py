@@ -1,8 +1,5 @@
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from main import parser
-
 
 class FlagParser:
     """Holds flags from args or sets up default ones that are mainly used to testing and delaying
@@ -12,7 +9,7 @@ class FlagParser:
 
     def __init__(
         self,
-        parser: "parser.ArgumentParser",
+        parser: "parser.ArgumentParser",  # type: ignore
         test_sheet_name: str = str(),
         sheet_config_dir: str = str(),
         profile_dir: str = str(),

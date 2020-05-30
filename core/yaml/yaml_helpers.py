@@ -9,7 +9,7 @@ from core.exceptions import SheetConfigParsingError, YAMLFileEmptyError
 def open_yaml(path: "Path"):
     if path.is_file():
         with open(path, "r") as stream:
-            yaml_file = yaml.safe_load(stream)
+            yaml_file = yaml.safe_load(stream)  # type: ignore
             if yaml_file:
                 return yaml_file
             raise YAMLFileEmptyError(f"Your yml file {path.resolve()} seems empty.")
