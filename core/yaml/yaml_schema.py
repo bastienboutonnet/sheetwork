@@ -32,6 +32,7 @@ config_schema = {
                     "required": False,
                     "schema": {"type": "string"},
                 },
+
                 "custom_column_name_cleanup": {
                     "type": "list",
                     "required": False,
