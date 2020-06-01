@@ -28,7 +28,7 @@ setup(
         "gspread==3.3.0",
         "sqlalchemy==1.3.16",
         "cerberus==1.3.2",
-        "pandas==1.0.3",
+        "pandas==1.0.4",
         "pyyaml==5.3.1",
         "snowflake-sqlalchemy==1.2.3",
         "oauth2client==4.1.3",
