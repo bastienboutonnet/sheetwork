@@ -18,20 +18,22 @@ Please name your branch with a prefix denoting the type of change you're makeing
 #### Branches
 
 ```bash
-feature/my_awesome_feature
+feat/my_awesome_feature
 fix/describe_what_you_fix
 refactor/describe_what_you_refactor
 docs/what_is_changing_what_you_are_explaining
 ```
 
 #### Pull Requests
+Please prefix your PR using similar prefixes as your branch. Feel free to change tha message for the title compareed to the one you named your branch with. We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) for PR naming since we squash before mergin.
 
-Please prefix your PRs with the same prefix you gave your branch, feel free to use a different title message. **PR linting will fail if the PR isn't name with one of the following prefixes**. For example:
+**PR linting will fail if the PR isn't name with one of the following prefixes**. For example:
 
 ```txt
-Feature: My awesome feature
-Fix: Relax version requiremtents on pandas
-Docs: Document new feature
+feat: My awesome feature
+fix: Relax version requiremtents on pandas
+docs: Document new feature
+refactor: Move cleanups into its own class
 ```
 
 Use the template provided for you as a guide to cover most aspects of your PR. Feel free to delete stuff you think isn't relevant. The template is **just** a guide.
