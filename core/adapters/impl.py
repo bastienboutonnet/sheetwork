@@ -2,7 +2,6 @@ import tempfile
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import pandas
-from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric  # type: ignore
 from core.config.config import ConfigLoader
 from core.exceptions import DatabaseError, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
@@ -27,22 +26,6 @@ class SnowflakeAdapter(BaseAdapter):
 
     def close_connection(self):
         self.con.close()
-
-    @staticmethod
-    def sqlalchemy_dtypes(dtypes_dict: Dict[str, Any]) -> Dict[str, Any]:
-        dtypes_dict = dtypes_dict.copy()
-        dtypes_map: Dict[str, Any] = dict(
-            varchar=VARCHAR,
-            int=INTEGER,
-            numeric=Numeric(38, 18),
-            boolean=BOOLEAN,
-            timestamp_ntz=TIMESTAMP,
-            date=DATE,
-        )
-
-        for col, data_type in dtypes_dict.items():
-            dtypes_dict.update({col: dtypes_map[data_type]})
-        return dtypes_dict
 
     def upload(self, df: pandas.DataFrame, override_schema: str = str()):
         # cast columns
