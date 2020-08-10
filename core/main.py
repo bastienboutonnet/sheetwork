@@ -103,7 +103,7 @@ def main(parser: argparse.ArgumentParser = parser):
     if parser:
         handle(parser)
     else:
-        NotImplementedError(
+        raise NotImplementedError(
             """You did not parse any args to sheetwork.
             If you are not sure how to use it consult the help by doing: sheetwork --help
             """
