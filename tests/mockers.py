@@ -59,7 +59,7 @@ EXPECTED_SHEETWORK_PROJECT_DEPRECATED = {
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],
-    "1. col_one": ["aa", "bb", "cc"],
+    "1. ??col_one": ["aa", "bb", "cc"],
     "": ["q", "q", "q"],
     "col_1": [1, 2, 33],
     "long ass name": ["foo", "bar", "fizz"],

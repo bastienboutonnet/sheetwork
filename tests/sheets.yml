@@ -88,3 +88,11 @@ sheets:
   - sheet_name: sheet_with_no_schema
     sheet_key: sample
     target_table: sample
+
+  - sheet_name: df_cleaner
+    sheet_key: sample
+    target_schema: sand
+    target_table: bb_test_sheetwork
+    custom_column_name_cleanup:
+      default_replacement: ' '
+      characters_to_replace: ['aa', 'bb']
