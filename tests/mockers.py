@@ -43,7 +43,7 @@ EXPECTED_SHEETWORK_PROJECT = {
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],
-    "1. col_one": ["aa", "bb", "cc"],
+    "1. ??col_one": ["aa", "bb", "cc"],
     "": ["q", "q", "q"],
     "col_1": [1, 2, 33],
     "long ass name": ["foo", "bar", "fizz"],
@@ -99,7 +99,7 @@ DROP_COL_DF = {
     "to_exclude": ["garbage1", "garbage2", "garbage3"],
 }
 
-RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "col_1", "renamed_col"]
+RENAMED_COLS = ["col_a", "col b", "1. ??col_one", "", "col_1", "renamed_col"]
 
 EXCLUDED_DF_COLS = ["col_a", "col b", "1. col_one", "", "long ass name"]
 
