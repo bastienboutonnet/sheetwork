@@ -2,7 +2,7 @@ import os
 from setuptools import find_packages, setup
 
 NAME = "sheetwork"
-VERSION = "1.0.0a8"
+VERSION = "1.0.0a9"
 DESCRIPTION = """
     sheetwork is a command line tool to load sheets from google
     and upload them to snowflake
@@ -38,10 +38,9 @@ setup(
     python_requires=REQUIRES_PYTHON,
     entry_points={"console_scripts": ["sheetwork = core.main:main"]},
     packages=find_packages(),
-    # packages=["core"],
     license="MIT",
     url="https://github.com/bastienboutonnet/sheetwork",
-    # download_url="https://github.com/bastienboutonnet/sheetwork/archive/v1.0.0a8.tar.gz",
+    download_url="https://github.com/bastienboutonnet/sheetwork/archive/v1.0.0a9.tar.gz",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
