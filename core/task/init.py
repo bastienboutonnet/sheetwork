@@ -1,14 +1,11 @@
-from typing import TYPE_CHECKING
+import time
 from pathlib import Path
 
-from core.logger import GLOBAL_LOGGER as logger
+from core.clients.system import make_dir, make_file, open_dir_cmd
 from core.exceptions import ProjectIsAlreadyCreated
-from core.clients.system import open_dir_cmd, make_dir, make_file
+from core.flags import FlagParser
+from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import green
-import time
-
-if TYPE_CHECKING:
-    from core.flags import FlagParser
 
 PROJECT_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-project"
 PROFILE_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-profile"
@@ -25,6 +22,24 @@ Here is what happened behind the scenes:
 - If it was your first time setting up sheetwork on your machine, we also created a profiles.yml file
 
 What you need to do now:
+{to_do_credentials}
+
+Optionally:
+- You might want to change some defaults in your {project_path}/{project_name}.yml file. For help:
+    {project_doc_url}
+
+- You might want to configure a sheet to import in your sheets.yml file. For help:
+    {sheets_config_doc_url}
+"""
+
+CREDENTIALS_ONLY_SUCCESS_MESSAGE = """
+Alright! Your credential and profile files have been creeated ✨
+
+What you need to do now:
+{to_do_credentials}
+"""
+
+TO_DO_CREDENTIALS = """
 - Fill up your profiles.yml file. You can access it by running the following command:
 
     {open_cmd} {profiles_path}
@@ -34,13 +49,6 @@ What you need to do now:
 
 - You will need to fill up the {project_name}.json file with your google credentials key. For help see:
     {google_creds_doc_url}
-
-Optionally:
-- You might want to change some defaults in your {project_path}/{project_name}.yml file. For help:
-    {project_doc_url}
-
-- You might want to configure a sheet to import in your sheets.yml file. For help:
-    {sheets_config_doc_url}
 """
 
 PROFILES_PATH = Path("~/.sheetwork/").expanduser()
@@ -58,12 +66,13 @@ always_create: true
 
 
 class InitTask:
-    def __init__(self, flags: "FlagParser"):
+    def __init__(self, flags: FlagParser):
         self.flags = flags
         self.project_name: str = flags.project_name
         self.profiles_path: Path = PROFILES_PATH
         self.project_path: Path = PROJECT_PATH
         self.google_path: Path = Path()
+        self.project_dir_is_created = False
         self.assert_project_name()
 
     def assert_project_name(self):
@@ -108,11 +117,17 @@ class InitTask:
         project_dir = self.project_path / f"{self.project_name}"
         if not project_dir.exists():
             make_dir(project_dir)
+            self.project_dir_is_created = True
+        elif self.flags.force_credentials:
+            logger.warn(f"{self.project_name} already exists, moving on to credential files.")
         else:
             raise ProjectIsAlreadyCreated(
                 f"""\n
                 {self.project_name} already exists, so we'll stop.
                 If you created it by mistake, delete it and run this again.
+
+                If you want to generate the profiles and credentials files only use
+                --force-credentials-folders CLI arguments (see help for more info).
                 """
             )
 
@@ -125,22 +140,48 @@ class InitTask:
             make_file(full_path, project_file_content)
 
     def show_complete(self):
-        done_message = INIT_DONE.format(
-            project_name=self.project_name,
-            project_path=self.project_path,
+        credentials_message = TO_DO_CREDENTIALS.format(
+            to_do_credentials=TO_DO_CREDENTIALS,
+            open_cmd=open_dir_cmd(),
             profiles_path=self.profiles_path,
-            google_path=self.google_path,
             profiles_doc_url=PROFILE_DOC_URL,
             google_creds_doc_url=GOOGLE_CREDS_DOC_URL,
-            project_doc_url=PROJECT_DOC_URL,
-            sheets_config_doc_url=SHEETS_CONFIG_DOC_URL,
-            open_cmd=open_dir_cmd(),
+            project_name=self.project_name,
         )
+        if self.project_dir_is_created:
+            done_message = INIT_DONE.format(
+                project_name=self.project_name,
+                project_path=self.project_path,
+                profiles_path=self.profiles_path,
+                google_path=self.google_path,
+                profiles_doc_url=PROFILE_DOC_URL,
+                google_creds_doc_url=GOOGLE_CREDS_DOC_URL,
+                project_doc_url=PROJECT_DOC_URL,
+                sheets_config_doc_url=SHEETS_CONFIG_DOC_URL,
+                to_do_credentials=credentials_message,
+                open_cmd=open_dir_cmd(),
+            )
+        else:
+            done_message = CREDENTIALS_ONLY_SUCCESS_MESSAGE.format(
+                to_do_credentials=credentials_message
+            )
         logger.info(green(done_message))
 
     def run(self):
-        logger.info("❤️ Taking peantut butter and jelly out of the cupboard...🍇")
+        # print something cos it's fun!
+        print(
+            """
+           ______           __                  __
+          / __/ /  ___ ___ / /__    _____  ____/ /__
+         _\ \/ _ \/ -_) -_) __/ |/|/ / _ \/ __/  '_/
+        /___/_//_/\__/\__/\__/|__,__/\___/_/ /_/\_\\
+        """
+        )
+        logger.info("Alright let's get to work")
+        logger.info("❤️ Taking peanut butter and jelly out of the cupboard 🍇")
         time.sleep(3)
+
+        # do the actual work people cared about in the first place.
         self.override_paths()
         self.create_project_dir()
         self.create_project_file()

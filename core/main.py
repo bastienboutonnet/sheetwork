@@ -78,6 +78,12 @@ init_sub = subs.add_parser(
 )
 init_sub.set_defaults(cls=init_task.InitTask, which="init")
 init_sub.add_argument("--project_name", help="Name you want to init your dbt project with")
+init_sub.add_argument(
+    "--force-credentials-folders",
+    action="store_true",
+    default=False,
+    help="Forces init task to at least attempt to create credential folders.",
+)
 
 
 def handle(parser: argparse.ArgumentParser):
