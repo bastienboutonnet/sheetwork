@@ -17,7 +17,11 @@ config_schema = {
                     "schema": {
                         "type": "dict",
                         "schema": {
-                            "name": {"required": True, "type": "string", "maxlength": 255},
+                            "name": {
+                                "required": True,
+                                "type": "string",
+                                "maxlength": 255,
+                            },
                             "datatype": {
                                 "required": True,
                                 "type": "string",

@@ -122,8 +122,7 @@ def check_columns_in_df(
 
 
 def check_dupe_cols(columns: list, suppress_warning: bool = False) -> Optional[list]:
-    """checks dupes in a list
-    """
+    """checks dupes in a list"""
     dupes = [item for item, count in collections.Counter(columns).items() if count > 1]
     if dupes and not suppress_warning:
         raise DuplicatedColumnsInSheet(

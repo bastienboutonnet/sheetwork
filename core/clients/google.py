@@ -16,7 +16,10 @@ from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import green
 from core.utils import check_dupe_cols
 
-SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+SCOPE = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/drive",
+]
 
 
 class GoogleSpreadsheet:

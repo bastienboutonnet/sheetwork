@@ -14,8 +14,7 @@ PROJECT_FILENAME = "sheetwork_project.yml"
 
 
 class Project:
-    """Sets up everything there is to know about the project config.
-    """
+    """Sets up everything there is to know about the project config."""
 
     def __init__(self, flags: "FlagParser", project_name: str = str()):
         self.project_name = project_name

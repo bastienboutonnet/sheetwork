@@ -4,7 +4,9 @@ from pathlib import Path
 
 class LogManager:
     def __init__(
-        self, log_file_path: Path = Path(Path.cwd(), "sheetwork_logs"), log_to_console: bool = True
+        self,
+        log_file_path: Path = Path(Path.cwd(), "sheetwork_logs"),
+        log_to_console: bool = True,
     ):
         Path(log_file_path).mkdir(parents=True, exist_ok=True)
         log_filename = Path(log_file_path, "sheetwork_log.log")

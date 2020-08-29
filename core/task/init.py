@@ -16,14 +16,13 @@ GOOGLE_CREDS_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installati
 SHEETS_CONFIG_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/usage/sheet-configuration"
 
 INIT_DONE = """
-Your new sheetwork project "{project_name}" has been created <3.
+Your new sheetwork project "{project_name}" has been created ✨.
 
 Here is what happened behind the scenes:
 - {project_path} was created.
-- Inside that project, we dropped an empty "sheets.yml" to get you started.
-- And we created a "sheetwork_project.yml" containing the bare essentials to get you started.
+- Inside that project, we created "sheetwork_project.yml" containing the bare essentials to get you started.
 - An empty google credentials file was dropped in {google_path} and we called it {project_name}.json
-- If it was your first time setting up sheetwork on your machine we also created a profiles.yml file
+- If it was your first time setting up sheetwork on your machine, we also created a profiles.yml file
 
 What you need to do now:
 - Fill up your profiles.yml file. You can access it by running the following command:
