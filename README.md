@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/bastienboutonnet/sheetwork/branch/dev%2Fnicolas_jaar/graph/badge.svg)](https://codecov.io/gh/bastienboutonnet/sheetwork)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 
-Package Version: `v1.0.0a9`
+Package Version: `v1.0.0a10`
 
 # sheetwork 💩🤦
 
