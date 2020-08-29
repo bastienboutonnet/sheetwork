@@ -114,7 +114,7 @@ class SnowflakeAdapter:
                 timed_message(
                     green(
                         f"Push successful for "
-                        f"{target_schema}.{target_table} . "
+                        f"{target_schema}.{target_table} \n"
                         f"Found {columns[0][0]} columns and {rows[0][0]} rows."
                     )
                 )
