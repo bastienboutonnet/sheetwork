@@ -14,9 +14,9 @@ PROJECT_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-an
 PROFILE_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-profile"
 GOOGLE_CREDS_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/connecting-to-google-sheets"
 SHEETS_CONFIG_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/usage/sheet-configuration"
-
+# TODO: Result message says a sheets.yml has been created but that's not true!!
 INIT_DONE = """
-Your new sheetwork project "{project_name}" has been created <3.
+Your new sheetwork project "{project_name}" has been created ✨.
 
 Here is what happened behind the scenes:
 - {project_path} was created.
