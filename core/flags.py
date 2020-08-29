@@ -27,6 +27,7 @@ class FlagParser:
         self.project_dir = project_dir
         self.target = "test"
         self.project_name = project_name
+        self.force_credentials = False
 
     def consume_cli_arguments(self):
         self.args = self.parser.parse_args()
@@ -46,6 +47,7 @@ class FlagParser:
             self.target = self.args.target
         if self.task == "init":
             self.project_name = self.args.project_name
+            self.force_credentials = self.args.force_credentials_folders
 
         self.log_level = self.args.log_level
         self.profile_dir = self.args.profile_dir
