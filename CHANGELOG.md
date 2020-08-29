@@ -5,7 +5,7 @@
 ### Overview
 
 This release is the first release that is usable as a fully open source package. That being said **it is still a beta!**
-To celebrate its idependence, we have named it after extremely independent artist **"Nicolas Jaar**.
+To celebrate its independence, we have named it after extremely independent artist **"Nicolas Jaar**.
 
 **IMPORTANT!**
 
