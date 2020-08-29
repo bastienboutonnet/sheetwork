@@ -140,7 +140,7 @@ class InitTask:
         logger.info(green(done_message))
 
     def run(self):
-        logger.info("Taking peantut butter and jelly out of the cupboard...")
+        logger.info("❤️ Taking peantut butter and jelly out of the cupboard...🍇")
         time.sleep(3)
         self.override_paths()
         self.create_project_dir()

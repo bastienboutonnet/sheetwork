@@ -1,4 +1,5 @@
 import argparse
+from typing import Union
 
 import core.sheetwork as upload_task
 import core.task.init as init_task
@@ -87,7 +88,7 @@ def handle(parser: argparse.ArgumentParser):
         log_manager.set_debug()
 
     if flag_parser.args.command == "init":
-        task = init_task.InitTask(flag_parser)
+        task: Union[init_task.InitTask, upload_task.SheetBag] = init_task.InitTask(flag_parser)
         return task.run()
 
     if flag_parser.args.command == "upload":
