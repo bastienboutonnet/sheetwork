@@ -2,13 +2,13 @@ name: PR lint
 
 on:
   pull_request:
-    types: ['opened', 'edited', 'reopened', 'synchronize']
+    types: ["opened", "edited", "reopened", "synchronize"]
 
 jobs:
   pr-lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: seferov/pr-lint-action@master
-      with:
-        title-regex: '^feat|fix|refactor|docs|ci|Bump|Update '
-        title-regex-flags: 'g'
+      - uses: seferov/pr-lint-action@master
+        with:
+          title-regex: "^feat|fix|refactor|chore|docs|ci|Bump|Update "
+          title-regex-flags: "g"
