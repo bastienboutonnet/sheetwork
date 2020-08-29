@@ -16,17 +16,17 @@ parser = argparse.ArgumentParser(
     description="CLI tool to load google sheets onto a DB.",
     epilog="Select one of these sub-commands to find specific help for those.",
 )
-parser.add_argument("--version", action="version", version=f"%(prog)s Running v{__version__}")
+parser.add_argument("-v", "--version", action="version", version=f"%(prog)s Running v{__version__}")
 
 base_subparser = argparse.ArgumentParser(add_help=False)
-base_subparser.add_argument("--log_level", help="sets the log level", type=str, default=str())
+base_subparser.add_argument("--log-level", help="sets the log level", type=str, default=str())
 base_subparser.add_argument(
-    "--profile_dir",
+    "--profile-dir",
     help="Unusual path to the directory in which the 'profiles.yml' can be found",
     default=str(),
 )
 base_subparser.add_argument(
-    "--project_dir",
+    "--project-dir",
     help="Unusual path to the directory in which the 'sheetwork_project.yml' can be found",
     default=str(),
 )
@@ -42,11 +42,11 @@ upload_sub.set_defaults(cls=upload_task.SheetBag, which="upload")
 upload_sub.add_argument("--schema", help="Target Schema Name", type=str, default=None)
 upload_sub.add_argument("--table", help="Target Table Name", type=str, default=None)
 upload_sub.add_argument(
-    "-sn", "--sheet_name", help="Name of your sheet from config", type=str, default=None
+    "-sn", "--sheet-name", help="Name of your sheet from config", type=str, default=None
 )
-upload_sub.add_argument("-sk", "--sheet_key", help="Google sheet Key", type=str, default=None)
+upload_sub.add_argument("-sk", "--sheet-key", help="Google sheet Key", type=str, default=None)
 upload_sub.add_argument(
-    "--dry_run", help="Skips pushing to database", action="store_true", default=False
+    "--dry-run", help="Skips pushing to database", action="store_true", default=False
 )
 upload_sub.add_argument(
     "-i",
@@ -61,12 +61,12 @@ upload_sub.add_argument(
     help="Specity target profile. When none provided sheetwork will use the profile default",
 )
 upload_sub.add_argument(
-    "--sheet_config_dir",
+    "--sheet-config-dir",
     help="Unusual path to the directory in which the 'sheets.yml' can be found",
     default=str(),
 )
 upload_sub.add_argument(
-    "--create_table",
+    "--create-table",
     help="Creates target table before pushing.",
     action="store_true",
     default=False,
@@ -77,7 +77,7 @@ init_sub = subs.add_parser(
     "init", parents=[base_subparser], help="Initialise your sheetwork project"
 )
 init_sub.set_defaults(cls=init_task.InitTask, which="init")
-init_sub.add_argument("--project_name", help="Name you want to init your dbt project with")
+init_sub.add_argument("--project-name", help="Name you want to init your dbt project with")
 init_sub.add_argument(
     "--force-credentials-folders",
     action="store_true",
