@@ -9,6 +9,7 @@ from core.config.profile import Profile
 from core.config.project import Project
 from core.flags import FlagParser
 from core.logger import log_manager
+from core.utils import check_and_compare_version
 
 parser = argparse.ArgumentParser(
     prog="sheetwork",
@@ -107,6 +108,7 @@ def handle(parser: argparse.ArgumentParser):
 
 def main(parser: argparse.ArgumentParser = parser):
     print(f"Sheetwork version: {__version__} \n")
+    check_and_compare_version()
     if parser:
         handle(parser)
     else:

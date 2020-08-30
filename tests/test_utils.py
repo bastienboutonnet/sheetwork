@@ -1,5 +1,4 @@
-from .mockers import TO_CAST_DF, CAST_DF, generate_test_df
-
+from .mockers import CAST_DF, TO_CAST_DF, generate_test_df
 
 CASTING_DICT = {
     "col_int": "int",
@@ -37,3 +36,13 @@ def test_check_dupe_cols():
     dupes = check_dupe_cols(list_with_dupe, suppress_warning=True)
 
     assert dupes == ["a"]
+
+
+def test_check_and_compare_version(mocker):
+    from core.utils import check_and_compare_version
+
+    # mock the call to pypi
+    mocker.patch("luddite.get_version_pypi", return_value="1.0.0")
+    dummy_version = "0.0.0"
+    needs_update = check_and_compare_version(dummy_version)
+    assert needs_update is True
