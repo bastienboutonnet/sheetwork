@@ -34,6 +34,7 @@ setup(
         "oauth2client==4.1.3",
         "inflection==0.4.0",
         "colorama==0.4.3",
+        "luddite==1.0.1",
     ],
     python_requires=REQUIRES_PYTHON,
     entry_points={"console_scripts": ["sheetwork = core.main:main"]},
