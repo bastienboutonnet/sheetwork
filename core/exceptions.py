@@ -80,3 +80,7 @@ class TargetSchemaMissing(SheetWorkError):
 
 class ProjectIsAlreadyCreated(SheetWorkError):
     "when using sheetwork init and a project is found"
+
+
+class MissnigInitProjectName(SheetWorkError):
+    "when no project name is requested"

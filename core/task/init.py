@@ -2,7 +2,7 @@ import time
 from pathlib import Path
 
 from core.clients.system import make_dir, make_file, open_dir_cmd
-from core.exceptions import ProjectIsAlreadyCreated
+from core.exceptions import MissnigInitProjectName, ProjectIsAlreadyCreated
 from core.flags import FlagParser
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import green
@@ -73,11 +73,12 @@ class InitTask:
         self.project_path: Path = PROJECT_PATH
         self.google_path: Path = Path()
         self.project_dir_is_created = False
-        self.assert_project_name()
 
     def assert_project_name(self):
         if not self.flags.project_name:
-            logger.error(f"Please provide a project name to init your project with.")
+            raise MissnigInitProjectName(
+                f"Please provide a project name to init your project with."
+            )
 
     def override_paths(self):
         if self.flags.profile_dir:
@@ -182,6 +183,7 @@ class InitTask:
         time.sleep(3)
 
         # do the actual work people cared about in the first place.
+        self.assert_project_name()
         self.override_paths()
         self.create_project_dir()
         self.create_project_file()
