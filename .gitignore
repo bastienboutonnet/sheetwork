@@ -91,7 +91,11 @@ sheetwork_logs/
 #Mypy
 .mypy_cache
 
+# sheetwork logs
 .sheetload_logs
 
+# twine
 .pypirc
-.
+
+# pyenv
+.python-version
