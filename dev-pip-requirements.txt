@@ -9,3 +9,4 @@ codecov
 twine
 coveralls
 coverage
+pytest-mock

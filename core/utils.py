@@ -1,9 +1,13 @@
 import collections
 from pathlib import Path
 from typing import Optional, Tuple, Union
+from urllib.error import URLError
 
+import luddite
 import pandas
+from packaging.version import parse as semver_parse
 
+from core._version import __version__
 from core.exceptions import (
     ColumnNotFoundInDataFrame,
     DuplicatedColumnsInSheet,
@@ -129,3 +133,24 @@ def check_dupe_cols(columns: list, suppress_warning: bool = False) -> Optional[l
             f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
         )
     return dupes
+
+
+def check_and_compare_version(external_version: Optional[str] = str()) -> bool:
+    try:
+        pypi_version = luddite.get_version_pypi("sheetwork")
+        if external_version:
+            installed_version = external_version
+        else:
+            installed_version = __version__
+
+        needs_update = semver_parse(pypi_version) > semver_parse(installed_version)
+        if needs_update:
+            logger.warn(
+                yellow(
+                    f"Looks like you're a bit behind. A newer version of Sheetwork v{pypi_version} is available."
+                )
+            )
+        return needs_update
+
+    except URLError:
+        return False
