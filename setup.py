@@ -32,7 +32,7 @@ setup(
         "pyyaml==5.3.1",
         "snowflake-sqlalchemy==1.2.3",
         "oauth2client==4.1.3",
-        "inflection==0.4.0",
+        "inflection==0.5.1",
         "colorama==0.4.3",
         "luddite==1.0.1",
         "packaging==20.4",
