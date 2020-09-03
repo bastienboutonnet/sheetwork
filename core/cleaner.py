@@ -1,18 +1,19 @@
 import re
 
 import inflection
+import numpy as np
 import pandas
 
 
 class SheetCleaner:
-    def __init__(self, df: pandas.DataFrame, casing: bool = False):
+    def __init__(self, df: pandas.DataFrame, casing: bool = False) -> None:
         self.df = df
         self.casing = casing
         assert isinstance(
             self.df, pandas.DataFrame
         ), f"SheetCleaner can only process a pandas.DataFrame. You are feeding a {type(self.df)}."
 
-    def cleanup(self):
+    def cleanup(self) -> pandas.DataFrame:
         clean_df = self.df.copy(deep=True)
 
         if self.casing:
@@ -23,7 +24,7 @@ class SheetCleaner:
         return clean_df
 
     @staticmethod
-    def columns_cleanups(df):
+    def columns_cleanups(df: pandas.DataFrame) -> pandas.DataFrame:
 
         # clean column names (slashes and spaces to understore), remove trailing whitespace
         df.columns = [re.sub(r"^\d+", "", col) for col in df.columns]
@@ -49,7 +50,9 @@ class SheetCleaner:
         return df
 
     @staticmethod
-    def fields_cleanups(df):
+    def fields_cleanups(df: pandas.DataFrame) -> pandas.DataFrame:
+        # convert empty strings with missing value
+        df = df.replace("", np.nan)
 
         # clean trailing spaces in fields
         for col in df.columns:

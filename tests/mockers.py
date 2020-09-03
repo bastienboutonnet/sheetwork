@@ -1,3 +1,4 @@
+import numpy as np
 import pandas
 from pandas import Timestamp
 
@@ -47,6 +48,7 @@ DIRTY_DF = {
     "": ["q", "q", "q"],
     "col_1": [1, 2, 33],
     "long ass name": ["foo", "bar", "fizz"],
+    "col_with_empty_string": ["1", "", "2"],
 }
 
 TO_CAST_DF = {
@@ -80,6 +82,7 @@ CLEAN_DF = {
     "col_one": {0: "aa", 1: "bb", 2: "cc"},
     "col_1": {0: 1, 1: 2, 2: 33},
     "long_ass_name": {0: "foo", 1: "bar", 2: "fizz"},
+    "col_with_empty_string": {0: "1", 1: "", 2: "2"},
 }
 
 RENAMED_DF = {
@@ -99,7 +102,7 @@ DROP_COL_DF = {
     "to_exclude": ["garbage1", "garbage2", "garbage3"],
 }
 
-RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "col_1", "renamed_col"]
+RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "col_1", "renamed_col", "col_with_empty_string"]
 
 EXCLUDED_DF_COLS = ["col_a", "col b", "1. col_one", "", "long ass name"]
 
