@@ -8,7 +8,6 @@ from core.config.config import ConfigLoader
 from core.exceptions import DatabaseError, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import green, timed_message
-from core.utils import cast_pandas_dtypes
 
 if TYPE_CHECKING:
     from core.adapters.connection import Connection
@@ -46,7 +45,7 @@ class SnowflakeAdapter:
 
     def upload(self, df: pandas.DataFrame, override_schema: str = str()):
         # cast columns
-        df = cast_pandas_dtypes(df, overwrite_dict=self.config.sheet_columns)
+        # ! temporarily deactivatiing df casting in pandas related to #205 & #204
         dtypes_dict = self.sqlalchemy_dtypes(self.config.sheet_columns)
 
         # potenfially override target schema from config.
