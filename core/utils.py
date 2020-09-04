@@ -1,6 +1,6 @@
 import collections
 from pathlib import Path
-from typing import Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union
 from urllib.error import URLError
 
 import luddite
@@ -8,12 +8,7 @@ import pandas
 from packaging.version import parse as semver_parse
 
 from core._version import __version__
-from core.exceptions import (
-    ColumnNotFoundInDataFrame,
-    DuplicatedColumnsInSheet,
-    NearestFileNotFound,
-    UnsupportedDataTypeError,
-)
+from core.exceptions import ColumnNotFoundInDataFrame, DuplicatedColumnsInSheet, NearestFileNotFound
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import yellow
 
@@ -70,37 +65,6 @@ class PathFinder:
             )
 
 
-def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> pandas.DataFrame:
-    overwrite_dict = overwrite_dict.copy()
-    dtypes_map = dict(
-        varchar="object",
-        int="int64",
-        numeric="float64",
-        boolean="bool",
-        timestamp_ntz="datetime64[ns]",
-        date="datetime64[ns]",  # this intentional pandas doesn't really have just dates.
-    )
-
-    # Check for type support
-    unsupported_dtypes = set(overwrite_dict.values()).difference(dtypes_map.keys())
-    if unsupported_dtypes:
-        raise UnsupportedDataTypeError(f"{unsupported_dtypes} are currently not supported")
-
-    # check overwrite col is in df
-    invalid_columns = set(overwrite_dict.keys()).difference(set(df.columns.tolist()))
-    if invalid_columns:
-        raise ColumnNotFoundInDataFrame(f"{invalid_columns} not in DataFrame. Check spelling?")
-
-    # recode dict in pandas terms
-    for col, data_type in overwrite_dict.items():
-        overwrite_dict.update({col: dtypes_map[data_type]})
-
-    # cast
-    df = df.astype(overwrite_dict)
-    logger.debug(f"Head of cast dataframe:\n {df.head()}")
-    return df
-
-
 def check_columns_in_df(
     df: pandas.DataFrame,
     columns: Union[list, str],
@@ -127,7 +91,12 @@ def check_columns_in_df(
 
 def check_dupe_cols(columns: list, suppress_warning: bool = False) -> Optional[list]:
     """checks dupes in a list"""
-    dupes = [item for item, count in collections.Counter(columns).items() if count > 1]
+    columns_without_empty_strings: List[str] = list(filter(None, columns))
+    dupes = [
+        item
+        for item, count in collections.Counter(columns_without_empty_strings).items()
+        if count > 1
+    ]
     if dupes and not suppress_warning:
         raise DuplicatedColumnsInSheet(
             f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
