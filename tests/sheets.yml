@@ -86,19 +86,3 @@ sheets:
   - sheet_name: sheet_with_no_schema
     sheet_key: sample
     target_table: sample
-
-  - sheet_name: quality_assessment_scale
-    sheet_key: 1YyiUlZ4BNSADdO3LEz59gikEkmA3VmrktLOppgf-zqU
-    target_schema: ref_tables
-    target_table: quality_assessment_scale
-    columns:
-      - name: Needs_Improvement
-        datatype: int
-      - name: Acceptable
-        datatype: int
-      - name: Excellent
-        datatype: int
-      - name: N_A
-        datatype: int
-      - name: Fail
-        datatype: int
