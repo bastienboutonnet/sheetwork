@@ -99,3 +99,6 @@ sheetwork_logs/
 
 # pyenv
 .python-version
+
+**/build/
+*.whl
