@@ -1,3 +1,6 @@
+from core.exceptions import InvalidOrMissingCommandError
+
+
 class FlagParser:
     """Holds flags from args or sets up default ones that are mainly used to testing and delaying
     argument parsing from CLI so that pytest doesn't steal them and thinks they're for him and
@@ -45,10 +48,14 @@ class FlagParser:
             self.dry_run = self.args.dry_run
             self.sheet_config_dir = self.args.sheet_config_dir
             self.target = self.args.target
-        if self.task == "init":
+        elif self.task == "init":
             self.project_name = self.args.project_name
             self.force_credentials = self.args.force_credentials_folders
-
+        else:
+            raise InvalidOrMissingCommandError(
+                "No task or invalid task was provided. Run `sheetwork --help` to learn how to use sheetwork."
+            )
+        # put these out cos they apply to both tasks or would be escaped by error.
         self.log_level = self.args.log_level
         self.profile_dir = self.args.profile_dir
         self.project_dir = self.args.project_dir

@@ -84,3 +84,7 @@ class ProjectIsAlreadyCreated(SheetWorkError):
 
 class MissnigInitProjectName(SheetWorkError):
     "when no project name is requested"
+
+
+class InvalidOrMissingCommandError(SheetWorkError):
+    "when no  command or invalid command is requested"
