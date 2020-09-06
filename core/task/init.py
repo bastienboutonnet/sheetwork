@@ -76,9 +76,7 @@ class InitTask:
 
     def assert_project_name(self):
         if not self.flags.project_name:
-            raise MissnigInitProjectName(
-                f"Please provide a project name to init your project with."
-            )
+            raise MissnigInitProjectName("Please provide a project name to init your project with.")
 
     def override_paths(self):
         if self.flags.profile_dir:
