@@ -49,10 +49,13 @@ class Profile:
                         self.profile_dict = target_profile
                 else:
                     raise ProfileParserError(
-                        f"Error finding and entry for {self.target_name}, for {self.profile_name}."
+                        f"Error finding and entry for  target: {self.target_name}, "
+                        f"under the {self.profile_name} profile."
                     )
             else:
-                raise ProfileParserError(f"Could not find an entry for {self.profile_name}")
+                raise ProfileParserError(
+                    f"Could not find an entry for {self.profile_name} in your profile.yml"
+                )
         else:
             raise FileNotFoundError(
                 f"Could not open or find {filename.resolve()} check that it exists"
