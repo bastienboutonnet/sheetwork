@@ -3,6 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/bastienboutonnet/sheetwork/badge)](https://www.codefactor.io/repository/github/bastienboutonnet/sheetwork)
 [![codecov](https://codecov.io/gh/bastienboutonnet/sheetwork/branch/dev%2Fnicolas_jaar/graph/badge.svg)](https://codecov.io/gh/bastienboutonnet/sheetwork)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bastienboutonnet/sheetwork?include_prereleases)
 
 Package Version: `v1.0.0b2`
 
