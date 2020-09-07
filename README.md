@@ -3,16 +3,13 @@
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 
-
 # sheetwork 💩🤦
 
-A handy package to load Google Sheets to Snowflake
+A handy package to load Google Sheets to your database right from the CLI and with easy configuration via YAML files.
 
-Performs some cleanups on column names and string (such as removing trailing spaces etc.)
+> ⚠️ **warning** `sheetwork` is still in its early inception (don't get fooled by the 1 in the version). Please do some testing before you end up using it in production, and feel free to report bugs.
 
-**BIG DISCLAIMER** sheetwork is still very early. Do not use in production jobs unless you tested it extensively and know whether it does what you want it to do!
 
 ## Documentation
-Head over to the [official documentation](https://bastienboutonnet.gitbook.io/sheetwork/) to learn about:
-- how to set up sheetwork
-- how to use sheetwork
+
+Head over to this pretty [documentation](https://bastienboutonnet.gitbook.io/sheetwork/) to get started and find out how to install, and use `sheetwork`
