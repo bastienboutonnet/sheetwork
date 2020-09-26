@@ -67,10 +67,10 @@ class PathFinder:
 
 def check_columns_in_df(
     df: pandas.DataFrame,
-    columns: Union[list, str],
+    columns: Union[List[str], str],
     warn_only: bool = False,
     suppress_warning: bool = False,
-) -> Tuple[bool, list]:
+) -> Tuple[bool, List[str]]:
     if isinstance(columns, str):
         columns = [columns]
     is_subset = set(columns).issubset(df.columns)
@@ -89,9 +89,9 @@ def check_columns_in_df(
     return False, reduced_cols
 
 
-def check_dupe_cols(columns: list, suppress_warning: bool = False) -> Optional[list]:
+def check_dupe_cols(columns: List[str], suppress_warning: bool = False) -> Optional[List[str]]:
     """checks dupes in a list"""
-    columns_without_empty_strings: List[str] = list(filter(None, columns))
+    columns_without_empty_strings = list(filter(None, columns))
     dupes = [
         item
         for item, count in collections.Counter(columns_without_empty_strings).items()
@@ -106,7 +106,7 @@ def check_dupe_cols(columns: list, suppress_warning: bool = False) -> Optional[l
 
 def check_and_compare_version(external_version: Optional[str] = str()) -> bool:
     try:
-        pypi_version = luddite.get_version_pypi("sheetwork")
+        pypi_version: str = luddite.get_version_pypi("sheetwork")
         if external_version:
             installed_version = external_version
         else:
@@ -114,7 +114,7 @@ def check_and_compare_version(external_version: Optional[str] = str()) -> bool:
 
         needs_update = semver_parse(pypi_version) > semver_parse(installed_version)
         if needs_update:
-            logger.warn(
+            logger.warning(
                 yellow(
                     f"Looks like you're a bit behind. A newer version of Sheetwork v{pypi_version} is available."
                 )

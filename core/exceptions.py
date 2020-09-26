@@ -2,8 +2,8 @@ from colorama import Fore
 
 
 class SheetWorkError(Exception):
-    def __init__(self, message):
-        super().__init__(Fore.RED + message)
+    def __init__(self, message: str):
+        super().__init__(Fore.RED + message)  # type: ignore
 
 
 class SheetWorkConfigMissingError(SheetWorkError):

@@ -1,3 +1,5 @@
+from argparse import ArgumentParser
+
 from core.exceptions import InvalidOrMissingCommandError
 
 
@@ -9,7 +11,7 @@ class FlagParser:
 
     def __init__(
         self,
-        parser: "parser.ArgumentParser",  # type: ignore
+        parser: ArgumentParser,
         test_sheet_name: str = str(),
         sheet_config_dir: str = str(),
         profile_dir: str = str(),

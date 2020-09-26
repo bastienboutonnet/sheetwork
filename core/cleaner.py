@@ -27,7 +27,7 @@ class SheetCleaner:
     def columns_cleanups(df: pandas.DataFrame) -> pandas.DataFrame:
 
         # clean column names (slashes and spaces to understore), remove trailing whitespace
-        df.columns = [re.sub(r"^\d+", "", col) for col in df.columns]
+        df.columns = [re.sub(r"^\d+", "", col) for col in df.columns]  # type: ignore
         df.columns = [
             col.replace(" ", "_")
             .replace("/", "_")
@@ -46,22 +46,22 @@ class SheetCleaner:
             df = df.drop([""], axis=1)
 
         # make all columns lowercase
-        df.columns = map(str.lower, df.columns)
+        df.columns = list(map(str.lower, df.columns))
         return df
 
     @staticmethod
     def fields_cleanups(df: pandas.DataFrame) -> pandas.DataFrame:
         # convert empty strings with missing value
-        df = df.replace("", np.nan)
+        df = df.replace("", np.nan)  # type: ignore
 
         # clean trailing spaces in fields
-        for col in df.columns:
-            if df[col].dtype == "object":
-                df[col] = df[col].str.strip()
+        for col in df.columns:  # type: ignore
+            if df[col].dtype == "object":  # type: ignore
+                df[col] = df[col].str.strip()  # type: ignore
 
         return df
 
     @staticmethod
     def camel_to_snake(df: pandas.DataFrame) -> pandas.DataFrame:
-        df.columns = [inflection.underscore(col) for col in df.columns]
+        df.columns = [inflection.underscore(col) for col in df.columns]  # type: ignore
         return df
