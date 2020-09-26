@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, Union
 
 from core.exceptions import ProjectFileParserError
 from core.logger import GLOBAL_LOGGER as logger
@@ -18,7 +18,7 @@ class Project:
 
     def __init__(self, flags: "FlagParser", project_name: str = str()):
         self.project_name = project_name
-        self.project_dict: dict = dict()
+        self.project_dict: Dict[str, Union[str, bool]] = dict()
         self.target_schema: str = str()
         self.always_create: bool = True
         self.flags = flags
@@ -41,6 +41,8 @@ class Project:
         is_valid_yaml = validate_yaml(project_yaml, project_schema)
         if project_yaml and is_valid_yaml:
             self.project_dict = project_yaml
+            print("PROJECT DICT")
+            print(self.project_dict)
             self.project_name = project_yaml.get("name", self.project_name)
             self.target_schema = project_yaml.get("target_schema", self.target_schema)
             if project_yaml.get("paths"):

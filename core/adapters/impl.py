@@ -1,9 +1,8 @@
 import tempfile
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import pandas
-from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
-
+from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric  # type: ignore
 from core.config.config import ConfigLoader
 from core.exceptions import DatabaseError, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
@@ -28,9 +27,9 @@ class SnowflakeAdapter:
         self.con.close()
 
     @staticmethod
-    def sqlalchemy_dtypes(dtypes_dict) -> dict:
+    def sqlalchemy_dtypes(dtypes_dict: Dict[str, Any]) -> Dict[str, Any]:
         dtypes_dict = dtypes_dict.copy()
-        dtypes_map = dict(
+        dtypes_map: Dict[str, Any] = dict(
             varchar=VARCHAR,
             int=INTEGER,
             numeric=Numeric(38, 18),
@@ -81,16 +80,16 @@ class SnowflakeAdapter:
             self.con.execute(f"copy into {qualified_table} from @{self.config.target_table}_stg")
             self.con.execute(f"drop stage {self.config.target_table}_stg")
         except Exception as e:
-            raise DatabaseError(e)
+            raise DatabaseError(str(e))
         finally:
             temp.close()
             self.close_connection()
 
-    def execute(self, query: str, return_results: bool = False):
+    def execute(self, query: str, return_results: bool = False) -> Optional[Any]:
         self.acquire_connection()
-        results = self.con.execute(query)
+        results: Any = self.con.execute(query)
         if return_results:
-            result_set = results.fetchall()
+            result_set: Any = results.fetchall()
             self.close_connection()
             return result_set
         self.close_connection()

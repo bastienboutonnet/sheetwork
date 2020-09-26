@@ -102,3 +102,5 @@ sheetwork_logs/
 
 **/build/
 *.whl
+
+**/typings/

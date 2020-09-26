@@ -1,5 +1,5 @@
 import sys
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING, List, Tuple, Union
 
 import pandas
 
@@ -10,7 +10,7 @@ from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
 from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import yellow, red, timed_message
+from core.ui.printer import red, timed_message, yellow
 from core.utils import check_columns_in_df
 
 if TYPE_CHECKING:
@@ -39,12 +39,13 @@ class SheetBag:
         self.target_table = config.target_table
         self.profile = profile
         self.push_anyway = False
+        self.sheet_key: str = str(config.sheet_config.get("sheet_key", str()))
 
     def _obtain_googlesheet(self):
-        worksheet = self.config.sheet_config.get("worksheet", str())
-        df = GoogleSpreadsheet(
-            self.profile, self.config.sheet_config["sheet_key"]
-        ).make_df_from_worksheet(worksheet_name=worksheet)
+        worksheet = str(self.config.sheet_config.get("worksheet", str()))
+        df = GoogleSpreadsheet(self.profile, self.sheet_key).make_df_from_worksheet(
+            worksheet_name=worksheet
+        )
         return df
 
     def load_sheet(self):
@@ -75,10 +76,10 @@ class SheetBag:
         logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
         self.sheet_df = df
 
-    def rename_columns(self, df):
+    def rename_columns(self, df: pandas.DataFrame):
         if self.config.sheet_column_rename_dict:
-            _, _ = check_columns_in_df(df, self.config.sheet_column_rename_dict.keys())
-            df = df.rename(columns=self.config.sheet_column_rename_dict)
+            _, _ = check_columns_in_df(df, list(self.config.sheet_column_rename_dict.keys()))
+            df = df.rename(columns=self.config.sheet_column_rename_dict)  # type: ignore
         return df
 
     def exclude_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
@@ -93,7 +94,9 @@ class SheetBag:
             columns as required.
         """
 
-        cols_to_exclude = self.config.sheet_config.get("excluded_columns", list())
+        cols_to_exclude: Union[str, List[str]] = self.config.sheet_config.get(  # type: ignore
+            "excluded_columns", list(str())
+        )
         if cols_to_exclude:
             _, filtered_columns = check_columns_in_df(df, cols_to_exclude, warn_only=True)
             if filtered_columns:
@@ -121,12 +124,12 @@ class SheetBag:
             sys.exit(1)
 
     @staticmethod
-    def _show_dry_run_preview(sheet_df):
+    def _show_dry_run_preview(sheet_df: pandas.DataFrame):
 
         print("\nDataFrame DataTypes: \n\n" + str(sheet_df.dtypes))
         print("\nDataFrame Header: \n\n" + str(sheet_df.head(10)))
 
-    def run_cleanup(self, df) -> Tuple[bool, pandas.DataFrame]:
+    def run_cleanup(self, df: pandas.DataFrame) -> Tuple[bool, pandas.DataFrame]:
         clean_up = True
         # check for interactive mode
         if self.flags.interactive:
@@ -141,7 +144,7 @@ class SheetBag:
         if clean_up is True:
             logger.debug("Performing clean ups")
             clean_df = SheetCleaner(
-                df, self.config.sheet_config.get("snake_case_camel", False)
+                df, bool(self.config.sheet_config.get("snake_case_camel", False))
             ).cleanup()
             if self.flags.dry_run or self.flags.interactive:
                 logger.info(yellow("\nPOST-CLEANING PREVIEW:"))

@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Dict
 
 from core.config.project import Project
 from core.exceptions import InvalidProfileError, ProfileParserError
@@ -22,7 +23,7 @@ class Profile:
     def __init__(self, project: Project, target_name: str = str()):
         self.profile_name = project.project_name
         self.target_name = target_name
-        self.profile_dict: dict = dict()
+        self.profile_dict: Dict[str, str] = dict()
         self.cannot_be_none = {"db_type", "guser"}
         self.profile_dir: Path = project.profile_dir
         self.google_credentials_dir = Path(project.profile_dir, "google").resolve()
@@ -47,6 +48,8 @@ class Profile:
                     is_valid_profile = self._validate_profile(target_profile)
                     if is_valid_profile:
                         self.profile_dict = target_profile
+                        print("PROOOOOOOO")
+                        print(self.profile_dict)
                 else:
                     raise ProfileParserError(
                         f"Error finding and entry for  target: {self.target_name}, "
@@ -61,7 +64,7 @@ class Profile:
                 f"Could not open or find {filename.resolve()} check that it exists"
             )
 
-    def _validate_profile(self, profile_dict: dict) -> bool:
+    def _validate_profile(self, profile_dict: Dict[str, str]) -> bool:
         if isinstance(profile_dict, dict):
             keys_with_nones = {k for k, v in profile_dict.items() if not v}
             keys_with_nones.intersection_update(self.cannot_be_none)

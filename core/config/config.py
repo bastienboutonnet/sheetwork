@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from core.config.project import Project
 from core.exceptions import (
@@ -17,18 +17,18 @@ if TYPE_CHECKING:
 
 
 class ConfigLoader:
-    def __init__(self, flags: "FlagParser", project: "Project"):
-        self.config: dict = dict()
-        self.sheet_config: dict = dict(
+    def __init__(self, flags: "FlagParser", project: Project):
+        self.config: Dict[str, List[Dict[str, Any]]] = dict()
+        self.sheet_config: Dict[str, Union[str, bool, List[Union[str, Dict[str, str]]]]] = dict(
             sheet_key=flags.sheet_key,
             target_schema=flags.target_schema,
             target_table=flags.target_table,
         )
-        self.target_schema = flags.target_schema
-        self.target_table = flags.target_table
-        self.sheet_column_rename_dict: dict = dict()
-        self.sheet_columns: dict = dict()
-        self.excluded_columns: list = list()
+        self.target_schema: str = flags.target_schema
+        self.target_table: str = flags.target_table
+        self.sheet_column_rename_dict: Dict[str, str] = dict()
+        self.sheet_columns: Dict[str, str] = dict()
+        self.excluded_columns: Dict = dict()
         self.flags = flags
         self.project = project
         self.yml_folder: Path = project.sheet_config_dir
@@ -65,21 +65,23 @@ class ConfigLoader:
             is_valid_yaml = validate_yaml(config_yaml, config_schema)
         if is_valid_yaml:
             self.config = config_yaml
+            print(self.config)
+            print(type(self.config))
             self.get_sheet_config()
             self._generate_column_type_override_dict()
             self._generate_column_rename_dict()
             self._override_cli_args()
 
     @staticmethod
-    def lowercase(obj):
+    def lowercase(obj: Dict[str, str]) -> Dict[str, str]:
         """ Make dictionary lowercase """
-        new = dict()
+        new: Dict[str, str] = dict()
         if isinstance(obj, dict):
             for k, v in obj.items():
                 if isinstance(v, dict):
-                    v = lowercase(v)
+                    v = lowercase(v)  # type: ignore # noqa
                 if k == "name":
-                    new[k] = v.lower()
+                    new[k] = v.lower()  # type: ignore
                 else:
                     new[k] = v
         return new
@@ -88,7 +90,7 @@ class ConfigLoader:
         if self.flags.sheet_name:
             sheets = self.config["sheets"]
             sheet_config = [
-                sheet for sheet in sheets if sheet["sheet_name"] == self.flags.sheet_name
+                sheet for sheet in sheets if sheet.get("sheet_name") == self.flags.sheet_name
             ]
             if len(sheet_config) > 1:
                 raise SheetConfigParsingError(
@@ -101,10 +103,12 @@ class ConfigLoader:
                     "Check your sheets.yml file."
                 )
             self.sheet_config = sheet_config[0]
+            print("SHEET CONFIG")
+            print(self.sheet_config)
             logger.debug(f"Sheet config dict: {self.sheet_config}")
             if self.sheet_config.get("columns"):
                 self.sheet_config["columns"] = [
-                    self.lowercase(column_dict) for column_dict in self.sheet_config.get("columns")
+                    self.lowercase(column_dict) for column_dict in self.sheet_config.get("columns")  # type: ignore
                 ]
                 logger.debug(f"Cols after lowercasing: {self.sheet_config.get('columns')}")
         else:
@@ -117,10 +121,10 @@ class ConfigLoader:
 
         try:
             if self.sheet_config and self.sheet_config.get("columns"):
-                columns = self.sheet_config.get("columns")
-                column_dict = dict()
+                columns: List[Dict[str, str]] = self.sheet_config.get("columns", list())  # type: ignore
+                column_dict: Dict[str, str] = dict()
                 for column in columns:
-                    column_dict.update(dict({column.get("name"): column.get("datatype")}))
+                    column_dict.update({column.get("name", str()): column.get("datatype", str())})
                 if column_dict:
                     logger.debug(f"colums operations dict: {column_dict}")
                     self.sheet_columns = column_dict
@@ -137,9 +141,9 @@ class ConfigLoader:
         """
 
         if self.sheet_config:
-            columns = self.sheet_config.get("columns")
+            columns: List[Dict[str, str]] = self.sheet_config.get("columns", list())  # type: ignore
             if columns:
-                column_rename_dict = dict()
+                column_rename_dict: Dict[str, str] = dict()
                 for column in columns:
                     if column.get("identifier"):
                         column_rename_dict.update(dict({column["identifier"]: column["name"]}))
@@ -154,9 +158,11 @@ class ConfigLoader:
 
         self.sheet_key = self.sheet_config["sheet_key"]
         if not self.target_table:
-            self.target_table = self.sheet_config.get("target_table")
+            self.target_table = str(self.sheet_config.get("target_table", str()))
         if not self.target_schema:
-            self.target_schema = self.sheet_config.get("target_schema", self.project.target_schema)
+            self.target_schema = str(
+                self.sheet_config.get("target_schema", self.project.target_schema)
+            )
         if not self.target_schema:
             raise TargetSchemaMissing(
                 "No target schema found. You must provide one either in the project, sheet or CLI"

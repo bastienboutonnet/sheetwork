@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any, List
 
 import gspread
 import pandas
@@ -79,7 +80,7 @@ class GoogleSpreadsheet:
                 worksheet = self.workbook.get_worksheet(0)
             logger.debug(green("Sheet loaded successfully"))
             if grab_header:
-                values = worksheet.get_all_values()
+                values: List[Any] = worksheet.get_all_values()
                 check_dupe_cols(values[0])
                 df = pandas.DataFrame(values[1:], columns=values[0])
             else:

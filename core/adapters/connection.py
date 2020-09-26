@@ -1,26 +1,26 @@
+from typing import Dict
+
 from snowflake.sqlalchemy import URL
 from sqlalchemy import create_engine
-
 from core.config.profile import Profile
 from core.exceptions import CredentialsParsingError
 
 
 class Credentials:
-    """This should be a base class down the line but for now it's kinda adhoc until all works fine.
-    """
+    """This should be a base class down the line but for now it's kinda adhoc until all works fine."""
 
     def __init__(self, profile: Profile):
-        self.profile: dict = profile.profile_dict
+        self.profile = profile.profile_dict
         self.are_valid_credentials: bool = False
         self.db_type: str = str()
-        self.credentials: dict = dict()
+        self.credentials: Dict[str, str] = dict()
         self.validate_credentials()
         self.parse_credentials()
 
     def validate_credentials(self):
         # check that all necessary keys are in the profile (nullity will have been handled by
         # the yaml validator upsteam)
-        db_type = self.profile.get("db_type")
+        db_type = self.profile.get("db_type", str())
         if db_type == "snowflake":
             must_have_keys = {
                 "account",
@@ -51,7 +51,7 @@ class Credentials:
                 "schema",
             }
             for key in must_have_keys:
-                self.credentials.update({key: self.profile.get(key)})
+                self.credentials.update({key: self.profile.get(key, str())})
 
 
 class Connection:
