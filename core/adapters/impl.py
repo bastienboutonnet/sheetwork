@@ -1,33 +1,32 @@
 import tempfile
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import Any, Optional
 
 import pandas
+
+# from core.utils import cast_pandas_dtypes
+from core.adapters.base.impl import BaseAdapter
+from core.adapters.connection import SnowflakeConnection
 from core.config.config import ConfigLoader
 from core.exceptions import DatabaseError, TableDoesNotExist
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import green, timed_message
-from core.utils import cast_pandas_dtypes
-from core.adapters.base.impl import BaseAdapter
-
-if TYPE_CHECKING:
-    from core.adapters.connection import Connection
 
 
 class SnowflakeAdapter(BaseAdapter):
     """Interacts with snowflake via SQLAlchemy"""
 
-    def __init__(self, connection: "Connection", config: ConfigLoader):
+    def __init__(self, connection: SnowflakeConnection, config: ConfigLoader):
         self.connection = connection
         self.engine = connection.engine
         self.config = config
 
-    def acquire_connection(self):
+    def acquire_connection(self) -> None:
         self.con = self.engine.connect()
 
-    def close_connection(self):
+    def close_connection(self) -> None:
         self.con.close()
 
-    def upload(self, df: pandas.DataFrame, override_schema: str = str()):
+    def upload(self, df: pandas.DataFrame, override_schema: str = str()) -> None:
         # cast columns
         # ! temporarily deactivatiing df casting in pandas related to #205 & #204
         dtypes_dict = self.sqlalchemy_dtypes(self.config.sheet_columns)
@@ -70,7 +69,7 @@ class SnowflakeAdapter(BaseAdapter):
             temp.close()
             self.close_connection()
 
-    def execute(self, query: str, return_results: bool = False) -> Optional[Any]:
+    def excecute_query(self, query: str, return_results: bool = False) -> Optional[Any]:
         self.acquire_connection()
         results: Any = self.con.execute(query)
         if return_results:
@@ -80,7 +79,7 @@ class SnowflakeAdapter(BaseAdapter):
         self.close_connection()
         return None
 
-    def check_table(self, target_schema: str, target_table: str):
+    def check_table(self, target_schema: str, target_table: str) -> None:
         columns_query = f"""
                 select count(*)
                 from dwh.information_schema.columns
@@ -90,8 +89,8 @@ class SnowflakeAdapter(BaseAdapter):
                 ;
                 """
         rows_query = rows_query = f"select count(*) from {target_schema}.{target_table}"
-        columns = self.execute(columns_query, return_results=True)
-        rows = self.execute(rows_query, return_results=True)
+        columns = self.excecute_query(columns_query, return_results=True)
+        rows = self.excecute_query(rows_query, return_results=True)
         if columns and rows:
             logger.info(
                 timed_message(

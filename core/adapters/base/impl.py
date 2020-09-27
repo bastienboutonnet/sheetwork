@@ -1,38 +1,39 @@
 import abc
+from typing import Any, Dict, Optional
 
+import pandas
 from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
 
 
 class BaseAdapter(metaclass=abc.ABCMeta):
-    """sets up required adapter methods
-    """
+    """sets up required adapter methods"""
 
     @abc.abstractmethod
-    def acquire_connection(self):
+    def acquire_connection(self) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def close_connection(self):
+    def close_connection(self) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def upload(self):
+    def upload(self, df: pandas.DataFrame, override_schema: str = str()) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def excecute(self):
+    def excecute_query(self, query: str, return_results: bool = False) -> Optional[Any]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def check_table(self):
+    def check_table(self, target_schema: str, target_table: str) -> None:
         raise NotImplementedError()
 
     @staticmethod
-    def sqlalchemy_dtypes(dtypes_dict) -> dict:
+    def sqlalchemy_dtypes(dtypes_dict: Dict[str, Any]) -> Dict[str, Any]:
         dtypes_dict = dtypes_dict.copy()
-        dtypes_map = dict(
-            varchar=VARCHAR,
+        dtypes_map: Dict[str, Any] = dict(
             int=INTEGER,
+            varchar=VARCHAR,
             numeric=Numeric(38, 18),
             boolean=BOOLEAN,
             timestamp_ntz=TIMESTAMP,

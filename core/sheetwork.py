@@ -1,20 +1,19 @@
 import sys
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import pandas
 
-from core.adapters.connection import Connection, Credentials
-from core.adapters.impl import SnowflakeAdapter
+from core.adapters.base.connection import BaseConnection, BaseCredentials
+from core.adapters.base.impl import BaseAdapter
+from core.adapters.factory import Adapter, AdapterContainer
 from core.cleaner import SheetCleaner
 from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
+from core.flags import FlagParser
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import red, timed_message, yellow
 from core.utils import check_columns_in_df
-
-if TYPE_CHECKING:
-    from core.flags import FlagParser
 
 
 class SheetBag:
@@ -31,7 +30,7 @@ class SheetBag:
         SheetBag: Loaded, and possibly cleaned sheet object with db interaction methods.
     """
 
-    def __init__(self, config: "ConfigLoader", flags: "FlagParser", profile: "Profile"):
+    def __init__(self, config: ConfigLoader, flags: FlagParser, profile: Profile):
         self.sheet_df: pandas.DataFrame = pandas.DataFrame()
         self.flags = flags
         self.config = config
@@ -40,6 +39,15 @@ class SheetBag:
         self.profile = profile
         self.push_anyway = False
         self.sheet_key: str = str(config.sheet_config.get("sheet_key", str()))
+        self.adaptors_dict: Optional[Dict[str, Adapter]] = None
+
+    def get_adaptor_modules(self) -> None:
+        adaptors = AdapterContainer()
+        adaptors.register_adapter(self.profile)
+        self.adaptors_dict = adaptors.load_plugins()
+        self.credentials: BaseCredentials = self.adaptors_dict["credentials"]  # type: ignore
+        self.connection: BaseConnection = self.adaptors_dict["connection"]  # type: ignore
+        self.db_adapter: BaseAdapter = self.adaptors_dict["db_adapter"]  # type: ignore
 
     def _obtain_googlesheet(self):
         worksheet = str(self.config.sheet_config.get("worksheet", str()))
@@ -161,18 +169,19 @@ class SheetBag:
         logger.debug(f"Column override dict is a {type(self.config.sheet_columns)}")
         logger.debug(f"Sheet columns: {self.config.sheet_columns}")
         logger.debug(f"Columns in final df: {self.sheet_df.columns.tolist()}")
-        credentials = Credentials(self.profile)
-        connection = Connection(credentials)
-        adapter = SnowflakeAdapter(connection, self.config)
-        adapter.upload(self.sheet_df, self.target_schema)
+        credentials = self.credentials(self.profile)  # type: ignore
+        connection = self.connection(credentials)  # type: ignore
+        db_adatper = self.db_adapter(connection, self.config)  # type: ignore
+        db_adatper.upload(self.sheet_df, self.target_schema)  # type: ignore
 
     def check_table(self):
-        credentials = Credentials(self.profile)
-        connection = Connection(credentials)
-        adapter = SnowflakeAdapter(connection, self.config)
-        adapter.check_table(self.target_schema, self.target_table)
+        credentials = self.credentials(self.profile)  # type: ignore
+        connection = self.connection(credentials)  # type: ignore
+        db_adatper = self.db_adapter(connection, self.config)  # type: ignore
+        db_adatper.check_table(self.target_schema, self.target_table)  # type: ignore
 
     def run(self):
+        self.get_adaptor_modules()
         self.load_sheet()
         if self.push_anyway:
             self.push_sheet()

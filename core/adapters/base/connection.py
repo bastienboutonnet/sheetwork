@@ -2,19 +2,18 @@ import abc
 
 
 class BaseCredentials(metaclass=abc.ABCMeta):
-    # TODO: Need to firgure out how to impose properties to be set
-    # and provided by the init
+    """Base class to define basic API contract for a Credentials class and its methods."""
 
     @abc.abstractmethod
-    def validate_credentials(self):
+    def validate_credentials(self) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def parse_credentials(self):
+    def parse_credentials(self) -> None:
         raise NotImplementedError()
 
 
 class BaseConnection(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def generate_engine(self):
+    def generate_engine(self) -> None:
         raise NotImplementedError()
