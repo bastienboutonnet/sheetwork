@@ -3,8 +3,9 @@ from typing import Any, Optional
 
 import pandas
 
+# ! temporarily deactivatiing df casting in pandas related to #205 & #204
 # from core.utils import cast_pandas_dtypes
-from core.adapters.base.impl import BaseAdapter
+from core.adapters.base.impl import BaseSQLAdapter
 from core.adapters.connection import SnowflakeConnection
 from core.config.config import ConfigLoader
 from core.exceptions import DatabaseError, TableDoesNotExist
@@ -12,7 +13,7 @@ from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import green, timed_message
 
 
-class SnowflakeAdapter(BaseAdapter):
+class SnowflakeAdapter(BaseSQLAdapter):
     """Interacts with snowflake via SQLAlchemy"""
 
     def __init__(self, connection: SnowflakeConnection, config: ConfigLoader):
@@ -29,6 +30,7 @@ class SnowflakeAdapter(BaseAdapter):
     def upload(self, df: pandas.DataFrame, override_schema: str = str()) -> None:
         # cast columns
         # ! temporarily deactivatiing df casting in pandas related to #205 & #204
+        # df = cast_pandas_dtypes(df, overwrite_dict=self.config.sheet_columns)
         dtypes_dict = self.sqlalchemy_dtypes(self.config.sheet_columns)
 
         # potenfially override target schema from config.

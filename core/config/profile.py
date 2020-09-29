@@ -48,8 +48,6 @@ class Profile:
                     is_valid_profile = self._validate_profile(target_profile)
                     if is_valid_profile:
                         self.profile_dict = target_profile
-                        print("PROOOOOOOO")
-                        print(self.profile_dict)
                 else:
                     raise ProfileParserError(
                         f"Error finding and entry for  target: {self.target_name}, "

@@ -14,7 +14,6 @@ def test_read_profile(datafiles):
     from core.flags import FlagParser
     from core.main import parser
 
-    print(FIXTURE_DIR)
     flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
     project = Project(flags, "sheetwork_test")
     profile = Profile(project, "dev")

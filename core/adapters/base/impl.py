@@ -5,7 +5,7 @@ import pandas
 from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
 
 
-class BaseAdapter(metaclass=abc.ABCMeta):
+class BaseSQLAdapter(abc.ABC):
     """sets up required adapter methods"""
 
     @abc.abstractmethod

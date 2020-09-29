@@ -1,29 +1,30 @@
 import importlib
-from types import ModuleType
-from typing import Dict
+from typing import Type
 
+from core.adapters.base.connection import BaseConnection, BaseCredentials
+from core.adapters.base.impl import BaseSQLAdapter
 from core.config.profile import Profile
-
-# specify some more helpful types
-Adapter = ModuleType
 
 
 class AdapterContainer:
     def __init__(self):
         self.adatpters = {
             "snowflake": {
-                "db_adapter": {"module": "core.adapters.impl", "class_name": "SnowflakeAdapter"},
-                "connection": {
+                "sql_adapter": {"module": "core.adapters.impl", "class_name": "SnowflakeAdapter"},
+                "connection_adapter": {
                     "module": "core.adapters.connection",
                     "class_name": "SnowflakeConnection",
                 },
-                "credentials": {
+                "credentials_adapter": {
                     "module": "core.adapters.connection",
                     "class_name": "SnowflakeCredentials",
                 },
             }
         }
         self.adapter_name: str = str()
+        self.credentials_adapter: Type[BaseCredentials] = BaseCredentials
+        self.connection_adapter: Type[BaseConnection] = BaseConnection
+        self.sql_adapter: Type[BaseSQLAdapter] = BaseSQLAdapter
 
     def register_adapter(self, profile: Profile) -> None:
         adapter_to_register = profile.profile_dict["db_type"]
@@ -32,12 +33,7 @@ class AdapterContainer:
         else:
             raise NotImplementedError(f"{adapter_to_register} is not implemented in sheetwork.")
 
-    def load_plugins(
-        self,
-    ) -> Dict[str, Adapter]:
-        plugins_collection = {}
-        for plugin_type, module_info in self.adatpters[self.adapter_name].items():
+    def load_plugins(self) -> None:
+        for adap, module_info in self.adatpters[self.adapter_name].items():
             module = importlib.import_module(module_info["module"])
-            plugins_collection[plugin_type] = getattr(module, module_info["class_name"])
-
-        return plugins_collection
+            setattr(self, adap, getattr(module, module_info["class_name"]))

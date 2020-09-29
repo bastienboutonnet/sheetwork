@@ -65,8 +65,6 @@ class ConfigLoader:
             is_valid_yaml = validate_yaml(config_yaml, config_schema)
         if is_valid_yaml:
             self.config = config_yaml
-            print(self.config)
-            print(type(self.config))
             self.get_sheet_config()
             self._generate_column_type_override_dict()
             self._generate_column_rename_dict()
@@ -103,8 +101,6 @@ class ConfigLoader:
                     "Check your sheets.yml file."
                 )
             self.sheet_config = sheet_config[0]
-            print("SHEET CONFIG")
-            print(self.sheet_config)
             logger.debug(f"Sheet config dict: {self.sheet_config}")
             if self.sheet_config.get("columns"):
                 self.sheet_config["columns"] = [

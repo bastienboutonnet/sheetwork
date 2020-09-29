@@ -1,7 +1,7 @@
 import abc
 
 
-class BaseCredentials(metaclass=abc.ABCMeta):
+class BaseCredentials(abc.ABC):
     """Base class to define basic API contract for a Credentials class and its methods."""
 
     @abc.abstractmethod
@@ -13,7 +13,7 @@ class BaseCredentials(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
 
-class BaseConnection(metaclass=abc.ABCMeta):
+class BaseConnection(abc.ABC):
     @abc.abstractmethod
     def generate_engine(self) -> None:
         raise NotImplementedError()
