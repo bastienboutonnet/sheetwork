@@ -26,7 +26,7 @@ setup(
     install_requires=[
         "requests<2.23.0",
         "gspread==3.3.0",
-        "sqlalchemy==1.3.16",
+        "sqlalchemy==1.3.19",
         "cerberus==1.3.2",
         "pandas==1.1.1",
         "pyyaml==5.3.1",
