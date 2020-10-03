@@ -8,6 +8,9 @@
 A handy package to load Google Sheets to your database right from the CLI and with easy configuration via YAML files.
 
 > ⚠️ **warning** `sheetwork` is still in its early inception (don't get fooled by the 1 in the version). Please do some testing before you end up using it in production, and feel free to report bugs.
+> **compatibility**: 
+> -Python >=3.7, Mac OSX >10.14. 
+> Probably works on most UNIX systems but not nested. Most likely absolutely not working in Windows.
 
 
 ## Documentation
