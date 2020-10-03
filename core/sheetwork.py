@@ -1,20 +1,19 @@
 import sys
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 import pandas
 
-from core.adapters.connection import Connection, Credentials
-from core.adapters.impl import SnowflakeAdapter
+from core.adapters.base.connection import BaseConnection, BaseCredentials
+from core.adapters.base.impl import BaseSQLAdapter
+from core.adapters.factory import AdapterContainer
 from core.cleaner import SheetCleaner
 from core.clients.google import GoogleSpreadsheet
 from core.config.config import ConfigLoader
 from core.config.profile import Profile
+from core.flags import FlagParser
 from core.logger import GLOBAL_LOGGER as logger
 from core.ui.printer import red, timed_message, yellow
 from core.utils import check_columns_in_df
-
-if TYPE_CHECKING:
-    from core.flags import FlagParser
 
 
 class SheetBag:
@@ -31,7 +30,7 @@ class SheetBag:
         SheetBag: Loaded, and possibly cleaned sheet object with db interaction methods.
     """
 
-    def __init__(self, config: "ConfigLoader", flags: "FlagParser", profile: "Profile"):
+    def __init__(self, config: ConfigLoader, flags: FlagParser, profile: Profile):
         self.sheet_df: pandas.DataFrame = pandas.DataFrame()
         self.flags = flags
         self.config = config
@@ -40,6 +39,28 @@ class SheetBag:
         self.profile = profile
         self.push_anyway = False
         self.sheet_key: str = str(config.sheet_config.get("sheet_key", str()))
+        self.credentials_adapter: Optional[BaseCredentials] = None
+        self.connection_adapter: Optional[BaseConnection] = None
+        self.sql_adapter: Optional[BaseSQLAdapter] = None
+        self.init_adapters()
+
+    def init_adapters(self) -> None:
+        adapter_container = self._get_adapter_modules()
+        self.credentials_adapter = adapter_container.credentials_adapter(  # type:ignore
+            self.profile
+        )
+        self.connection_adapter = adapter_container.connection_adapter(  # type:ignore
+            self.credentials_adapter
+        )
+        self.sql_adapter = adapter_container.sql_adapter(  # type:ignore
+            self.connection_adapter, self.config
+        )
+
+    def _get_adapter_modules(self) -> AdapterContainer:
+        adapters = AdapterContainer()
+        adapters.register_adapter(self.profile)
+        adapters.load_plugins()
+        return adapters
 
     def _obtain_googlesheet(self):
         worksheet = str(self.config.sheet_config.get("worksheet", str()))
@@ -161,16 +182,10 @@ class SheetBag:
         logger.debug(f"Column override dict is a {type(self.config.sheet_columns)}")
         logger.debug(f"Sheet columns: {self.config.sheet_columns}")
         logger.debug(f"Columns in final df: {self.sheet_df.columns.tolist()}")
-        credentials = Credentials(self.profile)
-        connection = Connection(credentials)
-        adapter = SnowflakeAdapter(connection, self.config)
-        adapter.upload(self.sheet_df, self.target_schema)
+        self.sql_adapter.upload(self.sheet_df, self.target_schema)
 
     def check_table(self):
-        credentials = Credentials(self.profile)
-        connection = Connection(credentials)
-        adapter = SnowflakeAdapter(connection, self.config)
-        adapter.check_table(self.target_schema, self.target_table)
+        self.sql_adapter.check_table(self.target_schema, self.target_table)
 
     def run(self):
         self.load_sheet()

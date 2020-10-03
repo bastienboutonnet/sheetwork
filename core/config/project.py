@@ -41,8 +41,6 @@ class Project:
         is_valid_yaml = validate_yaml(project_yaml, project_schema)
         if project_yaml and is_valid_yaml:
             self.project_dict = project_yaml
-            print("PROJECT DICT")
-            print(self.project_dict)
             self.project_name = project_yaml.get("name", self.project_name)
             self.target_schema = project_yaml.get("target_schema", self.target_schema)
             if project_yaml.get("paths"):

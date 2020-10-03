@@ -2,11 +2,13 @@ from typing import Dict
 
 from snowflake.sqlalchemy import URL
 from sqlalchemy import create_engine
+
+from core.adapters.base.connection import BaseConnection, BaseCredentials
 from core.config.profile import Profile
 from core.exceptions import CredentialsParsingError
 
 
-class Credentials:
+class SnowflakeCredentials(BaseCredentials):
     """This should be a base class down the line but for now it's kinda adhoc until all works fine."""
 
     def __init__(self, profile: Profile):
@@ -54,12 +56,12 @@ class Credentials:
                 self.credentials.update({key: self.profile.get(key, str())})
 
 
-class Connection:
+class SnowflakeConnection(BaseConnection):
     """For now this is also pretty adhocy until all works well and we can genericise into proper
     adaptor design.
     """
 
-    def __init__(self, credentials: Credentials):
+    def __init__(self, credentials: SnowflakeCredentials):
         self.db_type = credentials.db_type
         self.credentials = credentials
         self.generate_engine()
