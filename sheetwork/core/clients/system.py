@@ -1,6 +1,6 @@
 import sys
 from typing import TYPE_CHECKING
-from core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
 
 if TYPE_CHECKING:
     from pathlib import Path

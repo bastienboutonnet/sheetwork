@@ -1,11 +1,11 @@
 from pathlib import Path
 from typing import Dict
 
-from core.config.project import Project
-from core.exceptions import InvalidProfileError, ProfileParserError
-from core.logger import GLOBAL_LOGGER as logger
-from core.yaml.yaml_helpers import open_yaml, validate_yaml
-from core.yaml.yaml_schema import profiles_schema
+from sheetwork.core.config.project import Project
+from sheetwork.core.exceptions import InvalidProfileError, ProfileParserError
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
+from sheetwork.core.yaml.yaml_schema import profiles_schema
 
 
 class Profile:

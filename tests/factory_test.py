@@ -7,13 +7,13 @@ FIXTURE_DIR = Path(__file__).resolve().parent
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_load_plugins(datafiles):
-    from core.adapters.base.connection import BaseConnection, BaseCredentials
-    from core.adapters.base.impl import BaseSQLAdapter
-    from core.adapters.factory import AdapterContainer
-    from core.config.profile import Profile
-    from core.config.project import Project
-    from core.flags import FlagParser
-    from core.main import parser
+    from sheetwork.core.adapters.base.connection import BaseConnection, BaseCredentials
+    from sheetwork.core.adapters.base.impl import BaseSQLAdapter
+    from sheetwork.core.adapters.factory import AdapterContainer
+    from sheetwork.core.config.profile import Profile
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.flags import FlagParser
+    from sheetwork.core.main import parser
 
     flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
     project = Project(flags, "sheetwork_test")

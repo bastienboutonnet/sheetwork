@@ -4,7 +4,7 @@ from typing import Any, Dict
 import yaml
 from cerberus import Validator
 
-from core.exceptions import SheetConfigParsingError, YAMLFileEmptyError
+from sheetwork.core.exceptions import SheetConfigParsingError, YAMLFileEmptyError
 
 
 def open_yaml(path: "Path"):

@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from core.flags import FlagParser
+from sheetwork.core.flags import FlagParser
 
 from .mockers import EXPECTED_CONFIG, NO_COLS_EXPECTED_CONFIG
 
@@ -11,10 +11,10 @@ FIXTURE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_set_config(datafiles):
-    from core.config.config import ConfigLoader
+    from sheetwork.core.config.config import ConfigLoader
 
-    from core.config.project import Project
-    from core.main import parser
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.main import parser
 
     flags = FlagParser(
         parser,
@@ -40,10 +40,10 @@ def test_set_config(datafiles):
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test__override_cli_args(datafiles):
-    from core.config.config import ConfigLoader
+    from sheetwork.core.config.config import ConfigLoader
 
-    from core.config.project import Project
-    from core.main import parser
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.main import parser
 
     flags = FlagParser(
         parser,

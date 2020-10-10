@@ -1,16 +1,16 @@
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Union
 
-from core.config.project import Project
-from core.exceptions import (
+from sheetwork.core.config.project import Project
+from sheetwork.core.exceptions import (
     SheetConfigParsingError,
     SheetWorkConfigMissingError,
     TargetSchemaMissing,
 )
-from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import yellow
-from core.yaml.yaml_helpers import open_yaml, validate_yaml
-from core.yaml.yaml_schema import config_schema
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.ui.printer import yellow
+from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
+from sheetwork.core.yaml.yaml_schema import config_schema
 
 if TYPE_CHECKING:
     from core.flags import FlagParser

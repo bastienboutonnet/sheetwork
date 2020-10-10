@@ -1,14 +1,14 @@
 from pathlib import Path
 from typing import TYPE_CHECKING, Dict, Union
 
-from core.exceptions import ProjectFileParserError
-from core.logger import GLOBAL_LOGGER as logger
-from core.utils import PathFinder
-from core.yaml.yaml_helpers import open_yaml, validate_yaml
-from core.yaml.yaml_schema import project_schema
+from sheetwork.core.exceptions import ProjectFileParserError
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.utils import PathFinder
+from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
+from sheetwork.core.yaml.yaml_schema import project_schema
 
 if TYPE_CHECKING:
-    from core.flags import FlagParser
+    from sheetwork.core.flags import FlagParser
 
 PROJECT_FILENAME = "sheetwork_project.yml"
 

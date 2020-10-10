@@ -5,12 +5,12 @@ import pandas
 
 # ! temporarily deactivatiing df casting in pandas related to #205 & #204
 # from core.utils import cast_pandas_dtypes
-from core.adapters.base.impl import BaseSQLAdapter
-from core.adapters.connection import SnowflakeConnection
-from core.config.config import ConfigLoader
-from core.exceptions import DatabaseError, TableDoesNotExist
-from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import green, timed_message
+from sheetwork.core.adapters.base.impl import BaseSQLAdapter
+from sheetwork.core.adapters.connection import SnowflakeConnection
+from sheetwork.core.config.config import ConfigLoader
+from sheetwork.core.exceptions import DatabaseError, TableDoesNotExist
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.ui.printer import green, timed_message
 
 
 class SnowflakeAdapter(BaseSQLAdapter):

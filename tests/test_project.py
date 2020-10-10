@@ -9,9 +9,9 @@ FIXTURE_DIR = Path(__file__).resolve().parent
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_load_project_from_yaml(datafiles):
-    from core.flags import FlagParser
-    from core.config.project import Project
-    from core.main import parser
+    from sheetwork.core.flags import FlagParser
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.main import parser
 
     flags = FlagParser(parser, project_dir=str(datafiles))
     project = Project(flags)

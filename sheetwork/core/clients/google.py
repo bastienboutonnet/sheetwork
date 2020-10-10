@@ -6,16 +6,16 @@ import pandas
 from gspread.exceptions import SpreadsheetNotFound, WorksheetNotFound
 from oauth2client.service_account import ServiceAccountCredentials
 
-from core.config.profile import Profile
-from core.exceptions import (
+from sheetwork.core.config.profile import Profile
+from sheetwork.core.exceptions import (
     GoogleCredentialsFileMissingError,
     GoogleSpreadSheetNotFound,
     NoWorkbookLoadedError,
     WorksheetNotFoundError,
 )
-from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import green
-from core.utils import check_dupe_cols
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.ui.printer import green
+from sheetwork.core.utils import check_dupe_cols
 
 SCOPE = [
     "https://spreadsheets.google.com/feeds",
