@@ -2,6 +2,9 @@
 
 Thanks for looking into making `sheetwork` better! We have some loosely defined rules, preferences etc. to make the process a bit smoother but above all, don't let that deter you from contributing.
 
+
+> ⚠️ **Wanna use `sheetwork` with another database than Snowflake?** ✨ Let's talk!! 🎉  I'm really eager to grow the database adapters for `sheetwork`. Create an issue on GitHub or DM me on [Discord](https://discord.gg/5GnNNb)
+
 ## How can you contribute?
 
 - It **usually starts with creating an issue** (reporting a bug, or discussing a feature). In fact, even if you don't know how to code it or don't have the time, you're already helping out by pointing out potential issues or functionality that you would like to see implemented.
@@ -13,9 +16,11 @@ Thanks for looking into making `sheetwork` better! We have some loosely defined 
 
 ### Git stuff
 
-Please name your branch with a prefix denoting the type of change you're makeing. Generally contributions fall within the following categories but if you don't find yours feel free to get creative:
+It's apprecited if you could follow a few of the guidelines around branch and PR naming, but don't let that deter you from contributing.
 
 #### Branches
+
+Below is the preferred format:
 
 ```bash
 feat/my_awesome_feature
@@ -25,26 +30,32 @@ docs/what_is_changing_what_you_are_explaining
 ```
 
 #### Pull Requests
-Please prefix your PR using similar prefixes as your branch. Feel free to change tha message for the title compareed to the one you named your branch with. We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) for PR naming since we squash before mergin.
 
-**PR linting will fail if the PR isn't name with one of the following prefixes**. For example:
+We follow [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/) to standardise commits, and help with CHANGELOG.md generation.
+If you feel like you don't want to bother with it it's ok but we will rename your PR at merge time or during the review to make sure the git history is kept consistent.
+
+**PR linting will fail if the PR isn't name with one of prefixes below**. Don't worry though, we'll get that sorted before merging 🎉
+
+Here is what your PR names should ideally look like:
 
 ```txt
-feat: My awesome feature
-fix: Relax version requiremtents on pandas
-docs: Document new feature
-refactor: Move cleanups into its own class
+feat: my awesome feature
+fix: relax version requiremtents on pandas
+docs: document new feature
+refactor: move cleanups into its own class
 ```
 
 Use the template provided for you as a guide to cover most aspects of your PR. Feel free to delete stuff you think isn't relevant. The template is **just** a guide.
 
 #### Commits and Conventions
 
-Please follow generally accepted git best practices by using **descriptive commit messages**, **imperative mood** ("Fix typo" instead of "Fixing typo" for example), and feel free to clean up your branch by squashing any commits you deem will not need to be there. Also totally OK to squash the entire branch into one commit. Note, most likely, I will squash and merge your branch at the point of integration anyway.
+Please follow generally accepted git best practices by using **descriptive commit messages**, **imperative mood** ("Fix typo" instead of "Fixing typo" for example), and feel free to clean up your branch by squashing any commits you deem will not need to be there.
 
-#### Fork it!
+We'll squash your PR at merge time.
 
-Easiest is probably to fork the repo, do your work and push back to the repo. I can give a few contributor seats but it may run out or I may have to kick people out which isn't really fun.
+#### Fork it, let's go!
+
+Fork the repo and get going. If you're not too experienced with forks, feel free to shoot me a DM on [Discord](https://discord.gg/5GnNNb)
 
 **Shit how do we do this fork thing?**
 In most cases it's pretty easy
@@ -73,35 +84,26 @@ When the time comes to merge your code back on the original repo (here). Go to y
 
 #### Formatting
 
-- Please use `black` to format your python code. No one likes to spend hours discussing code style and PRs failing to comply to black will fail CI checks anyway. Black comes as an extention in most IDEs, formats things for you and is just a breeze. If you don't know what black is, here's [Black's GitHub](https://github.com/psf/black).
-- Don't leave trailing whitespace lying around (also easy to knock off or hightlight automatically in your IDE).
-- Don't forget an empty line at the end of all files (yes, your IDE or an extention can do it for you!).
+- Please use `black` to format your python code. CI checks on the PR will fail if files don't comply with it. **We can of course fix this later on in the review process**. Black comes as an extention in most IDEs, formats things for you and is just a breeze. If you don't know what black is, here's [Black's GitHub](https://github.com/psf/black).
+- If you could make sure you don't leave trailing whitespace around that would be great (Most IDEs will have an option for that)
+- Finally, make sure you introduce an empty line at the end of your files (Also very easy to set this up in your IDE).
 
-#### Linting
+#### Linting/Type Hinting
 
 - It is recommended to use Type Hinting and have [`mypy`](http://mypy-lang.org/) enabled as your linter. Most IDE's have an extension or a way to help with this. Typing isn't necessary but **really, really** preferred.
+- [`flake8`](https://flake8.pycqa.org/en/latest/) is also a great linter to run, it'll help you catch a few potential bugs early on and push you to enforce common [PEP8](https://www.python.org/dev/peps/pep-0008/) rules
 
 ### Development
 
-1. It is highly recommended to make a virtual environment **just** for developing the app so you have a clean slate and don't end up messing your previously working version of it.
-2. Activate your venv
-3. Clone your fork wherever you like to keep your repos
-4. Navigate to the repo's folder's root in your terminal
-5. Install the app from this local source in `--editable` mode so that any changes you make will directly be reflected. You won't need to install it over and over again to test it!
+The whole package is managed using [Poetry](https://python-poetry.org/). It's really really good and ensures reproducibility. **If this is holding you up from contributing feel free to shoot me a DM on [Discord](https://discord.gg/5GnNNb) and I can deploy good old `setup.py` files for you to use `pip install -e .` in your venv management tool of choice
 
-    ```bash
-    pip install -e .
-    ```
-
-6. Make sure you also install the development pip requirements which include testing libraries etc. (Note. The app's basic requirement will be installed in the previous step, so no need to care for this one.)
-
-    ```bash
-    pip install -r dev-pip-requirements.txt
-    ```
+1. [Install Poetry on your system](https://python-poetry.org/docs/#installation) --I personally recommend installing it via [`pipx`](https://github.com/pipxproject/pipx) but that's entirely up to you.
+2. `cd` to your fork and run `poetry install` in the root folder of the repo. Poetry will create a virtual environment for python, install dependencies and install `sheetwork` in **editable** mode so that you can directly run and test `sheetwork` as you develop without having to install over and over.
+3. The easiest way to activate the poetry virtual env is to call `poetry shell` it'll wrap around your shell and and activate the sheetwork venv, to deactivate or get out of the shell simply type `exit`. More info on [the Poetry documentation website](https://python-poetry.org/docs/basic-usage/#using-your-virtual-environment)
 
 ### Testing
 
-Would be really nice if you could write tests for your functionality but this is not necessary or always possible. If the code owner is adament you should write a test they will guide you in the PR process. If you feel like writing tests as part of your PR (Thanks in advance). We're currently using the `pytest` framework.
+If you're comfortable writing tests for your features, I use the [`pytest`](https://docs.pytest.org/en/stable/) framework. It'll be installed automatically when you set up your poetry environment. If you don't know how to write tests that's fine, we'll work it out with you during the review process 💪🏻
 
 Have a look into the `tests/` folder for how the tests are written and if you want to trigger tests locally you can do so from the root of the repo with
 
@@ -109,6 +111,6 @@ Have a look into the `tests/` folder for how the tests are written and if you wa
 pytests tests/
 ```
 
-## Wow you're still reading!? Thanks a lot for taking the time to make sheetwork better!
+## Wow you're still reading!? Thanks a lot for taking the time to make sheetwork better! ✨
 
-Thanks for your interest in contributing. I really appreciate it and I hope those guidelines don't sound too much.
+Thanks for your interest in contributing. I really appreciate it and I hope those guidelines don't sound too much. If you have any questions feel free to DM me or reach out the community on [Discord](https://discord.gg/5GnNNb).
