@@ -33,11 +33,11 @@ jobs:
       - name: Mypy checks
         uses: jpetrucciani/mypy-check@master
         with:
-          path: "core"
+          path: "sheetwork"
 
       - name: Run Tests and Coverage Report
         run: |
-          pytest --cov-report=xml:coverage-reports/coverage.xml --cov-report term-missing  --cov=. tests/
+          pytest --cov-report=xml:coverage-reports/coverage.xml --cov-report term-missing  --cov=sheetwork tests/
 
       - name: Upload coverage report to CodeCov
         uses: codecov/codecov-action@v1
