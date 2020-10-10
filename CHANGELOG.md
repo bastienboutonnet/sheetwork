@@ -10,26 +10,28 @@ To celebrate its independence, we have named it after extremely independent arti
 **IMPORTANT!**
 
 - This release got a huge version bump and breaks **all** functionality of previously installed `sheetwork`
-- Check documentation for **Installation** INSERT LINK TO DOC and **Configuration** INSERT LINK TO DOC
-- Refactor your jobs according to **Usage** INSERT LINK TO DOC
+- Check documentation for [**Installation**](https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/installation) and [**Configuration**](https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled)
+- Refactor your jobs according to **Usage** (see [documentation](https://bastienboutonnet.gitbook.io/sheetwork/))
 
 ### Features
 
 - Solid management of credentials, target schemas, database interaction with `Project`, `Config`, and `Profile` concepts. INSERT LINK TO DOC. (#81, #76, #91, #80, #73)
 - Allows ability to convert `CamelCased` columns in the original sheet to `snake_case (#112)
-- Allows datatype casting (#108)
 - Ability to call sheetwork from anywhere on disc provided paths to config, profiles, and projects files are provided at runtime (#82)
 - Adds support for short flag names for commonly used arguments (#70)
+- Adds `sheetwork init` task to automatically set up a new sheetwork project and folders for you INSERT LINKS TO DOC
 
 ### Under The Hood
 
 - Checks for duplicate columns in sheet (#145, #151)
+- Checks that column up for exclusion are in df otherwise throws errors (#145)
 - Improve interactive clean up (#156)
 - Fixes a bug with default target schemas (#155)
 - Fixes `--help` formatting (#147)
 - Connects to Snowflake via SQLAlchemy (#102)
 - Implements its own logger and logs to file (#98, #121)
 - Is case insensitive, except when referring to columns in sheet via `identifier:` for renames (#63)
+- Implements an Adaptor/Plugin design to allow for adapting to other databases (#173)
 
 ## 0.2.1 Daft Punk (2019/12/10)
 
@@ -38,6 +40,7 @@ Documentation Missed and was not usable.
 ## 0.0.0 Kraftwerk (2019/11/06)
 
 ### Overview
+
 This is the very first version of sheetwork. It is named after the German electronic pioneers **"Kraftwerk"** as it is the pioneer (first version) of the package that will set and pave the way for future generations to come and we will all live happy forever ever after...
 
 It loads Google Sheets into Snowflake, from the comand line and avoids the fast multiplication of `<insert_non_creative_name>_sheet_importer.py` type scripts.
