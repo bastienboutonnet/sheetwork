@@ -3,17 +3,17 @@ from typing import List, Optional, Tuple, Union
 
 import pandas
 
-from core.adapters.base.connection import BaseConnection, BaseCredentials
-from core.adapters.base.impl import BaseSQLAdapter
-from core.adapters.factory import AdapterContainer
-from core.cleaner import SheetCleaner
-from core.clients.google import GoogleSpreadsheet
-from core.config.config import ConfigLoader
-from core.config.profile import Profile
-from core.flags import FlagParser
-from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import red, timed_message, yellow
-from core.utils import check_columns_in_df
+from sheetwork.core.adapters.base.connection import BaseConnection, BaseCredentials
+from sheetwork.core.adapters.base.impl import BaseSQLAdapter
+from sheetwork.core.adapters.factory import AdapterContainer
+from sheetwork.core.cleaner import SheetCleaner
+from sheetwork.core.clients.google import GoogleSpreadsheet
+from sheetwork.core.config.config import ConfigLoader
+from sheetwork.core.config.profile import Profile
+from sheetwork.core.flags import FlagParser
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.ui.printer import red, timed_message, yellow
+from sheetwork.core.utils import check_columns_in_df
 
 
 class SheetBag:

@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from core.exceptions import InvalidOrMissingCommandError
+from sheetwork.core.exceptions import InvalidOrMissingCommandError
 
 
 class FlagParser:

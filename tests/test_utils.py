@@ -8,7 +8,7 @@ CASTING_DICT = {
 
 
 def test_check_columns_in_df():
-    from core.utils import check_columns_in_df
+    from sheetwork.core.utils import check_columns_in_df
 
     cols = ["column_that_is_not_in_df", "col_int"]
 
@@ -20,7 +20,7 @@ def test_check_columns_in_df():
 
 
 def test_check_dupe_cols():
-    from core.utils import check_dupe_cols
+    from sheetwork.core.utils import check_dupe_cols
 
     list_with_dupe = ["a", "a", "b"]
     dupes = check_dupe_cols(list_with_dupe, suppress_warning=True)
@@ -29,7 +29,7 @@ def test_check_dupe_cols():
 
 
 def test_check_and_compare_version(mocker):
-    from core.utils import check_and_compare_version
+    from sheetwork.core.utils import check_and_compare_version
 
     # mock the call to pypi
     mocker.patch("luddite.get_version_pypi", return_value="1.0.0")

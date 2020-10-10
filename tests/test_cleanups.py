@@ -10,7 +10,7 @@ TESTING_PATH = pathlib.Path(__file__).parent.absolute()
 
 
 def test_cleanup():
-    from core.cleaner import SheetCleaner
+    from sheetwork.core.cleaner import SheetCleaner
 
     clean_df_path = Path(TESTING_PATH, "clean_df.json")
     dirty_df = generate_test_df(DIRTY_DF)
@@ -25,7 +25,7 @@ def test_cleanup():
 
 
 def test_snake_to_camel():
-    from core.cleaner import SheetCleaner
+    from sheetwork.core.cleaner import SheetCleaner
 
     cased_df = generate_test_df(CASING_DF)
     recased_df = SheetCleaner(cased_df, True).cleanup()

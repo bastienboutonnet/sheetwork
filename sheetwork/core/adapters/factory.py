@@ -1,22 +1,25 @@
 import importlib
 from typing import Type
 
-from core.adapters.base.connection import BaseConnection, BaseCredentials
-from core.adapters.base.impl import BaseSQLAdapter
-from core.config.profile import Profile
+from sheetwork.core.adapters.base.connection import BaseConnection, BaseCredentials
+from sheetwork.core.adapters.base.impl import BaseSQLAdapter
+from sheetwork.core.config.profile import Profile
 
 
 class AdapterContainer:
     def __init__(self):
         self.adatpters = {
             "snowflake": {
-                "sql_adapter": {"module": "core.adapters.impl", "class_name": "SnowflakeAdapter"},
+                "sql_adapter": {
+                    "module": "sheetwork.core.adapters.impl",
+                    "class_name": "SnowflakeAdapter",
+                },
                 "connection_adapter": {
-                    "module": "core.adapters.connection",
+                    "module": "sheetwork.core.adapters.connection",
                     "class_name": "SnowflakeConnection",
                 },
                 "credentials_adapter": {
-                    "module": "core.adapters.connection",
+                    "module": "sheetwork.core.adapters.connection",
                     "class_name": "SnowflakeCredentials",
                 },
             }

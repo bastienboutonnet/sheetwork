@@ -3,9 +3,9 @@ from typing import Dict
 from snowflake.sqlalchemy import URL
 from sqlalchemy import create_engine
 
-from core.adapters.base.connection import BaseConnection, BaseCredentials
-from core.config.profile import Profile
-from core.exceptions import CredentialsParsingError
+from sheetwork.core.adapters.base.connection import BaseConnection, BaseCredentials
+from sheetwork.core.config.profile import Profile
+from sheetwork.core.exceptions import CredentialsParsingError
 
 
 class SnowflakeCredentials(BaseCredentials):

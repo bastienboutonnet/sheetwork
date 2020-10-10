@@ -1,11 +1,11 @@
 import time
 from pathlib import Path
 
-from core.clients.system import make_dir, make_file, open_dir_cmd
-from core.exceptions import MissnigInitProjectName, ProjectIsAlreadyCreated
-from core.flags import FlagParser
-from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import green
+from sheetwork.core.clients.system import make_dir, make_file, open_dir_cmd
+from sheetwork.core.exceptions import MissnigInitProjectName, ProjectIsAlreadyCreated
+from sheetwork.core.flags import FlagParser
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.ui.printer import green
 
 PROJECT_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-project"
 PROFILE_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-profile"

@@ -7,10 +7,14 @@ import luddite
 import pandas
 from packaging.version import parse as semver_parse
 
-from core._version import __version__
-from core.exceptions import ColumnNotFoundInDataFrame, DuplicatedColumnsInSheet, NearestFileNotFound
-from core.logger import GLOBAL_LOGGER as logger
-from core.ui.printer import yellow
+from sheetwork.core._version import __version__
+from sheetwork.core.exceptions import (
+    ColumnNotFoundInDataFrame,
+    DuplicatedColumnsInSheet,
+    NearestFileNotFound,
+)
+from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.ui.printer import yellow
 
 
 class PathFinder:

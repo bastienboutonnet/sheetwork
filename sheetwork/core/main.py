@@ -1,15 +1,15 @@
 import argparse
 from typing import Union
 
-import core.sheetwork as upload_task
-import core.task.init as init_task
-from core._version import __version__
-from core.config.config import ConfigLoader
-from core.config.profile import Profile
-from core.config.project import Project
-from core.flags import FlagParser
-from core.logger import log_manager
-from core.utils import check_and_compare_version
+import sheetwork.core.sheetwork as upload_task
+import sheetwork.core.task.init as init_task
+from sheetwork.core._version import __version__
+from sheetwork.core.config.config import ConfigLoader
+from sheetwork.core.config.profile import Profile
+from sheetwork.core.config.project import Project
+from sheetwork.core.flags import FlagParser
+from sheetwork.core.logger import log_manager
+from sheetwork.core.utils import check_and_compare_version
 
 parser = argparse.ArgumentParser(
     prog="sheetwork",

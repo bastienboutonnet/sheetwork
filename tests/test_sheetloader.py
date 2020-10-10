@@ -3,10 +3,10 @@ import os
 import mock
 import pytest
 
-from core.config.config import ConfigLoader
-from core.config.profile import Profile
-from core.config.project import Project
-from core.flags import FlagParser
+from sheetwork.core.config.config import ConfigLoader
+from sheetwork.core.config.profile import Profile
+from sheetwork.core.config.project import Project
+from sheetwork.core.flags import FlagParser
 from tests.mockers import (
     DIRTY_DF,
     DROP_COL_DF,
@@ -21,8 +21,8 @@ FIXTURE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_rename_columns(datafiles):
-    from core.sheetwork import SheetBag
-    from core.main import parser
+    from sheetwork.core.sheetwork import SheetBag
+    from sheetwork.core.main import parser
 
     flags = FlagParser(
         parser,
@@ -42,8 +42,8 @@ def test_rename_columns(datafiles):
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_exclude_columns(datafiles):
-    from core.sheetwork import SheetBag
-    from core.main import parser
+    from sheetwork.core.sheetwork import SheetBag
+    from sheetwork.core.main import parser
 
     flags = FlagParser(
         parser,
@@ -63,8 +63,8 @@ def test_exclude_columns(datafiles):
 
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test_load_sheet(datafiles):
-    from core.sheetwork import SheetBag
-    from core.main import parser
+    from sheetwork.core.sheetwork import SheetBag
+    from sheetwork.core.main import parser
 
     flags = FlagParser(
         parser,
