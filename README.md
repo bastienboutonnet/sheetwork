@@ -14,6 +14,8 @@ A handy package to load Google Sheets to your database right from the CLI and wi
 > - Python >=3.7, Mac OSX >10.14.
 > - Probably works on most UNIX systems but not nested. Most likely absolutely not working in Windows.
 
-## Documentation
+🙋🏻‍♂️ **Want to use `sheetwork` on other databases? Let's talk!** ([Make an issue](https://github.com/bastienboutonnet/sheetwork/issues/new/choose), or ping me on [Discord](https://discord.gg/5GnNNb))
+
+## Instalation & Documentation
 
 Head over to this pretty [documentation](https://bastienboutonnet.gitbook.io/sheetwork/) to get started and find out how to install, and use `sheetwork`
