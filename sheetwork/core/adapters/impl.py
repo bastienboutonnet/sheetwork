@@ -4,7 +4,7 @@ from typing import Any, Optional
 import pandas
 
 # ! temporarily deactivatiing df casting in pandas related to #205 & #204
-# from core.utils import cast_pandas_dtypes
+from sheetwork.core.utils import cast_pandas_dtypes
 from sheetwork.core.adapters.base.impl import BaseSQLAdapter
 from sheetwork.core.adapters.connection import SnowflakeConnection
 from sheetwork.core.config.config import ConfigLoader
@@ -37,8 +37,8 @@ class SnowflakeAdapter(BaseSQLAdapter):
 
     def upload(self, df: pandas.DataFrame, override_schema: str = str()) -> None:
         # cast columns
-        # ! temporarily deactivatiing df casting in pandas related to #205 & #204
-        # df = cast_pandas_dtypes(df, overwrite_dict=self.config.sheet_columns)
+        # !: note integer conversion doesn't actually happen it is left as a str see #204, #205
+        df = cast_pandas_dtypes(df, overwrite_dict=self.config.sheet_columns)
         dtypes_dict = self.sqlalchemy_dtypes(self.config.sheet_columns)
 
         # potenfially override target schema from config.
