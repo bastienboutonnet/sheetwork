@@ -1,34 +1,37 @@
 sheetwork 1.0.0 (2020-10-11)
 ============================
 
-Bug Fixes ---------
+Bug Fixes 
+---------
 
-   - `#150 <https://github.com/bastienboutonnet/sheetwork/issues/150>`_: Columns that are now mentioned in the sheet.yml are first checked for presence in the sheet and ignored or skipped if not present with warning.
+- `#150 <https://github.com/bastienboutonnet/sheetwork/issues/150>`_: Columns that are now mentioned in the sheet.yml are first checked for presence in the sheet and ignored or skipped if not present with warning.
 
-  - `#155 <https://github.com/bastienboutonnet/sheetwork/issues/155>`_: Schema specification hierarchy is fixed: Flags > Config > Project.
+- `#155 <https://github.com/bastienboutonnet/sheetwork/issues/155>`_: Schema specification hierarchy is fixed: Flags > Config > Project.
 
-  - `#206 <https://github.com/bastienboutonnet/sheetwork/issues/206>`_: Pandas dataframe casting is disabled due to issues with mixed ints and strings (see #205, #204)
+- `#206 <https://github.com/bastienboutonnet/sheetwork/issues/206>`_: Pandas dataframe casting is disabled due to issues with mixed ints and strings (see #205, #204)
 
-  - `#221 <https://github.com/bastienboutonnet/sheetwork/issues/221>`_: Attempts to reintroduce datatype casting to solve issue with dates converion (see #216 for issue). Since the mixed str and ints issue is not solved on pandas side, int conversion doesn't actually happen (for now Snowflake deals with it ok and converts to the reguested int format).
-
-
-Features --------
-
-   - `#151 <https://github.com/bastienboutonnet/sheetwork/issues/151>`_: Raises errors when a sheet contains duplicate columns
-
-  - `#156 <https://github.com/bastienboutonnet/sheetwork/issues/156>`_: Interactive cleanup is a bit more intereactive
-
-  - `#169 <https://github.com/bastienboutonnet/sheetwork/issues/169>`_: Adds `InitTask` to `sheetwork` to ease users set their projects up.
-
-  - `#195 <https://github.com/bastienboutonnet/sheetwork/issues/195>`_: Sheetwork now checks for available updates on start (provided you have an internet connection)
+- `#221 <https://github.com/bastienboutonnet/sheetwork/issues/221>`_: Attempts to reintroduce datatype casting to solve issue with dates converion (see #216 for issue). Since the mixed str and ints issue is not solved on pandas side, int conversion doesn't actually happen (for now Snowflake deals with it ok and converts to the reguested int format).
 
 
-Under The Hood/Misc -------------------
+Features 
+--------
 
-   - `#154 <https://github.com/bastienboutonnet/sheetwork/issues/154>`_: Logging to file always debug, logging messages in CLI look more like pretty prints.
+- `#151 <https://github.com/bastienboutonnet/sheetwork/issues/151>`_: Raises errors when a sheet contains duplicate columns
 
-  - `#161 <https://github.com/bastienboutonnet/sheetwork/issues/161>`_: Simplify `SheetBag` internals
-  - `check_table` is moved to the db adapter
+- `#156 <https://github.com/bastienboutonnet/sheetwork/issues/156>`_: Interactive cleanup is a bit more intereactive
+
+- `#169 <https://github.com/bastienboutonnet/sheetwork/issues/169>`_: Adds `InitTask` to `sheetwork` to ease users set their projects up.
+
+- `#195 <https://github.com/bastienboutonnet/sheetwork/issues/195>`_: Sheetwork now checks for available updates on start (provided you have an internet connection)
+
+
+Under The Hood/Misc 
+-------------------
+
+- `#154 <https://github.com/bastienboutonnet/sheetwork/issues/154>`_: Logging to file always debug, logging messages in CLI look more like pretty prints.
+
+- `#161 <https://github.com/bastienboutonnet/sheetwork/issues/161>`_: Simplify `SheetBag` internals
+- `check_table` is moved to the db adapter
 
   - `#163 <https://github.com/bastienboutonnet/sheetwork/issues/163>`_: Fixes broken interactive flow of asking whether to push to db.
 
