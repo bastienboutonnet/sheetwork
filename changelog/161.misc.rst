@@ -1,2 +1,1 @@
-Simplify `SheetBag` internals
-- `check_table` is moved to the db adapter
+Simplify ``SheetBag`` internals: `check_table` is moved to the db adapter

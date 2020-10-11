@@ -1,1 +1,1 @@
-When passing `--log-level debug` in CLI the format of the console output looks more like proper logs instead of the pretty prints to make following logs more easy
+When passing ``--log-level debug`` in CLI the format of the console output looks more like proper logs instead of the pretty prints to make following logs more easy
