@@ -10,7 +10,7 @@ from sheetwork.core.adapters.connection import SnowflakeConnection
 from sheetwork.core.config.config import ConfigLoader
 from sheetwork.core.exceptions import DatabaseError, TableDoesNotExist
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
-from sheetwork.core.ui.printer import green, timed_message
+from sheetwork.core.ui.printer import green, timed_message, red
 
 
 class SnowflakeAdapter(BaseSQLAdapter):
@@ -22,10 +22,18 @@ class SnowflakeAdapter(BaseSQLAdapter):
         self.config = config
 
     def acquire_connection(self) -> None:
-        self.con = self.engine.connect()
+        try:
+            self.con = self.engine.connect()
+        except Exception:
+            raise DatabaseError(red(f"Error creating Snowflake connection."))
 
     def close_connection(self) -> None:
-        self.con.close()
+        try:
+            self.con.close()
+        except AttributeError:
+            raise DatabaseError(
+                red("SnowflakeAdaport did not create a connection so it cannot be closed")
+            )
 
     def upload(self, df: pandas.DataFrame, override_schema: str = str()) -> None:
         # cast columns
@@ -43,8 +51,8 @@ class SnowflakeAdapter(BaseSQLAdapter):
         temp = tempfile.NamedTemporaryFile()
         df.to_csv(temp.name, index=False, header=False, sep="|")
 
+        self.acquire_connection()
         try:
-            self.acquire_connection()
             df.head(0).to_sql(
                 name=self.config.target_table,
                 schema=schema,
