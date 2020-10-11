@@ -9,6 +9,9 @@ class LogManager:
         log_to_console: bool = True,
     ):
         Path(log_file_path).mkdir(parents=True, exist_ok=True)
+
+        # setup colorlog
+
         log_filename = Path(log_file_path, "sheetwork_log.log")
         logger = logging.getLogger("Sheetwork Logger")
         logger.setLevel(logging.INFO)
@@ -20,8 +23,8 @@ class LogManager:
         f_format = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s - %(message)s"
         )
-        f_handler.setFormatter(f_format)
 
+        f_handler.setFormatter(f_format)
         # Add handlers to the logger
         logger.addHandler(f_handler)
 
@@ -34,11 +37,15 @@ class LogManager:
             logger.addHandler(c_handler)
 
         self.logger = logger
+        self.f_format = f_format
 
     def set_debug(self):
+        """Set all loggers to debug and make both the file and console logger have more informative
+        format"""
         self.logger.setLevel(logging.DEBUG)
         for handler in self.logger.handlers:
             handler.setLevel(logging.DEBUG)
+            handler.setFormatter(self.f_format)
 
 
 log_manager = LogManager()
