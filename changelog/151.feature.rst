@@ -1,0 +1,1 @@
+Raises errors when a sheet contains duplicate columns

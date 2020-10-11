@@ -1,0 +1,1 @@
+Logging to file always debug, logging messages in CLI look more like pretty prints.

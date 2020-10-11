@@ -1,0 +1,1 @@
+Profile error messages are now a bit more helpful and more nicely formatted
