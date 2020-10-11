@@ -3,7 +3,7 @@
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 ![python](https://img.shields.io/badge/python-3.7%20%7C%203.8-blue)
-![discord](https://img.shields.io/discord/752101657218908281?label=discord)
+[![Discord](https://img.shields.io/discord/752101657218908281?label=discord)](https://discord.gg/ebSTWq)
 # sheetwork 💩🤦
 
 A handy package to load Google Sheets to your database right from the CLI and with easy configuration via YAML files.
