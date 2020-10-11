@@ -1,3 +1,41 @@
+sheetwork 1.0.0 (2020-10-11)
+============================
+
+Bug Fixes
+---------
+
+- Columns that are now mentioned in the sheet.yml are first checked for presence in the sheet and ignored or skipped if not present with warning. (#150)
+- Schema specification hierarchy is fixed: Flags > Config > Project. (#155)
+- Pandas dataframe casting is disabled due to issues with mixed ints and strings (see #205, #204) (#206)
+- Attempts to reintroduce datatype casting to solve issue with dates converion (see #216 for issue). Since the mixed str and ints issue is not solved on pandas side, int conversion doesn't actually happen (for now Snowflake deals with it ok and converts to the reguested int format). (#221)
+
+
+Features
+--------
+
+- Raises errors when a sheet contains duplicate columns (#151)
+- Interactive cleanup is a bit more intereactive (#156)
+- Adds `InitTask` to `sheetwork` to ease users set their projects up. (#169)
+- Sheetwork now checks for available updates on start (provided you have an internet connection) (#195)
+
+
+Under The Hood/Misc
+-------------------
+
+- Logging to file always debug, logging messages in CLI look more like pretty prints. (#154)
+- Simplify `SheetBag` internals
+  - `check_table` is moved to the db adapter (#161)
+- Fixes broken interactive flow of asking whether to push to db. (#163)
+- CLI logging/progress messages are now timed (#171)
+- Sheetwork now uses an adaptor/plugin design to allow and facilitate extensions of the tool to other databases. (#173)
+- CLI arguments are now POSIX (#193)
+- An proper sheetwork error is thrown when you do not provide a command to `sheetwork` in CLI (#207)
+- Profile error messages are now a bit more helpful and more nicely formatted (#208)
+- Use and try to fix most warnings from Pylance in an attempt to have more strict typing (#210)
+- Poetry is now used a the package and dependencies manager (#215)
+- When passing `--log-level debug` in CLI the format of the console output looks more like proper logs instead of the pretty prints to make following logs more easy (#218)
+
+----
 # Sheetwork Changelog
 
 ## 1.0.0 Nicolas Jaar (Unreleased)

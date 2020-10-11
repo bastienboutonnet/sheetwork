@@ -1,0 +1,1 @@
+An proper sheetwork error is thrown when you do not provide a command to `sheetwork` in CLI

@@ -44,6 +44,7 @@ codecov = "^2.1.10"
 coverage = "^5.3"
 pytest-mock = "^3.3.1"
 pytest-datafiles = "^2.0"
+towncrier = "^19.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -51,3 +52,27 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 sheetwork= "sheetwork.core.main:main"
+
+
+[tool.towncrier]
+package = "sheetwork"
+package_dir = "sheetwork/"
+directory = "changelog/"
+filename = "CHANGELOG.md"
+title_format = "sheetwork {version} ({project_date})"
+
+    [[tool.towncrier.type]]
+    directory = "fix"
+    name = "Bug Fixes"
+    showcontent = true
+
+
+    [[tool.towncrier.type]]
+    directory = "feature"
+    name = "Features"
+    showcontent = true
+
+    [[tool.towncrier.type]]
+    directory = "misc"
+    name = "Under The Hood/Misc"
+    showcontent = true

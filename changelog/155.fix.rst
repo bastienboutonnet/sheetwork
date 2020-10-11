@@ -1,0 +1,1 @@
+Schema specification hierarchy is fixed: Flags > Config > Project.
