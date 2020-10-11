@@ -33,6 +33,7 @@ class FlagParser:
         self.target = "test"
         self.project_name = project_name
         self.force_credentials = False
+        self.full_tracebacks = False
 
     def consume_cli_arguments(self):
         self.args = self.parser.parse_args()
@@ -61,3 +62,4 @@ class FlagParser:
         self.log_level = self.args.log_level
         self.profile_dir = self.args.profile_dir
         self.project_dir = self.args.project_dir
+        self.full_tracebacks = self.args.full_tracebacks

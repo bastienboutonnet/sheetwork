@@ -9,7 +9,11 @@ from sheetwork.core.config.profile import Profile
 from sheetwork.core.config.project import Project
 from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import log_manager
+from sheetwork.core.ui.traceback_manager import SheetworkTracebackManager
 from sheetwork.core.utils import check_and_compare_version
+
+# to identify sheetwork code --we use this arg in `core.logger to shorten the traceback`
+__SHEETWORK_CODE = True
 
 parser = argparse.ArgumentParser(
     prog="sheetwork",
@@ -30,6 +34,12 @@ base_subparser.add_argument(
     "--project-dir",
     help="Unusual path to the directory in which the 'sheetwork_project.yml' can be found",
     default=str(),
+)
+base_subparser.add_argument(
+    "--full-tracebacks",
+    action="store_true",
+    default=False,
+    help="When provided full tracebacks will be printed otherwise only the nearest one only.",
 )
 
 # Adds sub task parsers
@@ -90,6 +100,9 @@ init_sub.add_argument(
 def handle(parser: argparse.ArgumentParser):
     flag_parser = FlagParser(parser)
     flag_parser.consume_cli_arguments()
+
+    # set up traceback override
+    SheetworkTracebackManager(flag_parser)
 
     if flag_parser.log_level == "debug":
         log_manager.set_debug()
