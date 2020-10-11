@@ -17,8 +17,8 @@ class SheetworkTracebackManager:
         else:
 
             def is_mycode(tb):
-                globals = tb.tb_frame.f_globals
-                return globals.__contains__("__sheetwork_code")
+                globs = tb.tb_frame.f_globals
+                return globs.__contains__("__sheetwork_code")
 
             def mycode_traceback_levels(tb):
                 length = 0
