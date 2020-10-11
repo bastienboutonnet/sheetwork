@@ -58,7 +58,7 @@ sheetwork= "sheetwork.core.main:main"
 package = "sheetwork"
 package_dir = "sheetwork/"
 directory = "changelog/"
-filename = "CHANGELOG.md"
+filename = "CHANGELOG.rst"
 title_format = "sheetwork {version} ({project_date})"
 template = "changelog/_template.rst"
 
