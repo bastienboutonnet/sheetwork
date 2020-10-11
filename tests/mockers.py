@@ -58,7 +58,8 @@ TO_CAST_DF = {
 }
 
 CAST_DF = {
-    "col_int": {0: 1, 1: 2, 2: 32},
+    # this non conversion to int is intentional until we have a better fix see #205, #204
+    "col_int": {0: "1", 1: "2", 2: "32"},
     "col_varchar": {0: "foo", 1: "bar", 2: "fizz"},
     "created_date": {
         0: Timestamp("2019-01-01 00:00:00"),
