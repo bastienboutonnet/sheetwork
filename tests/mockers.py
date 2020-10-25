@@ -1,4 +1,3 @@
-import numpy as np
 import pandas
 from pandas import Timestamp
 
