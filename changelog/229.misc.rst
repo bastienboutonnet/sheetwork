@@ -1,0 +1,1 @@
+Uses the new `service_account()` wrapper from `gspread` to authenticate to a service account. This brings some stability with regards to the deprecation of `oauth2` by google as the converstion is now handled by `gspread`.
