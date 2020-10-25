@@ -4,7 +4,6 @@ from typing import Any, List
 import gspread
 import pandas
 from gspread.exceptions import SpreadsheetNotFound, WorksheetNotFound
-from oauth2client.service_account import ServiceAccountCredentials
 
 from sheetwork.core.config.profile import Profile
 from sheetwork.core.exceptions import (
@@ -16,11 +15,6 @@ from sheetwork.core.exceptions import (
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import green
 from sheetwork.core.utils import check_dupe_cols
-
-SCOPE = [
-    "https://spreadsheets.google.com/feeds",
-    "https://www.googleapis.com/auth/drive",
-]
 
 
 class GoogleSpreadsheet:
@@ -39,8 +33,7 @@ class GoogleSpreadsheet:
     def __init__(self, profile: Profile, workbook_key: str = str(), workbook_name: str = str()):
         p = Path(profile.google_credentials_dir, profile.profile_name).with_suffix(".json")
         if p.exists():
-            self.credentials = ServiceAccountCredentials.from_json_keyfile_name(p, SCOPE)
-            self.gc = gspread.authorize(self.credentials)
+            self.gc = gspread.service_account(p)
         else:
             raise GoogleCredentialsFileMissingError(
                 "Sheetwork could not find a credentials file for your "
