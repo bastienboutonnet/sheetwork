@@ -31,9 +31,15 @@ class GoogleSpreadsheet:
     """
 
     def __init__(self, profile: Profile, workbook_key: str = str(), workbook_name: str = str()):
+        self.is_service_account = profile.profile_dict.get("is_service_account", True)
         p = Path(profile.google_credentials_dir, profile.profile_name).with_suffix(".json")
         if p.exists():
-            self.gc = gspread.service_account(p)
+            if self.is_service_account:
+                logger.debug("Using SERVICE_ACCOUNT auth")
+                self.gc = gspread.service_account(p)
+            else:
+                logger.debug("Using END_USER auth")
+                self.gc = gspread.oauth(p)
         else:
             raise GoogleCredentialsFileMissingError(
                 "Sheetwork could not find a credentials file for your "

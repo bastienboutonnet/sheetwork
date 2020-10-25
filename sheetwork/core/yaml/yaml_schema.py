@@ -64,6 +64,7 @@ profiles_schema = {
                             "warehouse": {"required": False, "type": "string"},
                             "schema": {"required": False, "type": "string"},
                             "guser": {"required": True, "type": "string"},
+                            "is_service_account": {"required": False, "type": "boolean"},
                         },
                     },
                 },
