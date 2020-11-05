@@ -918,7 +918,7 @@ secure-local-storage = ["keyring (!=16.1.0,<22.0.0)"]
 
 [[package]]
 name = "snowflake-sqlalchemy"
-version = "1.2.3"
+version = "1.2.4"
 description = "Snowflake SQLAlchemy Dialect"
 category = "main"
 optional = false
@@ -929,7 +929,7 @@ snowflake-connector-python = "<3.0.0"
 sqlalchemy = "<2.0.0"
 
 [package.extras]
-development = ["pytest", "pytest-cov", "pytest-rerunfailures", "pytest-timeout", "coverage", "pexpect", "mock", "pytz", "pytzdata", "cython", "more-itertools", "numpy", "pandas (==0.24.2)", "pandas (>=1.0.0,<1.1.0)"]
+development = ["pytest (<6.1.0)", "pytest-cov", "pytest-rerunfailures", "pytest-timeout", "coverage", "pexpect", "mock", "pytz", "pytzdata", "cython", "more-itertools", "numpy", "pandas (==0.24.2)", "pandas (>=1.0.0,<1.1.0)"]
 
 [[package]]
 name = "sqlalchemy"
@@ -1039,7 +1039,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "75d268a800081e82e7b7950c4eb7893b7a4bae5c51dd3d26b8cf6430baecf6da"
+content-hash = "71417c2447c83d9cfd8af02d61d1e6178076787d8ade10c0b1da5b755af49267"
 
 [metadata.files]
 appnope = [
@@ -1610,8 +1610,8 @@ snowflake-connector-python = [
     {file = "snowflake_connector_python-2.3.3-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:2eb8b36a385274d2e5e38c9f1481bdad205cdb939fd68f5287879691b735466a"},
 ]
 snowflake-sqlalchemy = [
-    {file = "snowflake-sqlalchemy-1.2.3.tar.gz", hash = "sha256:2c598ef37623ef4d035a827f1e84725b3239a47f4366417d089de88f72fc4ac9"},
-    {file = "snowflake_sqlalchemy-1.2.3-py2.py3-none-any.whl", hash = "sha256:213d0530d1f62a9fc38d568bf6dff45e3baf11a38e7237f8625c4a32d6756183"},
+    {file = "snowflake-sqlalchemy-1.2.4.tar.gz", hash = "sha256:e79d83d4947a0945488699324802eda4ad4a63c7680ad5b2a42c71f4faa2cd8b"},
+    {file = "snowflake_sqlalchemy-1.2.4-py2.py3-none-any.whl", hash = "sha256:e20ee81f3c2f6748b33a69d2e97018930ed09f83e27b1aa36ba5f841eb53bdce"},
 ]
 sqlalchemy = [
     {file = "SQLAlchemy-1.3.20-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:bad73f9888d30f9e1d57ac8829f8a12091bdee4949b91db279569774a866a18e"},
