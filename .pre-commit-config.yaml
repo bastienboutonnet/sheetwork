@@ -4,7 +4,7 @@ repos:
     hooks:
       - id: mypy
         always_run: true
-        args: [--ignore-missing-imports, -p, sheetwork]
+        args: [--ignore-missing-imports, "sheetwork/core"]
   - repo: https://github.com/ambv/black
     rev: 20.8b1
     hooks:
