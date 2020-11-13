@@ -16,7 +16,7 @@ repos:
     rev: ""
     hooks:
       - id: mypy
-        name: core
+        name: Lint core with mypy
         files: ^sheetwork/core/
         entry: mypy sheetwork/core
         pass_filenames: false
