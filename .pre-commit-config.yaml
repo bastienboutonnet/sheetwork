@@ -16,6 +16,5 @@ repos:
     rev: "aad0a7b"
     hooks:
       - id: mypy
-        exclude_types: [python]
         always_run: true
         args: [--ignore-missing-imports, "sheetwork/core"]
