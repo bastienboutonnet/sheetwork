@@ -1,24 +1,27 @@
 repos:
-  - repo: https://github.com/asottile/seed-isort-config
-    rev: v2.2.0
-    hooks:
-      - id: seed-isort-config
-  - repo: https://github.com/timothycrosley/isort
+  - repo: https://github.com/pre-commit/mirrors-mypy
     rev: ''
     hooks:
-      - id: isort
+      - id: mypy
+        always_run: true
+        args: [--ignore-missing-imports]
+        files: ^sheetwork/
+  # - repo: https://github.com/asottile/seed-isort-config
+  #   rev: v2.2.0
+  #   hooks:
+  #     - id: seed-isort-config
+  # - repo: https://github.com/timothycrosley/isort
+  #   rev: ''
+  #   hooks:
+  #     - id: isort
+  #       args: [--src=/sheetwork/]
   - repo: https://github.com/ambv/black
     rev: 20.8b1
     hooks:
       - id: black
         language_version: python3
         args: [--line-length=100, --target-version=py37]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: ''
-    hooks:
-      - id: mypy
-        always_run: true
-        args: [--ignore-missing-imports, "sheetwork/core"]
+        types: [python]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.4.0
     hooks:
