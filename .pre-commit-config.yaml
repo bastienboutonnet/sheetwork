@@ -5,7 +5,6 @@ repos:
       - id: mypy
         always_run: true
         args: [--ignore-missing-imports, -p, sheetwork]
-        # files: ^sheetwork/
 
   # - repo: https://github.com/asottile/seed-isort-config
   #   rev: v2.2.0
