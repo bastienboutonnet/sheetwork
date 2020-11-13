@@ -12,9 +12,12 @@ repos:
         exclude: ^.bumpversion.cfg
       - id: trailing-whitespace
         exclude: ^.bumpversion.cfg
-  - repo: git://github.com/luismayta/pre-commit-mypy
-    rev: "aad0a7b"
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: ""
     hooks:
       - id: mypy
-        always_run: true
-        args: [--ignore-missing-imports, "sheetwork/core"]
+        name: core
+        files: ^sheetwork/core/
+        entry: mypy sheetwork/core
+        pass_filenames: false
+        args: [--ignore-missing-imports]
