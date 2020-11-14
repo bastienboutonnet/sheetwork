@@ -41,9 +41,8 @@ def test_set_config(datafiles):
 @pytest.mark.datafiles(FIXTURE_DIR)
 def test__override_cli_args(datafiles):
     from sheetwork.core.config.config import ConfigLoader
-
-    from sheetwork.core.main import parser
     from sheetwork.core.config.project import Project
+    from sheetwork.core.main import parser
 
     flags = FlagParser(
         parser,
