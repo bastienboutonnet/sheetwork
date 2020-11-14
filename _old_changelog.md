@@ -1,5 +1,5 @@
-Deprecated Changelog
-----
+## Deprecated Changelog
+
 # Sheetwork Changelog
 
 ## 1.0.0 Nicolas Jaar (Unreleased)

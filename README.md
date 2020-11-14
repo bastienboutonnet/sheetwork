@@ -6,6 +6,7 @@
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 ![python](https://img.shields.io/badge/python-3.7%20%7C%203.8-blue)
 [![Discord](https://img.shields.io/discord/752101657218908281?label=discord)](https://discord.gg/ebSTWq)
+
 # sheetwork 💩🤦
 
 A handy package to load Google Sheets to your database right from the CLI and with easy configuration via YAML files.
@@ -13,6 +14,7 @@ A handy package to load Google Sheets to your database right from the CLI and wi
 > ⚠️ **warning** `sheetwork` is still in its early inception (don't get fooled by the 1 in the version). Please do some testing before you end up using it in production, and feel free to report bugs.
 
 > **compatibility**:
+>
 > - Python >=3.7, Mac OSX >10.14.
 > - Probably works on most UNIX systems but not nested. Most likely absolutely not working in Windows.
 
