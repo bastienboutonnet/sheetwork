@@ -3,7 +3,6 @@
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/bastienboutonnet/sheetwork/dev/nicolas_jaar.svg)](https://results.pre-commit.ci/latest/github/bastienboutonnet/sheetwork/dev/nicolas_jaar)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 ![python](https://img.shields.io/badge/python-3.7%20%7C%203.8-blue)
 [![Discord](https://img.shields.io/discord/752101657218908281?label=discord)](https://discord.gg/ebSTWq)
