@@ -104,3 +104,6 @@ sheetwork_logs/
 *.whl
 
 **/typings/
+
+requirements.txt
+dev-requirements.txt
