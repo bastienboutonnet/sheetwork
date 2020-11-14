@@ -1,6 +1,6 @@
 import time
-from sheetwork.core.ui.colours import COLOURS
 
+from sheetwork.core.ui.colours import COLOURS
 
 USE_COLOURS = True
 PRINTER_WIDTH = 80

@@ -3,12 +3,6 @@ repos:
     rev: v2.2.0
     hooks:
       - id: seed-isort-config
-  - repo: https://github.com/PyCQA/isort
-    rev: ''
-    hooks:
-      - id: isort
-        args: ["-m3", "-w 100"]
-        exclude: ^tests/
   - repo: https://github.com/ambv/black
     rev: 20.8b1
     hooks:
@@ -31,3 +25,9 @@ repos:
         entry: mypy sheetwork/core
         pass_filenames: false
         args: [--ignore-missing-imports]
+  - repo: https://github.com/PyCQA/isort
+    rev: ''
+    hooks:
+      - id: isort
+        args: ["-m3", "-w 100"]
+        exclude: ^tests/
