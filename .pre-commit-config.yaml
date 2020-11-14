@@ -29,5 +29,5 @@ repos:
     rev: ''
     hooks:
       - id: isort
-        args: ["-m3", "-w 100"]
+        args: ["-m3", "-w 100", "--tc"]
         exclude: ^tests/
