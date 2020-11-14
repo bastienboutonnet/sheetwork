@@ -27,9 +27,13 @@ repos:
         pass_filenames: false
         args: [--ignore-missing-imports]
   - repo: https://github.com/PyCQA/isort
-    rev: ''
+    rev: ""
     hooks:
       - id: isort
         name: Sort import with isort
         args: ["-m3", "-w 100", "--tc"]
         exclude: ^tests/
+  - repo: https://github.com/prettier/prettier
+    rev: "" # Use the sha or tag you want to point at
+    hooks:
+      - id: prettier
