@@ -27,11 +27,6 @@ jobs:
           restore-keys: |
             poetry-$
 
-      - name: Mypy checks
-        uses: jpetrucciani/mypy-check@master
-        with:
-          path: "sheetwork"
-
       - name: Install Dependencies using Poetry
         run: poetry install
         if: steps.cache.outputs.cache-hit != 'true'

@@ -2,8 +2,7 @@
 
 Thanks for looking into making `sheetwork` better! We have some loosely defined rules, preferences etc. to make the process a bit smoother but above all, don't let that deter you from contributing.
 
-
-> ⚠️ **Wanna use `sheetwork` with another database than Snowflake?** ✨ Let's talk!! 🎉  I'm really eager to grow the database adapters for `sheetwork`. Create an issue on GitHub or DM me on [Discord](https://discord.gg/5GnNNb)
+> ⚠️ **Wanna use `sheetwork` with another database than Snowflake?** ✨ Let's talk!! 🎉 I'm really eager to grow the database adapters for `sheetwork`. Create an issue on GitHub or DM me on [Discord](https://discord.gg/5GnNNb)
 
 ## How can you contribute?
 
@@ -63,22 +62,22 @@ In most cases it's pretty easy
 1. Create a fork from this GitHub account into yours
 2. Clone your fork via ssh or http depending on how you like to authenticate and all that. For example:
 
-    ```bash
-    git clone git@github.com:<your_username>/sheetwork.git
-    ```
+   ```bash
+   git clone git@github.com:<your_username>/sheetwork.git
+   ```
 
 3. Modify your code locally
-As you would for a regular cloned repo, `git branch`, `git add`, `git commit`, `git push`.
-The push will go to your fork remote which is totally fine.
+   As you would for a regular cloned repo, `git branch`, `git add`, `git commit`, `git push`.
+   The push will go to your fork remote which is totally fine.
 
 4. Create a Pull Request
-When the time comes to merge your code back on the original repo (here). Go to your fork's GitHub page, click the "Pull Request" button and choose to merge into the original repo.
+   When the time comes to merge your code back on the original repo (here). Go to your fork's GitHub page, click the "Pull Request" button and choose to merge into the original repo.
 
 5. If you need to ingest changes from the fork. Say, you want to update or pull the origial repo you can add the original repo as another remote called `upstream` (actually you can name if whatever you want but usually that's how people name this) to your config like so:
 
-    ```bash
-    git remote add upstream https://github.com/bastienboutonnet/sheetwork.git
-    ```
+   ```bash
+   git remote add upstream https://github.com/bastienboutonnet/sheetwork.git
+   ```
 
 ### Python Stuff
 
@@ -95,7 +94,7 @@ When the time comes to merge your code back on the original repo (here). Go to y
 
 ### Development
 
-The whole package is managed using [Poetry](https://python-poetry.org/). It's really really good and ensures reproducibility. **If this is holding you up from contributing feel free to shoot me a DM on [Discord](https://discord.gg/5GnNNb) and I can deploy good old `setup.py` files for you to use `pip install -e .` in your venv management tool of choice
+The whole package is managed using [Poetry](https://python-poetry.org/). It's really really good and ensures reproducibility. **If this is holding you up from contributing feel free to shoot me a DM on [Discord](https://discord.gg/5GnNNb) and I can deploy good old `setup.py` files for you to use `pip install -e .` in your venv management tool of choice, although I think `pip` install edidable from current folder should work --but not sure.**
 
 1. [Install Poetry on your system](https://python-poetry.org/docs/#installation) --I personally recommend installing it via [`pipx`](https://github.com/pipxproject/pipx) but that's entirely up to you.
 2. `cd` to your fork and run `poetry install` in the root folder of the repo. Poetry will create a virtual environment for python, install dependencies and install `sheetwork` in **editable** mode so that you can directly run and test `sheetwork` as you develop without having to install over and over.
