@@ -31,6 +31,7 @@ class GoogleSpreadsheet:
     """
 
     def __init__(self, profile: Profile, workbook_key: str = str(), workbook_name: str = str()):
+        self._profile = profile
         self.is_service_account = profile.profile_dict.get("is_service_account", True)
         p = Path(profile.google_credentials_dir, profile.profile_name).with_suffix(".json")
         if p.exists():
@@ -39,7 +40,10 @@ class GoogleSpreadsheet:
                 self.gc = gspread.service_account(p)
             else:
                 logger.debug("Using END_USER auth")
-                self.gc = gspread.oauth(p)
+                # ! This override should be temporary ideally we'll have a more long term solution in:
+                # ! https://github.com/burnash/gspread/issues/826
+                self._override_gspread_default_creds()
+                self.gc = gspread.oauth()
         else:
             raise GoogleCredentialsFileMissingError(
                 "Sheetwork could not find a credentials file for your "
@@ -50,6 +54,42 @@ class GoogleSpreadsheet:
         self.workbook_name = workbook_name
         self.client = profile.profile_dict.get("guser")
         self._open_workbook()
+
+    def _override_gspread_default_creds(self) -> None:
+        """Temporary workaround to allow `gspread.oauth()` to look for credentials in another location
+        than defaults. For more info: https://github.com/burnash/gspread/issues/826
+        This will likely be removed if work on gspread #826 gets carried out.
+        """
+        logger.debug(
+            "Overriding `gspread`'s DEFAULT_AUTHORISED_USER_FILENAME and stuff. "
+            "This is temporary (hopefully) see `GoogleSpreadsheet._override_gspread_default_creds()` "
+            "docstring for more info."
+        )
+        logger.debug(
+            f"Overriding to: {self._profile.google_credentials_dir}/{self._profile.profile_name}"
+        )
+        gspread.auth.DEFAULT_CONFIG_DIR = Path(self._profile.google_credentials_dir)
+
+        gspread.auth.DEFAULT_CREDENTIALS_FILENAME = gspread.auth.DEFAULT_CONFIG_DIR.joinpath(
+            self._profile.profile_name
+        ).with_suffix(".json")
+
+        gspread.auth.DEFAULT_AUTHORIZED_USER_FILENAME = gspread.auth.DEFAULT_CONFIG_DIR.joinpath(
+            f"{self._profile.profile_name}_authorised_user"
+        ).with_suffix(".json")
+
+        gspread.auth.DEFAULT_SERVICE_ACCOUNT_FILENAME = gspread.auth.DEFAULT_CONFIG_DIR.joinpath(
+            f"{self._profile.profile_name}_service_account"
+        ).with_suffix(".json")
+
+        gspread.auth.load_credentials.__defaults__ = (
+            gspread.auth.DEFAULT_AUTHORIZED_USER_FILENAME,
+        )
+
+        gspread.auth.store_credentials.__defaults__ = (
+            gspread.auth.DEFAULT_AUTHORIZED_USER_FILENAME,
+            "token",
+        )
 
     def _open_workbook(self):
         try:
