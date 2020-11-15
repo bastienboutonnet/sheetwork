@@ -42,8 +42,6 @@ class GoogleSpreadsheet:
         self.client = profile.profile_dict.get("guser")
         self.is_authenticated: bool = False
 
-        # self._open_workbook()
-
     def _check_google_creds_exist(self) -> Tuple[bool, Path]:
         creds_path = Path(
             self._profile.google_credentials_dir, self._profile.profile_name
@@ -55,7 +53,6 @@ class GoogleSpreadsheet:
             f"'{self._profile.profile_name}' profile in the ~/.sheetwork/google/ folder. "
             "Check installation instructions if you do not know how to set this up."
         )
-        # return False, Path()
 
     def authenticate(self) -> None:
         if self.is_service_account:
