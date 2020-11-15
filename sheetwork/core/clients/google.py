@@ -50,7 +50,7 @@ class GoogleSpreadsheet:
             return True, creds_path
         raise GoogleCredentialsFileMissingError(
             "Sheetwork could not find a credentials file for your "
-            f"'{self._profile.profile_name}' profile in the ~/.sheetwork/google/ folder. "
+            f"'{self._profile.profile_name}' profile in the {self._profile.profile_dir} folder. "
             "Check installation instructions if you do not know how to set this up."
         )
 
