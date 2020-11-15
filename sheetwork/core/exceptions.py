@@ -88,3 +88,7 @@ class MissnigInitProjectName(SheetWorkError):
 
 class InvalidOrMissingCommandError(SheetWorkError):
     "when no  command or invalid command is requested"
+
+
+class GoogleClientNotAuthenticatedError(SheetWorkError):
+    "when you forgot to run authenticate or it failed"
