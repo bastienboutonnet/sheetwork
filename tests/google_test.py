@@ -30,9 +30,11 @@ def test__override_gspread_default_creds(datafiles, monkeypatch):
 
     # Patch gspread functions so they don't attempt to do stuff
     def mock_load_credentials(self) -> None:
+        # noop
         pass
 
     def mock_store_credentials(self) -> None:
+        # noop
         pass
 
     monkeypatch.setattr(gspread.auth, "load_credentials", mock_load_credentials)
