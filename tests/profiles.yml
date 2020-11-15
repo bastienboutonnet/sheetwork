@@ -12,3 +12,14 @@ profiles:
         warehouse: f
         schema: g
         guser: sheetwork_test@blahh.iam.gserviceaccount.com
+      end_user:
+        db_type: snowflake
+        account: a
+        user: b
+        password: c
+        role: d
+        database: e
+        warehouse: f
+        schema: g
+        guser: sheetwork_test@blahh.iam.gserviceaccount.com
+        is_service_account: False
