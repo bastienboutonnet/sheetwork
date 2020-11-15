@@ -38,7 +38,7 @@ def test__override_gspread_default_creds(datafiles, monkeypatch):
         pass
 
     monkeypatch.setattr(gspread.auth, "load_credentials", mock_load_credentials)
-    monkeypatch.setattr(gspread.auth, "store_credentials", mock_load_credentials)
+    monkeypatch.setattr(gspread.auth, "store_credentials", mock_store_credentials)
 
     project_name = "sheetwork_test"
     flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
