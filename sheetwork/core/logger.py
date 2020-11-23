@@ -14,7 +14,9 @@ class LogManager:
 
         log_filename = Path(log_file_path, "sheetwork_log.log")
         logger = logging.getLogger("Sheetwork Logger")
-        logger.setLevel(logging.INFO)
+        # set the logger to the lowest level (then each handler will have it's level --this ensures
+        # that all logging always ends up in the file logger.)
+        logger.setLevel(logging.DEBUG)
         # Create handlers
         f_handler = logging.FileHandler(log_filename)
         f_handler.setLevel(logging.DEBUG)
