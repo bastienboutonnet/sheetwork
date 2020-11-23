@@ -37,7 +37,8 @@ NO_COLS_EXPECTED_CONFIG = {
 EXPECTED_SHEETWORK_PROJECT = {
     "name": "sheetwork_test",
     "target_schema": "sand",
-    "always_create": True,
+    "always_create_table": True,
+    "destructive_create_table": True,
 }
 
 DIRTY_DF = {
