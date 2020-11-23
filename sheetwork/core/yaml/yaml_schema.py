@@ -81,6 +81,7 @@ project_schema = {
     "always_create_schema": {"required": False, "type": "boolean"},
     "always_create_database": {"required": False, "type": "boolean"},
     "always_create_objects": {"required": False, "type": "boolean"},
+    "destructive_create_table": {"required": False, "type": "boolean"},
     "paths": {
         "type": "dict",
         "required": False,

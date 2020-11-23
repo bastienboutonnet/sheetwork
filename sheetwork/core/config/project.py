@@ -21,6 +21,7 @@ class Project:
         self.project_dict: Dict[str, Union[str, bool]] = dict()
         self.target_schema: str = str()
         self.object_creation_dct: Dict[str, bool] = dict()
+        self.destructive_create_table: bool = False
         self.flags = flags
 
         # directories (first overwritten by flags, then by project) This may not always be able to
@@ -84,6 +85,12 @@ class Project:
             else:
                 create = [True for x in rule if self.project_dict.get(x) is True]
             self.object_creation_dct.update({object: True in create})
+        self.destructive_create_table = (
+            True
+            if self.project_dict.get("destructive_create_table", self.destructive_create_table)
+            is True
+            else False
+        )
 
     def override_from_flags(self):
         if self.flags.project_dir:

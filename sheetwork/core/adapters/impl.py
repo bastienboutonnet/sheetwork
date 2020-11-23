@@ -41,7 +41,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
         df = cast_pandas_dtypes(df, overwrite_dict=self.config.sheet_columns)
         dtypes_dict = self.sqlalchemy_dtypes(self.config.sheet_columns)
 
-        # potenfially override target schema from config.
+        # potentially override target schema from config.
         if override_schema:
             schema = override_schema
         else:
@@ -52,16 +52,39 @@ class SnowflakeAdapter(BaseSQLAdapter):
         df.to_csv(temp.name, index=False, header=False, sep="|")
 
         self.acquire_connection()
-        try:
-            df.head(0).to_sql(
-                name=self.config.target_table,
-                schema=schema,
-                con=self.con,
-                if_exists="replace",
-                index=False,
-                dtype=dtypes_dict,
-            )
 
+        try:
+            # set the table creation behaviour
+            _if_exists = "fail"
+            if self.config.project.object_creation_dct["create_table"] is True:
+                if self.config.project.destructive_create_table:
+                    _if_exists = "replace"
+
+                # perform the create ops
+                try:
+                    df.head(0).to_sql(
+                        name=self.config.target_table,
+                        schema=schema,
+                        con=self.con,
+                        if_exists=_if_exists,
+                        index=False,
+                        dtype=dtypes_dict,
+                    )
+
+                # if _if_exists is fail pandas will throw a ValueError which we want to escape when
+                # destructive_create_table is set to False (or not provided) and throw a warning instead.
+                except ValueError as e:
+                    if _if_exists == "fail":
+                        logger.warning(
+                            f"{self.connection.credentials.credentials.get('database')}"
+                            f".{schema}.{self.config.target_table} already exists and was not "
+                            "recreated because 'destructive_create_table' is set to False in your profile"
+                        )
+                    else:
+                        raise DatabaseError(str(e))
+
+            # Now push the actual data --the pandas create above is only for creation the logic below
+            # is actually faster as pandas does it row by row
             qualified_table = (
                 f"{self._database}.{self.config.target_schema}.{self.config.target_table}"
             )
@@ -78,6 +101,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
         except Exception as e:
             raise DatabaseError(str(e))
         finally:
+            logger.debug("CLOSING CONNECTION & CLEANING TMP FILE")
             temp.close()
             self.close_connection()
 
