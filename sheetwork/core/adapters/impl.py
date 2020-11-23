@@ -1,3 +1,4 @@
+"""Module containing all Database Specific classes."""
 import tempfile
 from typing import Any, Optional
 
@@ -13,9 +14,17 @@ from sheetwork.core.utils import cast_pandas_dtypes
 
 
 class SnowflakeAdapter(BaseSQLAdapter):
-    """Interacts with snowflake via SQLAlchemy"""
+    """Interacts with snowflake via SQLAlchemy."""
 
     def __init__(self, connection: SnowflakeConnection, config: ConfigLoader):
+        """Contstructs the Snowflake DB Adaptor.
+
+        Args:
+            connection (SnowflakeConnection): connection object containing credentials and
+                connection variables needed for Snowflake.
+            config (ConfigLoader): configuration class containing all params for sheetwork general
+                operation
+        """
         self.connection = connection
         self.engine = connection.engine
         self.config = config
@@ -25,7 +34,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
         try:
             self.con = self.engine.connect()
         except Exception:
-            raise DatabaseError(red(f"Error creating Snowflake connection."))
+            raise DatabaseError(red("Error creating Snowflake connection."))
 
     def close_connection(self) -> None:
         try:
