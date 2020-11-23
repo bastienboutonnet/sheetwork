@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Union
+from typing import Any, Dict, List, Union
 
 from sheetwork.core.config.project import Project
 from sheetwork.core.exceptions import (
