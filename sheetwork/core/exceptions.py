@@ -66,6 +66,10 @@ class DatabaseError(SheetWorkError):
     "To catch db interaction errors"
 
 
+class NoAcquiredConnectionError(SheetWorkError):
+    "For when no connection has been acquied"
+
+
 class TableDoesNotExist(SheetWorkError):
     "When query for rows and cols came back empty or none"
 

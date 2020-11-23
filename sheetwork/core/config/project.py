@@ -88,9 +88,9 @@ class Project:
         create_everything_label = "always_create_objects"
         object_creation_mapping = {
             # ! DEPRECATE "always_create"
-            "create_table": ["always_create_table", "always_create", create_everything_label],
-            "create_schema": ["alwayws_create_schema", create_everything_label],
-            "create_database": ["always_create_database", create_everything_label],
+            "create_table": ["always_create_table", "always_create"],
+            "create_schema": ["always_create_schema"],
+            "create_database": ["always_create_database"],
         }
         for object, rule in object_creation_mapping.items():
             if self.project_dict.get(create_everything_label):

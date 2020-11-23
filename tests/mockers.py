@@ -38,6 +38,7 @@ EXPECTED_SHEETWORK_PROJECT = {
     "name": "sheetwork_test",
     "target_schema": "sand",
     "always_create_table": True,
+    "always_create_schema": True,
     "destructive_create_table": True,
 }
 

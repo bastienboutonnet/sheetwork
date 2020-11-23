@@ -3,11 +3,12 @@ import tempfile
 from typing import Any, Optional
 
 import pandas
+from sqlalchemy.schema import CreateSchema
 
 from sheetwork.core.adapters.base.impl import BaseSQLAdapter
 from sheetwork.core.adapters.connection import SnowflakeConnection
 from sheetwork.core.config.config import ConfigLoader
-from sheetwork.core.exceptions import DatabaseError, TableDoesNotExist
+from sheetwork.core.exceptions import DatabaseError, NoAcquiredConnectionError, TableDoesNotExist
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import green, red, timed_message, yellow
 from sheetwork.core.utils import cast_pandas_dtypes
@@ -29,20 +30,43 @@ class SnowflakeAdapter(BaseSQLAdapter):
         self.engine = connection.engine
         self.config = config
         self._database: str = self.connection.credentials.credentials.get("database", str())
+        self._has_connection: bool = False
 
     def acquire_connection(self) -> None:
         try:
             self.con = self.engine.connect()
+            self._has_connection = True
         except Exception:
             raise DatabaseError(red("Error creating Snowflake connection."))
 
     def close_connection(self) -> None:
         try:
             self.con.close()
+            self._has_connection = False
         except AttributeError:
             raise DatabaseError(
-                red("SnowflakeAdaport did not create a connection so it cannot be closed")
+                red("SnowflakeAdaptor did not create a connection so it cannot be closed")
             )
+
+    def _create_schema(self) -> None:
+        if self._has_connection is False:
+            raise NoAcquiredConnectionError(
+                f"No acquired connection for {type(self).__name__}. Make sure you call `acquire_connection` before."
+            )
+        try:
+            if self.config.project.object_creation_dct["create_schema"]:
+                schema_exists = (
+                    True
+                    if self.config.target_schema in self.con.dialect.get_schema_names(self.con)
+                    else False
+                )
+                if schema_exists is False:
+                    logger.debug(
+                        yellow(f"Creating schema: {self.config.target_schema} in {self._database}")
+                    )
+                    self.con.execute(CreateSchema(self.config.target_schema))
+        except Exception as e:
+            raise DatabaseError(str(e))
 
     def upload(self, df: pandas.DataFrame, override_schema: str = str()) -> None:
         # cast columns
@@ -61,6 +85,9 @@ class SnowflakeAdapter(BaseSQLAdapter):
         df.to_csv(temp.name, index=False, header=False, sep="|")
 
         self.acquire_connection()
+
+        # set up schema creation
+        self._create_schema()
 
         try:
             # set the table creation behaviour
@@ -86,7 +113,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
                     if _if_exists == "fail":
                         logger.warning(
                             yellow(
-                                f"{self.connection.credentials.credentials.get('database')}"
+                                f"{self._database}"
                                 f".{schema}.{self.config.target_table} already exists and was not\n"
                                 "recreated because 'destructive_create_table' is set to False in your profile \n"
                                 "APPENDING instead."
