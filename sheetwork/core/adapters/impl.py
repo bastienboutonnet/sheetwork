@@ -19,6 +19,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
         self.connection = connection
         self.engine = connection.engine
         self.config = config
+        self._database: str = self.connection.credentials.credentials.get("database", str())
 
     def acquire_connection(self) -> None:
         try:
@@ -61,7 +62,9 @@ class SnowflakeAdapter(BaseSQLAdapter):
                 dtype=dtypes_dict,
             )
 
-            qualified_table = f"{self.config.target_schema}.{self.config.target_table}"
+            qualified_table = (
+                f"{self._database}.{self.config.target_schema}.{self.config.target_table}"
+            )
             self.con.execute(
                 f"""
                 create or replace temporary stage {self.config.target_table}_stg
@@ -91,8 +94,8 @@ class SnowflakeAdapter(BaseSQLAdapter):
     def check_table(self, target_schema: str, target_table: str) -> None:
         columns_query = f"""
                 select count(*)
-                from dwh.information_schema.columns
-                where table_catalog = 'DWH'
+                from {self._database}.information_schema.columns
+                where table_catalog = '{self._database.upper()}'
                 and table_schema = '{target_schema.upper()}'
                 and table_name = '{target_table.upper()}'
                 ;
@@ -105,10 +108,12 @@ class SnowflakeAdapter(BaseSQLAdapter):
                 timed_message(
                     green(
                         f"Push successful for "
-                        f"{target_schema}.{target_table} \n"
+                        f"{self._database}.{target_schema}.{target_table} \n"
                         f"Found {columns[0][0]} columns and {rows[0][0]} rows."
                     )
                 )
             )
         else:
-            raise TableDoesNotExist(f"Table {target_schema}.{target_table} seems empty")
+            raise TableDoesNotExist(
+                f"Table {self._database}.{target_schema}.{target_table} seems empty"
+            )
