@@ -1,0 +1,1 @@
+Success of failure message for database table creation now fully qualifies the table (`<database>.<schema>.<table>`). This makes the messages a lot more usable to a user who might want to copy paste and check that the table has been correctly created. (Also some ugly hardcoding in the catalog queries have been squashed).
