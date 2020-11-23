@@ -77,6 +77,11 @@ project_schema = {
     "name": {"required": True, "type": "string"},
     "target_schema": {"required": False, "type": "string"},
     "always_create": {"required": False, "type": "boolean"},
+    "always_create_table": {"required": False, "type": "boolean"},
+    "always_create_schema": {"required": False, "type": "boolean"},
+    "always_create_database": {"required": False, "type": "boolean"},
+    "always_create_objects": {"required": False, "type": "boolean"},
+    "destructive_create_table": {"required": False, "type": "boolean"},
     "paths": {
         "type": "dict",
         "required": False,
