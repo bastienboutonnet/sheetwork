@@ -35,7 +35,7 @@ def test_decide_object_creation(monkeypatch, datafiles, project_name):
 
     expected_object_creation_dict = {
         "create_table": True,
-        "create_schema": False,
+        "create_schema": True,
         "create_database": False,
     }
 
