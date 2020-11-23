@@ -7,17 +7,15 @@ from sheetwork.core.exceptions import (
     SheetWorkConfigMissingError,
     TargetSchemaMissing,
 )
+from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import yellow
 from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
 from sheetwork.core.yaml.yaml_schema import config_schema
 
-if TYPE_CHECKING:
-    from core.flags import FlagParser
-
 
 class ConfigLoader:
-    def __init__(self, flags: "FlagParser", project: Project):
+    def __init__(self, flags: FlagParser, project: Project):
         self.config: Dict[str, List[Dict[str, Any]]] = dict()
         self.sheet_config: Dict[str, Union[str, bool, List[Union[str, Dict[str, str]]]]] = dict(
             sheet_key=flags.sheet_key,
