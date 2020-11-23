@@ -20,7 +20,7 @@ class Project:
         self.project_name = project_name
         self.project_dict: Dict[str, Union[str, bool]] = dict()
         self.target_schema: str = str()
-        self.always_create: bool = True
+        self.object_creation_dct: Dict[str, bool] = dict()
         self.flags = flags
 
         # directories (first overwritten by flags, then by project) This may not always be able to
@@ -54,12 +54,36 @@ class Project:
                     .expanduser()
                     .resolve()
                 )
-            self.always_create = project_yaml.get("always_create", self.always_create)
         else:
             raise ProjectFileParserError(
                 f"Error trying to load project config from {self.project_file_fullpath}. "
                 "Check it exists or that it is valid."
             )
+
+    # ! DEPRECATION
+    def handle_deprecations(self) -> None:
+        if self.project_dict.get("always_create"):
+            logger.warning(
+                "DEPRECATION WANING: 'always_create' will be deprecated in a future major release\n"
+                "'always_create' now means 'always_create_table'. \n"
+                "Prefer using 'always_create_table' instead or 'always_create_all_objects' if you \n"
+                "want to make sheetwork create all objects (database, schemas and tables)."
+            )
+
+    def decide_object_creation(self) -> None:
+        self.handle_deprecations()
+        create_everything_label = "always_create_objects"
+        object_creation_mapping = {
+            "create_table": ["always_create_table", "always_create", create_everything_label],
+            "create_schema": ["alwayws_create_schema", create_everything_label],
+            "create_database": ["always_create_database", create_everything_label],
+        }
+        for object, rule in object_creation_mapping.items():
+            if self.project_dict.get(create_everything_label):
+                create = [True]
+            else:
+                create = [True for x in rule if self.project_dict.get(x) is True]
+            self.object_creation_dct.update({object: True in create})
 
     def override_from_flags(self):
         if self.flags.project_dir:

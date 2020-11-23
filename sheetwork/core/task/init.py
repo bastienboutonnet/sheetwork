@@ -60,8 +60,9 @@ name: '{project_name}'
 # change the following to your default destination schema
 target_schema: 'sandbox'
 
-# we set sheetwork to always create tables, feel free to set that to false if you don't like it.
-always_create: true
+# we set sheetwork to always create ALL objects (database, schema, tabke),
+# feel free to set that to false if you don't like it.
+always_create_objects: true
 """
 
 
