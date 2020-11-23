@@ -1,8 +1,10 @@
+import time
 from pathlib import Path
 from typing import TYPE_CHECKING, Dict, Union
 
 from sheetwork.core.exceptions import ProjectFileParserError
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
+from sheetwork.core.ui.printer import red
 from sheetwork.core.utils import PathFinder
 from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
 from sheetwork.core.yaml.yaml_schema import project_schema
@@ -10,11 +12,14 @@ from sheetwork.core.yaml.yaml_schema import project_schema
 if TYPE_CHECKING:
     from sheetwork.core.flags import FlagParser
 
-PROJECT_FILENAME = "sheetwork_project.yml"
-
 
 class Project:
     """Sets up everything there is to know about the project config."""
+
+    PROJECT_FILENAME = "sheetwork_project.yml"
+    # this is some garbage to make sure we don't sleep when we test the deprecation handling
+    # ! DEPRECATION
+    IS_TEST = False
 
     def __init__(self, flags: "FlagParser", project_name: str = str()):
         self.project_name = project_name
@@ -33,11 +38,16 @@ class Project:
         # override defaults
         self.override_from_flags()
         self.load_project_from_yaml()
+        self.decide_object_creation()
         logger.debug(f"Project name: {self.project_name}")
+
+        self.is_test: bool = False
 
     def load_project_from_yaml(self):
         if self.project_file_fullpath == Path("dumpy_path"):
-            _, self.project_file_fullpath = PathFinder().find_nearest_dir_and_file(PROJECT_FILENAME)
+            _, self.project_file_fullpath = PathFinder().find_nearest_dir_and_file(
+                type(self).PROJECT_FILENAME
+            )
         project_yaml = open_yaml(self.project_file_fullpath)
         is_valid_yaml = validate_yaml(project_yaml, project_schema)
         if project_yaml and is_valid_yaml:
@@ -64,17 +74,22 @@ class Project:
     # ! DEPRECATION
     def handle_deprecations(self) -> None:
         if self.project_dict.get("always_create"):
-            logger.warning(
-                "DEPRECATION WANING: 'always_create' will be deprecated in a future major release\n"
+            msg = (
+                "\nDEPRECATION WANING: 'always_create' will be deprecated in a future major release\n"
                 "'always_create' now means 'always_create_table'. \n"
                 "Prefer using 'always_create_table' instead or 'always_create_all_objects' if you \n"
                 "want to make sheetwork create all objects (database, schemas and tables)."
             )
 
+            logger.warning(red(msg))
+            if type(self).IS_TEST is False:
+                time.sleep(4)
+
     def decide_object_creation(self) -> None:
         self.handle_deprecations()
         create_everything_label = "always_create_objects"
         object_creation_mapping = {
+            # ! DEPRECATE "always_create"
             "create_table": ["always_create_table", "always_create", create_everything_label],
             "create_schema": ["alwayws_create_schema", create_everything_label],
             "create_database": ["always_create_database", create_everything_label],
@@ -94,7 +109,7 @@ class Project:
 
     def override_from_flags(self):
         if self.flags.project_dir:
-            self.project_file_fullpath = Path(self.flags.project_dir, PROJECT_FILENAME)
+            self.project_file_fullpath = Path(self.flags.project_dir, type(self).PROJECT_FILENAME)
         if self.flags.profile_dir:
             self.profile_dir = Path(self.flags.profile_dir)
         if self.flags.sheet_config_dir:
