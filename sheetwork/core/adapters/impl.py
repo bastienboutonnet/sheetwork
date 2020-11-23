@@ -8,7 +8,7 @@ from sheetwork.core.adapters.connection import SnowflakeConnection
 from sheetwork.core.config.config import ConfigLoader
 from sheetwork.core.exceptions import DatabaseError, TableDoesNotExist
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
-from sheetwork.core.ui.printer import green, red, timed_message
+from sheetwork.core.ui.printer import green, red, timed_message, yellow
 from sheetwork.core.utils import cast_pandas_dtypes
 
 
@@ -76,9 +76,12 @@ class SnowflakeAdapter(BaseSQLAdapter):
                 except ValueError as e:
                     if _if_exists == "fail":
                         logger.warning(
-                            f"{self.connection.credentials.credentials.get('database')}"
-                            f".{schema}.{self.config.target_table} already exists and was not "
-                            "recreated because 'destructive_create_table' is set to False in your profile"
+                            yellow(
+                                f"{self.connection.credentials.credentials.get('database')}"
+                                f".{schema}.{self.config.target_table} already exists and was not\n"
+                                "recreated because 'destructive_create_table' is set to False in your profile \n"
+                                "APPENDING instead."
+                            )
                         )
                     else:
                         raise DatabaseError(str(e))
