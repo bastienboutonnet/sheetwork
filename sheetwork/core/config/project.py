@@ -41,8 +41,6 @@ class Project:
         self.decide_object_creation()
         logger.debug(f"Project name: {self.project_name}")
 
-        self.is_test: bool = False
-
     def load_project_from_yaml(self):
         if self.project_file_fullpath == Path("dumpy_path"):
             _, self.project_file_fullpath = PathFinder().find_nearest_dir_and_file(
