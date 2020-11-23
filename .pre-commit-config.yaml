@@ -37,10 +37,10 @@ repos:
     rev: "" # Use the sha or tag you want to point at
     hooks:
       - id: prettier
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: "" # pick a git hash / tag to point to
-    hooks:
-      - id: flake8
-        exclude: ^tests/
-        additional_dependencies: [flake8-docstrings]
-        args: ["--max-line-length=120", "--ignore=D102"]
+  # - repo: https://gitlab.com/pycqa/flake8
+  #   rev: "" # pick a git hash / tag to point to
+  #   hooks:
+  #     - id: flake8
+  #       exclude: ^tests/
+  #       additional_dependencies: [flake8-docstrings]
+  #       args: ["--max-line-length=120", "--ignore=D102"]
