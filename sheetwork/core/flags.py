@@ -1,12 +1,18 @@
+"""Flags module containing the FlagParser.
+
+This class which will instanciate CLI args default and/or
+consume CLI arguments.
+"""
 from argparse import ArgumentParser
 
 from sheetwork.core.exceptions import InvalidOrMissingCommandError
 
 
 class FlagParser:
-    """Holds flags from args or sets up default ones that are mainly used to testing and delaying
-    argument parsing from CLI so that pytest doesn't steal them and thinks they're for him and
-    ultimately complain. It's one way to do it... There are probably other but I feel ok with it.
+    """Sets flags from defaults or by parsing CLI arguments.
+
+    Defaults for each flag must be provided. This is a bit strict but for now it saves us from
+    too many surprises.
     """
 
     def __init__(
@@ -18,6 +24,22 @@ class FlagParser:
         project_dir: str = str(),
         project_name: str = str(),
     ):
+        """Constructor for FlagsParser.
+
+        Args:
+            parser (ArgumentParser): CLI parser class
+            test_sheet_name (str, optional): This here is purely for unit testing.
+                It's should be the name of the sheet. We might reworkd this as it's a bit ugly but
+                for now it helps us moving forward. Defaults to str().
+            sheet_config_dir (str, optional): Path to where the sheet.yml resides.
+                Again this arg is mainly for testing purposes. Defaults to str().
+            profile_dir (str, optional): Path to the profiles.yml. Again for testing purposes.
+                Defaults to str().
+            project_dir (str, optional): Path to project directory. For testing purposes.
+                Defaults to str().
+            project_name (str, optional): Name of the project. Again for unit testing purposes.
+                Defaults to str().
+        """
         self.sheet_name = test_sheet_name
         self.create_table: bool = False
         self.create_schema: bool = False

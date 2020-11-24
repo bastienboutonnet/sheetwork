@@ -1,27 +1,36 @@
+"""Houses Project parsing class from sheetwork_project.yml."""
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, Union
+from typing import Dict, Union
 
 from sheetwork.core.exceptions import ProjectFileParserError
+from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import red, yellow
 from sheetwork.core.utils import PathFinder
 from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
 from sheetwork.core.yaml.yaml_schema import project_schema
 
-if TYPE_CHECKING:
-    from sheetwork.core.flags import FlagParser
-
 
 class Project:
-    """Sets up everything there is to know about the project config."""
+    """Sets up everything there is to know about the project config.
+
+    Will give precedence to CLI Args --see override functions.
+    """
 
     PROJECT_FILENAME = "sheetwork_project.yml"
     # this is some garbage to make sure we don't sleep when we test the deprecation handling
     # ! DEPRECATION
     IS_TEST = False
 
-    def __init__(self, flags: "FlagParser", project_name: str = str()):
+    def __init__(self, flags: FlagParser, project_name: str = str()):
+        """Constructs project object.
+
+        Args:
+            flags (FlagParser): Inited flags object.
+            project_name (str, optional): Mainly used for unit testing no real use in practice.
+                Defaults to str().
+        """
         self.project_name = project_name
         self.project_dict: Dict[str, Union[str, bool]] = dict()
         self.target_schema: str = str()

@@ -1,13 +1,29 @@
+"""Logger module contains LogManager which sets up file and stream handler + formatting."""
+
 import logging
 from pathlib import Path
 
 
 class LogManager:
+    """Manages the logs formats and levels.
+
+    We have 2 loggers one to stout and one to a logger file. General logger level is DEBUG and
+    each handler is set dynamically based on log-level CLI args
+    """
+
     def __init__(
         self,
         log_file_path: Path = Path(Path.cwd(), "sheetwork_logs"),
         log_to_console: bool = True,
     ):
+        """Log manager constructor. can take and override log path + whether to stout or not.
+
+        Args:
+            log_file_path (Path, optional): Custom path to logger file.
+                Defaults to Path(Path.cwd(), "sheetwork_logs").
+            log_to_console (bool, optional): When true logs will also be pushed into stout.
+                Defaults to True.
+        """
         Path(log_file_path).mkdir(parents=True, exist_ok=True)
 
         # setup colorlog
@@ -42,8 +58,7 @@ class LogManager:
         self.f_format = f_format
 
     def set_debug(self):
-        """Set all loggers to debug and make both the file and console logger have more informative
-        format"""
+        """Set all loggers handlers to debug level."""
         self.logger.setLevel(logging.DEBUG)
         for handler in self.logger.handlers:
             handler.setLevel(logging.DEBUG)

@@ -1,3 +1,4 @@
+"""House of the sheetwork init task that helps users set up their projects. It's by far the cutest part of the code."""
 import time
 from pathlib import Path
 
@@ -7,9 +8,9 @@ from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import green
 
-PROJECT_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-project"
-PROFILE_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-profile"
-GOOGLE_CREDS_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/connecting-to-google-sheets"
+PROJECT_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-project"  # noqa E501
+PROFILE_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/set-up-your-sheetwork-profile"  # noqa E501
+GOOGLE_CREDS_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/installation-and-configuration/untitled/connecting-to-google-sheets"  # noqa E501
 SHEETS_CONFIG_DOC_URL = "https://bastienboutonnet.gitbook.io/sheetwork/usage/sheet-configuration"
 
 INIT_DONE = """
@@ -67,7 +68,17 @@ always_create_objects: true
 
 
 class InitTask:
+    """Sheetwork's init class. Helps users set up their projects by creating required files.
+
+    It also guides them through what to fill in and where. And it prints a really nice retro art piece.
+    """
+
     def __init__(self, flags: FlagParser):
+        """Constructs InitTask. All it needs is to know things from the CLI.
+
+        Args:
+            flags (FlagParser): Initialised CLI flag parser object
+        """
         self.flags = flags
         self.project_name: str = flags.project_name
         self.profiles_path: Path = PROFILES_PATH
@@ -170,7 +181,7 @@ class InitTask:
     def run(self):
         # print something cos it's fun!
         print(
-            """
+            r"""
            ______           __                  __
           / __/ /  ___ ___ / /__    _____  ____/ /__
          _\ \/ _ \/ -_) -_) __/ |/|/ / _ \/ __/  '_/

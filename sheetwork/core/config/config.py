@@ -1,3 +1,4 @@
+"""Configuration class module. Loads project-wide params and all that fun stuff."""
 from pathlib import Path
 from typing import Any, Dict, List, Union
 
@@ -15,7 +16,18 @@ from sheetwork.core.yaml.yaml_schema import config_schema
 
 
 class ConfigLoader:
+    """Loads sheet configuraltions.
+
+    Basically all that lives in sheets.yml.
+    """
+
     def __init__(self, flags: FlagParser, project: Project):
+        """Construct config loader.
+
+        Args:
+            flags (FlagParser): Inited flags
+            project (Project): Parsed project object.
+        """
         self.config: Dict[str, List[Dict[str, Any]]] = dict()
         self.sheet_config: Dict[str, Union[str, bool, List[Union[str, Dict[str, str]]]]] = dict(
             sheet_key=flags.sheet_key,
@@ -70,7 +82,7 @@ class ConfigLoader:
 
     @staticmethod
     def lowercase(obj: Dict[str, str]) -> Dict[str, str]:
-        """ Make dictionary lowercase """
+        """Make dictionary lowercase."""
         new: Dict[str, str] = dict()
         if isinstance(obj, dict):
             for k, v in obj.items():
@@ -109,10 +121,11 @@ class ConfigLoader:
             raise SheetWorkConfigMissingError("No sheet name was provided, cannot fetch config.")
 
     def _generate_column_type_override_dict(self):
-        """Generates a dictionary of key, value where key is the name of a column and value is the
+        """Generates {col: dtype} dict for data type casting.
+
+        Generates a dictionary of key, value where key is the name of a column and value is the
         name of the datatype into that column should be cast on table creation.
         """
-
         try:
             if self.sheet_config and self.sheet_config.get("columns"):
                 columns: List[Dict[str, str]] = self.sheet_config.get("columns", list())  # type: ignore
@@ -130,10 +143,11 @@ class ConfigLoader:
             )
 
     def _generate_column_rename_dict(self):
-        """Generates a dictionary of key values where key is the original name in the sheet and
+        """Makes a pandas rename dict {old_col_name: new_col_name}.
+
+        Generates a dictionary of key values where key is the original name in the sheet and
         value is the target name.
         """
-
         if self.sheet_config:
             columns: List[Dict[str, str]] = self.sheet_config.get("columns", list())  # type: ignore
             if columns:
@@ -146,10 +160,10 @@ class ConfigLoader:
                         self.sheet_column_rename_dict = column_rename_dict
 
     def _override_cli_args(self):
-        """Overrides any CLI argument that may have been passed to sheeload when it reads from a
-        config yaml file, thereby giving precedence to the arguments in the .yml file.
-        """
+        """Overrides any CLI argument that may have been passed.
 
+        NOTE: This is one of the only times where CLI args do not have precedence.
+        """
         self.sheet_key = self.sheet_config["sheet_key"]
         if not self.target_table:
             self.target_table = str(self.sheet_config.get("target_table", str()))

@@ -1,3 +1,5 @@
+"""You need colours now and then. Sets up some colorama shortcuts."""
+
 from typing import Dict
 
 import colorama

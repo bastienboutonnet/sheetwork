@@ -1,3 +1,4 @@
+"""Main module for sheetwork. Sets up Arguments to parse and task handling. That's it!"""
 import argparse
 from typing import Union
 
@@ -9,6 +10,8 @@ from sheetwork.core.config.profile import Profile
 from sheetwork.core.config.project import Project
 from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import log_manager
+from sheetwork.core.sheetwork import SheetBag
+from sheetwork.core.task.init import InitTask
 from sheetwork.core.ui.traceback_manager import SheetworkTracebackManager
 from sheetwork.core.utils import check_and_compare_version
 
@@ -112,7 +115,18 @@ init_sub.add_argument(
 )
 
 
-def handle(parser: argparse.ArgumentParser):
+def handle(parser: argparse.ArgumentParser) -> Union[InitTask, SheetBag, None]:
+    """Pure orchestrator function.
+
+    Calls pipeline based on the command asked for. It also sets up log levels and calls for CLI arg
+    parsing JIT!.
+
+    Args:
+        parser (argparse.ArgumentParser): parser module to use for CLI parsing
+
+    Returns:
+        Union[InitTask, SheetBag, None]: Ran object of type Task (need to rework TODO)
+    """
     flag_parser = FlagParser(parser)
     flag_parser.consume_cli_arguments()
 
@@ -133,8 +147,11 @@ def handle(parser: argparse.ArgumentParser):
         task = upload_task.SheetBag(config, flag_parser, profile)
         return task.run()
 
+    raise NotImplementedError(f"{flag_parser.args.command} is not supported")
+
 
 def main(parser: argparse.ArgumentParser = parser):
+    """Just your boring main."""
     print(f"Sheetwork version: {__version__} \n")
     check_and_compare_version()
     if parser:

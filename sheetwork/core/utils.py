@@ -1,3 +1,4 @@
+"""Bunch of things needed by a bunch of other things which kinda don't have a better place to go."""
 import collections
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
@@ -19,7 +20,9 @@ from sheetwork.core.ui.printer import yellow
 
 
 class PathFinder:
-    """Finds paths of files by going up a number of parent folders. That's it really. It's a class
+    """Finds paths of files by going up a number of parent folders.
+
+    That's it really. It's a class
     mainly to be able to limit the number of iterations otherwise we could end up going up and
     up and up and up...
 
@@ -32,13 +35,20 @@ class PathFinder:
     """
 
     def __init__(self, max_iter: int = 4):
+        """Constructor for PathFinder.
+
+        Args:
+            max_iter (int, optional): Chooses number of folders up to go. Defaults to 4.
+        """
         self.max_iter = max_iter
         self.iteration = 0
 
     def find_nearest_dir_and_file(
         self, yaml_file: str, current: Path = Path.cwd()
     ) -> Tuple[Path, Path]:
-        """Looks for the yaml_file you ask for starting from the current directory and going up with
+        """Looks for the yaml_file you ask for.
+
+        Starting from the current directory and going up with
         recursion while the iteration number is still within the max allowed.
 
         Args:
@@ -76,6 +86,21 @@ def check_columns_in_df(
     warn_only: bool = False,
     suppress_warning: bool = False,
 ) -> Tuple[bool, List[str]]:
+    """Checks if a bunch of columns are present in a dataframe.
+
+    Args:
+        df (pandas.DataFrame): df to check.
+        columns (Union[List[str], str]): column names to check for.
+        warn_only (bool, optional): When True will only warn otherwise raises. Defaults to False.
+        suppress_warning (bool, optional): When true warning isn't shown only return. Defaults to False.
+
+    Raises:
+        ColumnNotFoundInDataFrame: If warn_only is False, this error will be raised when any of the
+            columns to check for are not present in the dataframe.
+
+    Returns:
+        Tuple[bool, List[str]]: Boolean if all columns are present in df, List of missing columns.
+    """
     if isinstance(columns, str):
         columns = [columns]
     is_subset = set(columns).issubset(df.columns)
@@ -95,7 +120,7 @@ def check_columns_in_df(
 
 
 def check_dupe_cols(columns: List[str], suppress_warning: bool = False) -> Optional[List[str]]:
-    """checks dupes in a list"""
+    """Checks dupes in a list."""
     columns_without_empty_strings = list(filter(None, columns))
     dupes = [
         item
@@ -110,6 +135,17 @@ def check_dupe_cols(columns: List[str], suppress_warning: bool = False) -> Optio
 
 
 def check_and_compare_version(external_version: Optional[str] = str()) -> bool:
+    """Checks what the currently installed version of sheetwork is and compares it to the one on PyPI.
+
+    This requires an internet connection. In the case where this doesn't happen a URLError will
+    probably be thrown and in that case we just return False not to cause annoying user experience.
+
+    Args:
+        external_version (Optional[str], optional): Mainly for testing purposes. Defaults to str().
+
+    Returns:
+        bool: True when sheetwork needs an update. False when good.
+    """
     try:
         pypi_version: str = luddite.get_version_pypi("sheetwork")
         if external_version:
@@ -131,6 +167,19 @@ def check_and_compare_version(external_version: Optional[str] = str()) -> bool:
 
 
 def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> pandas.DataFrame:
+    """Converts a dataframe's columns along a provided dictionary of {col: dype}.
+
+    Args:
+        df (pandas.DataFrame): dataframe to cast.
+        overwrite_dict (dict, optional): Dict of shate {column: dtype}. Defaults to dict().
+
+    Raises:
+        UnsupportedDataTypeError: When a dtype isn't currently supported (see dtypes_map inside function).
+        ColumnNotFoundInDataFrame: When a column that is required for casting isn't found.
+
+    Returns:
+        pandas.DataFrame: df with converted dtypes
+    """
     overwrite_dict = overwrite_dict.copy()
     dtypes_map = dict(
         varchar="object",

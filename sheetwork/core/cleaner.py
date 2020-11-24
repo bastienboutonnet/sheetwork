@@ -1,3 +1,4 @@
+"""Cleaning module. Holds SheetCleaner which holds df kinds of cleanings."""
 import re
 
 import inflection
@@ -6,7 +7,16 @@ import pandas
 
 
 class SheetCleaner:
+    """Class containing all sheet cleaning related methods and ochestrators for such cleaning."""
+
     def __init__(self, df: pandas.DataFrame, casing: bool = False) -> None:
+        """Constructor for SheetCleaner.
+
+        Args:
+            df (pandas.DataFrame): dataframe to clean up
+            casing (bool, optional): When true case-related operations (see self.cleanup()) are
+                performed. Defaults to False.
+        """
         self.df = df
         self.casing = casing
         assert isinstance(
