@@ -82,6 +82,21 @@ upload_sub.add_argument(
     action="store_true",
     default=False,
 )
+upload_sub.add_argument(
+    "--create-schema",
+    help="When True schema will be created. If not called, the project argument `always_create_schema` may set it up.",
+    action="store_true",
+    default=False,
+)
+upload_sub.add_argument(
+    "--destructive-create-table",
+    help=(
+        "When true the target table will be replaced or droped. If not passed, the project"
+        "argument of the same name might override it"
+    ),
+    action="store_true",
+    default=False,
+)
 
 # Init task parser
 init_sub = subs.add_parser(
