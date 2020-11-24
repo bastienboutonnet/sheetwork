@@ -34,8 +34,9 @@ def test_check_and_compare_version(mocker):
     # mock the call to pypi
     mocker.patch("luddite.get_version_pypi", return_value="1.0.0")
     dummy_version = "0.0.0"
-    needs_update = check_and_compare_version(dummy_version)
+    needs_update, pypi_version = check_and_compare_version(dummy_version)
     assert needs_update is True
+    assert pypi_version == "1.0.0"
 
 
 def test_cast_pandas_dtypes():
