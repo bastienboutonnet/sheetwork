@@ -45,6 +45,10 @@ coverage = "^5.3"
 pytest-mock = "^3.3.1"
 pytest-datafiles = "^2.0"
 towncrier = "^19.2.0"
+tox = "^3.20.1"
+
+[tool.poetry.extras]
+test = ["pytest"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
