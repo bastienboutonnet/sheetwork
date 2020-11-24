@@ -101,12 +101,12 @@ class Project:
             "create_table": ["always_create_table", "always_create"],
             "create_schema": ["always_create_schema"],
         }
-        for object, rule in object_creation_mapping.items():
+        for object_type, rule in object_creation_mapping.items():
             if self.project_dict.get(create_everything_label):
                 create = [True]
             else:
                 create = [True for x in rule if self.project_dict.get(x) is True]
-            self.object_creation_dct.update({object: True in create})
+            self.object_creation_dct.update({object_type: True in create})
         self.destructive_create_table = (
             True
             if self.project_dict.get("destructive_create_table", self.destructive_create_table)

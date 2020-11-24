@@ -38,12 +38,12 @@ class SheetworkTracebackManager:
                 length += 1
                 return length
 
-            def handle_exception(type, value, tb):
+            def handle_exception(exception_type, value, tb):
                 # 1. skip custom assert code, e.g.
                 # while tb and is_custom_assert_code(tb):
                 #   tb = tb.tb_next
                 # 2. only display your code
                 length = mycode_traceback_levels(tb)
-                print("".join(traceback.format_exception(type, value, tb, length)))
+                print("".join(traceback.format_exception(exception_type, value, tb, length)))
 
             sys.excepthook = handle_exception
