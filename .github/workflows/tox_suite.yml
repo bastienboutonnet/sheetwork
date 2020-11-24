@@ -43,3 +43,7 @@ jobs:
         run: tox -e py
         env:
           PLATFORM: ${{ matrix.platform }}
+      - name: Test with tox (wheels)
+        run: tox --wheel -e py
+        env:
+          PLATFORM: ${{ matrix.platform }}
