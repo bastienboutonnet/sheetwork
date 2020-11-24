@@ -1,3 +1,4 @@
+"""ABC to define what an concrete Connection object should look like."""
 import abc
 
 
@@ -13,7 +14,7 @@ class BaseCredentials(abc.ABC):
         raise NotImplementedError()
 
 
-class BaseConnection(abc.ABC):
+class BaseConnection(abc.ABC):  # noqa D101
     @abc.abstractmethod
     def generate_engine(self) -> None:
         raise NotImplementedError()

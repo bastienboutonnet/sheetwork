@@ -1,3 +1,4 @@
+"""Sheetwork main orchestration module containing."""
 import sys
 from typing import List, Optional, Tuple, Union
 
@@ -17,20 +18,26 @@ from sheetwork.core.utils import check_columns_in_df
 
 
 class SheetBag:
-    """Main object orchestrates sheet loading, cleaning, and db pushing by calling the relevant
-    submodules.
+    """Main object orchestrates sheet loading, cleaning, and db pushing.
 
     Raises:
-        TypeError: [description]
         ColumnNotFoundInDataFrame: If a column on which a rename or casting is asked for cannot be
         found in the DataFrame resulting from the obtained sheet.
-        RuntimeError: [description]
 
     Returns:
         SheetBag: Loaded, and possibly cleaned sheet object with db interaction methods.
     """
 
     def __init__(self, config: ConfigLoader, flags: FlagParser, profile: Profile):
+        """Constructor of SheetBag class.
+
+        Args:
+            config (ConfigLoader): initialised Sheetwork config class containing required params to
+                orchestrate SheetBag successfully.
+            flags (FlagParser): class containing defaults or parsed CLI arguments
+            profile (Profile): class containing info such as credentials db type etc required for
+                SheetBag to know what to do.
+        """
         self.sheet_df: pandas.DataFrame = pandas.DataFrame()
         self.flags = flags
         self.config = config
@@ -72,13 +79,13 @@ class SheetBag:
 
     def load_sheet(self):
         """Loads a google sheet, and calls clean up steps if applicable.
+
         Sheet must have been shared with account admin email address used in storage.
 
         Raises:
             TypeError: When loader does not return results that can be converted into a pandas
             DataFrame a type error will be raised.
         """
-
         if self.flags.sheet_name:
             logger.info(timed_message(f"Importing: {self.flags.sheet_name}"))
             logger.debug(f"Importing data from: {self.config.sheet_config['sheet_key']}")
@@ -105,7 +112,9 @@ class SheetBag:
         return df
 
     def exclude_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
-        """Drops columns referred to by their identifier (the exact string in the google sheet) when
+        """Drops columns referred to by their identifier.
+
+        The identifier is the exact string in the google sheet when
         a list is provided in the "excluded_columns" field of a sheet yml file.
 
         Args:
@@ -115,7 +124,6 @@ class SheetBag:
             pandas.DataFrame: Either the same dataframe as originally provided or one with dropped
             columns as required.
         """
-
         cols_to_exclude: Union[str, List[str]] = self.config.sheet_config.get(  # type: ignore
             "excluded_columns", list(str())
         )

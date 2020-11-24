@@ -1,3 +1,4 @@
+"""Abstract definition of what a basic SQL adaptor should look like to satisfy the rest of the contracts."""
 import abc
 from typing import Any, Dict, Optional
 
@@ -6,7 +7,7 @@ from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
 
 
 class BaseSQLAdapter(abc.ABC):
-    """sets up required adapter methods"""
+    """sets up required adapter methods."""
 
     @abc.abstractmethod
     def acquire_connection(self) -> None:

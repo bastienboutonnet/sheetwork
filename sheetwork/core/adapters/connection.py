@@ -1,3 +1,4 @@
+"""Concrete Database Connection classes. This may be broken into db specific modules down the road."""
 from typing import Dict
 
 from snowflake.sqlalchemy import URL
@@ -12,6 +13,11 @@ class SnowflakeCredentials(BaseCredentials):
     """This should be a base class down the line but for now it's kinda adhoc until all works fine."""
 
     def __init__(self, profile: Profile):
+        """Constructs SnowflakeCredentials. All it needs is an initted Profile object.
+
+        Args:
+            profile (Profile): inited profile objects generated from parsing profiles.ymlk
+        """
         self.profile = profile.profile_dict
         self.are_valid_credentials: bool = False
         self.db_type: str = str()
@@ -57,11 +63,15 @@ class SnowflakeCredentials(BaseCredentials):
 
 
 class SnowflakeConnection(BaseConnection):
-    """For now this is also pretty adhocy until all works well and we can genericise into proper
-    adaptor design.
-    """
+    """Sets up Snowflake database connection."""
 
     def __init__(self, credentials: SnowflakeCredentials):
+        """Constructs SnowflakeConnection by giving it an initialised SnowflakeCredentials object.
+
+        Args:
+            credentials (SnowflakeCredentials): initialised SnowflakeCredentials object obtained
+                from parsing and validating profiles.yml.
+        """
         self.db_type = credentials.db_type
         self.credentials = credentials
         self.generate_engine()

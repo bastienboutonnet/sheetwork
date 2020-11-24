@@ -1,3 +1,4 @@
+"""Houses Profile class which parses information from profiles.yml such as db type, creds etc."""
 from pathlib import Path
 from typing import Dict
 
@@ -21,6 +22,14 @@ class Profile:
     """
 
     def __init__(self, project: Project, target_name: str = str()):
+        """Profile constructor. Mainly just needs an initted Project object.
+
+        Args:
+            project (Project): initted project object
+            target_name (str, optional): Mainly used in unit testing if you want to override the
+                project name. Pretty useless in all other practice cases I think.
+                Defaults to str().
+        """
         self.profile_name = project.project_name
         self.target_name = target_name
         self.profile_dict: Dict[str, str] = dict()

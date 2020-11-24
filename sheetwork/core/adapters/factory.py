@@ -1,3 +1,4 @@
+"""Database Adaper factory."""
 import importlib
 from typing import Type
 
@@ -7,7 +8,14 @@ from sheetwork.core.config.profile import Profile
 
 
 class AdapterContainer:
+    """Chosses and houses all concrete database adaptors as well as Connections and Credentials."""
+
     def __init__(self):
+        """Constructor for AdapterContainer.
+
+        Houses what kind of adpaters are allowed and what their names are and where to load then
+        from.
+        """
         self.adatpters = {
             "snowflake": {
                 "sql_adapter": {

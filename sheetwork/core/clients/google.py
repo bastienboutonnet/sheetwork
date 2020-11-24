@@ -1,3 +1,4 @@
+"""Houses classes and methods to help interacting with Google Spreasheet API. Uses `gspread` mainly."""
 from pathlib import Path
 from typing import Any, List, Tuple
 
@@ -19,7 +20,9 @@ from sheetwork.core.utils import check_dupe_cols
 
 
 class GoogleSpreadsheet:
-    """Gets google cloud credentials checks client from profile and handles google sheet
+    """Takes care of the interaction with a Google Sheet like you've never seen before!
+
+    Gets google cloud credentials checks client from profile and handles google sheet
     interactions such as downloading a sheet or other activities permitted by the gspread lib.
 
     Raises:
@@ -34,6 +37,16 @@ class GoogleSpreadsheet:
     CREDS_EXT = ".json"
 
     def __init__(self, profile: Profile, workbook_key: str = str(), workbook_name: str = str()):
+        """Constructor of GoogleSpreadsheet.
+
+        Mainly just sets up auth.
+
+        Args:
+            profile (Profile): Initialised profile class containing parsed credentials and
+                other goodness.
+            workbook_key (str, optional): Unique google sheet key (found in URL). Defaults to str().
+            workbook_name (str, optional): Name of the workbook in your drive. Defaults to str().
+        """
         self._profile = profile
         self.is_service_account = profile.profile_dict.get("is_service_account", True)
         self.credential_file_exists, self.creds_path = self._check_google_creds_exist()
@@ -67,8 +80,9 @@ class GoogleSpreadsheet:
         self.is_authenticated = True
 
     def _override_gspread_default_creds(self) -> None:
-        """Temporary workaround to allow `gspread.oauth()` to look for credentials in another location
-        than defaults. For more info: https://github.com/burnash/gspread/issues/826
+        """Temporary workaround to allow `gspread.oauth()` to look for credentials in another location.
+
+        For more info: https://github.com/burnash/gspread/issues/826
         This will likely be removed if work on gspread #826 gets carried out.
         """
         logger.debug(
