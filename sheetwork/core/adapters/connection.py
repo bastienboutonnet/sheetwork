@@ -67,13 +67,14 @@ class SnowflakeConnection(BaseConnection):
         self.generate_engine()
 
     def generate_engine(self):
-        self.url = URL(
-            account=self.credentials.credentials.get("account"),
-            user=self.credentials.credentials.get("user"),
-            password=self.credentials.credentials.get("password"),
-            role=self.credentials.credentials.get("role"),
-            warehouse=self.credentials.credentials.get("warehouse"),
-            database=self.credentials.credentials.get("database"),
-            schema=self.credentials.credentials.get("schema"),
+        self.engine = create_engine(
+            URL(
+                account=self.credentials.credentials.get("account"),
+                user=self.credentials.credentials.get("user"),
+                password=self.credentials.credentials.get("password"),
+                role=self.credentials.credentials.get("role"),
+                warehouse=self.credentials.credentials.get("warehouse"),
+                database=self.credentials.credentials.get("database"),
+                schema=self.credentials.credentials.get("schema"),
+            )
         )
-        self.engine = create_engine(self.url)

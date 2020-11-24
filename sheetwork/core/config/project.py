@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Dict, Union
 
 from sheetwork.core.exceptions import ProjectFileParserError
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
-from sheetwork.core.ui.printer import red
+from sheetwork.core.ui.printer import red, yellow
 from sheetwork.core.utils import PathFinder
 from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
 from sheetwork.core.yaml.yaml_schema import project_schema
@@ -36,9 +36,10 @@ class Project:
         self.sheet_config_dir: Path = Path.cwd()
 
         # override defaults
-        self.override_from_flags()
+        self.override_paths_from_flags()
         self.load_project_from_yaml()
         self.decide_object_creation()
+        self.override_object_creation_from_flags()
         logger.debug(f"Project name: {self.project_name}")
 
     def load_project_from_yaml(self):
@@ -103,11 +104,29 @@ class Project:
             is True
             else False
         )
+        logger.debug(yellow(f"Object creation dict:\n {self.object_creation_dct}"))
+        logger.debug(yellow(str(self.project_dict)))
 
-    def override_from_flags(self):
+    def override_paths_from_flags(self):
         if self.flags.project_dir:
             self.project_file_fullpath = Path(self.flags.project_dir, type(self).PROJECT_FILENAME)
+
         if self.flags.profile_dir:
             self.profile_dir = Path(self.flags.profile_dir)
+
         if self.flags.sheet_config_dir:
             self.sheet_config_dir = Path(self.flags.sheet_config_dir)
+
+    def override_object_creation_from_flags(self) -> None:
+        if self.flags.create_table:
+            logger.debug(yellow("going to create table"))
+            self.object_creation_dct.update({"create_table": True})
+
+        if self.flags.create_schema:
+            logger.debug(yellow("going to create schema"))
+            self.object_creation_dct.update({"create_schema": True})
+        logger.debug(yellow(f"Object creation dict after override\n {self.object_creation_dct}"))
+
+        if self.flags.destructive_create_table:
+            logger.debug(yellow("going to perform destuctive table creation"))
+            self.destructive_create_table = True

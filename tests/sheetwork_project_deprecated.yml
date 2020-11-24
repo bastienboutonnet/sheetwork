@@ -1,5 +1,4 @@
 name: "sheetwork_test"
 target_schema: "sand"
 always_create: true
-always_create_schema: true
 destructive_create_table: true

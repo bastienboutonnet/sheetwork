@@ -19,7 +19,9 @@ class FlagParser:
         project_name: str = str(),
     ):
         self.sheet_name = test_sheet_name
-        self.create_table = False
+        self.create_table: bool = False
+        self.create_schema: bool = False
+        self.destructive_create_table: bool = False
         self.sheet_key = str()
         self.target_schema = str()
         self.target_table = str()
@@ -44,6 +46,8 @@ class FlagParser:
         if self.task == "upload":
             self.sheet_name = self.args.sheet_name
             self.create_table = self.args.create_table
+            self.create_schema = self.args.create_schema
+            self.destructive_create_table = self.args.destructive_create_table
             self.sheet_key = self.args.sheet_key
             self.target_schema = self.args.schema
             self.target_table = self.args.table

@@ -1,0 +1,11 @@
+ In order to override (or set on demand) object creation (tables and schemas) we now provide the following CLI arguments:
+- `create-table`
+- `create-schema`
+- `destructive-create-table`
+
+These arguments are "companions" which can override the following project configuration arguments:
+- `always_create_table`
+- `always_create_schema`
+- `destructive_create_table`
+
+**IMPORTANT**:CLI flags will override whatever is already present in the project config
