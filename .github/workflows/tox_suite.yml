@@ -1,4 +1,4 @@
-name: sheetwork build and test
+name: tox ci
 
 on: "push"
 
