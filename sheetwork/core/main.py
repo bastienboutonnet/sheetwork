@@ -1,5 +1,6 @@
 """Main module for sheetwork. Sets up Arguments to parse and task handling. That's it!"""
 import argparse
+import sys
 from typing import Union
 
 import sheetwork.core.sheetwork as upload_task
@@ -18,14 +19,31 @@ from sheetwork.core.utils import check_and_compare_version
 # to identify sheetwork code --we use this arg in `core.logger to shorten the traceback`
 __SHEETWORK_CODE = True
 
+
+def check_and_print_version() -> str:
+    """Calls check_and_compare_version and formats a message that works both for main and argparse.
+
+    Returns:
+        str: version info message ready for printing
+    """
+    needs_update, latest_version = check_and_compare_version()
+    installed_version_message = f"Installed Sheetwork version: {__version__}".rjust(40)
+    latest_version_message = f"Latest Sheetwork version: {latest_version}".rjust(40)
+    if latest_version:
+        return "\n".join([installed_version_message, latest_version_message])
+    return installed_version_message
+
+
+# general parser
 parser = argparse.ArgumentParser(
     prog="sheetwork",
     formatter_class=argparse.RawTextHelpFormatter,
     description="CLI tool to load google sheets onto a DB.",
     epilog="Select one of these sub-commands to find specific help for those.",
 )
-parser.add_argument("-v", "--version", action="version", version=f"%(prog)s Running v{__version__}")
+parser.add_argument("-v", "--version", action="version", version=check_and_print_version())
 
+# base sub parser
 base_subparser = argparse.ArgumentParser(add_help=False)
 base_subparser.add_argument("--log-level", help="sets the log level", type=str, default=str())
 base_subparser.add_argument(
@@ -152,8 +170,12 @@ def handle(parser: argparse.ArgumentParser) -> Union[InitTask, SheetBag, None]:
 
 def main(parser: argparse.ArgumentParser = parser):
     """Just your boring main."""
-    print(f"Sheetwork version: {__version__} \n")
-    check_and_compare_version()
+    # print version on every run unless doing `--version` which is better handled by argparse
+    if "--version" not in sys.argv:
+        version_message = check_and_print_version()
+        print(version_message)
+        print("\n")
+
     if parser:
         handle(parser)
     else:

@@ -134,7 +134,7 @@ def check_dupe_cols(columns: List[str], suppress_warning: bool = False) -> Optio
     return dupes
 
 
-def check_and_compare_version(external_version: Optional[str] = str()) -> bool:
+def check_and_compare_version(external_version: Optional[str] = str()) -> Tuple[bool, str]:
     """Checks what the currently installed version of sheetwork is and compares it to the one on PyPI.
 
     This requires an internet connection. In the case where this doesn't happen a URLError will
@@ -160,10 +160,10 @@ def check_and_compare_version(external_version: Optional[str] = str()) -> bool:
                     f"Looks like you're a bit behind. A newer version of Sheetwork v{pypi_version} is available."
                 )
             )
-        return needs_update
+        return needs_update, pypi_version
 
     except URLError:
-        return False
+        return False, str()
 
 
 def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> pandas.DataFrame:
