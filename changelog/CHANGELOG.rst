@@ -1,3 +1,7 @@
+This is an automatically generated changelog. Please consult the reformatted one which resides in the repository's root as ``CHANGELOG.rst``.
+
+.. towncrier release notes start
+
 sheetwork v1.0.1 Nicolas Jaar - Don't Break My Love (2020-11-25)
 =============================
 
