@@ -31,7 +31,7 @@ def test_rename_columns(datafiles):
         sheet_config_dir=str(datafiles),
         profile_dir=str(datafiles),
     )
-    project = Project(flags, "sheetwork_test")
+    project = Project(flags)
     profile = Profile(project)
     config = ConfigLoader(flags, project)
     df = generate_test_df(DIRTY_DF)
@@ -52,7 +52,7 @@ def test_exclude_columns(datafiles):
         sheet_config_dir=str(datafiles),
         profile_dir=str(datafiles),
     )
-    project = Project(flags, "sheetwork_test")
+    project = Project(flags)
     profile = Profile(project)
     config = ConfigLoader(flags, project)
     df = generate_test_df(DROP_COL_DF)
@@ -73,7 +73,7 @@ def test_load_sheet(datafiles):
         sheet_config_dir=str(datafiles),
         profile_dir=str(datafiles),
     )
-    project = Project(flags, "sheetwork_test")
+    project = Project(flags)
     config = ConfigLoader(flags, project)
     profile = Profile(project)
     with mock.patch.object(

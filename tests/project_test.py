@@ -45,7 +45,7 @@ def test_decide_object_creation(monkeypatch, datafiles, project_name):
         expected_object_creation_dict.update({"create_schema": False})
 
     flags = FlagParser(parser, project_dir=str(datafiles))
-    project = Project(flags, project_name=project_name)
+    project = Project(flags)
     project.decide_object_creation()
 
     assert project.object_creation_dct == expected_object_creation_dict
@@ -70,7 +70,7 @@ def test_override_object_creation_from_flags(monkeypatch, datafiles, project_nam
     flags = FlagParser(parser, project_dir=str(datafiles))
     flags.consume_cli_arguments()
 
-    project = Project(flags, project_name=project_name)
+    project = Project(flags)
     project.decide_object_creation()
 
     assert project.object_creation_dct["create_table"] is True

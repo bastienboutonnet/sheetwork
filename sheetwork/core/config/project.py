@@ -20,10 +20,11 @@ class Project:
 
     PROJECT_FILENAME = "sheetwork_project.yml"
     # this is some garbage to make sure we don't sleep when we test the deprecation handling
-    # ! DEPRECATION
+    # ! DEPRECATION "always_create"
     IS_TEST = False
 
-    def __init__(self, flags: FlagParser, project_name: str = str()):
+    def __init__(self, flags: FlagParser) -> None:
+        # , project_name: str = str()):
         """Constructs project object.
 
         Args:
@@ -31,7 +32,7 @@ class Project:
             project_name (str, optional): Mainly used for unit testing no real use in practice.
                 Defaults to str().
         """
-        self.project_name = project_name
+        # self.project_name = project_name
         self.project_dict: Dict[str, Union[str, bool]] = dict()
         self.target_schema: str = str()
         self.object_creation_dct: Dict[str, bool] = dict()
@@ -60,7 +61,7 @@ class Project:
         is_valid_yaml = validate_yaml(project_yaml, project_schema)
         if project_yaml and is_valid_yaml:
             self.project_dict = project_yaml
-            self.project_name = project_yaml.get("name", self.project_name)
+            self.project_name = project_yaml.get("name")
             self.target_schema = project_yaml.get("target_schema", self.target_schema)
             if project_yaml.get("paths"):
                 self.profile_dir = (
@@ -79,7 +80,7 @@ class Project:
                 "Check it exists or that it is valid."
             )
 
-    # ! DEPRECATION
+    # ! DEPRECATION "always_create"
     def handle_deprecations(self) -> None:
         if self.project_dict.get("always_create"):
             msg = (

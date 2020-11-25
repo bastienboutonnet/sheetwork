@@ -40,12 +40,9 @@ def test__override_gspread_default_creds(datafiles, monkeypatch):
     monkeypatch.setattr(gspread.auth, "load_credentials", mock_load_credentials)
     monkeypatch.setattr(gspread.auth, "store_credentials", mock_store_credentials)
 
-    project_name = "sheetwork_test"
     flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
-    project = Project(flags, project_name=project_name)
-    # print(project.project_name)
+    project = Project(flags)
     profile = Profile(project, "end_user")
-    # print(profile.profile_name)
     gsheet = GoogleSpreadsheet(profile)
 
     # testing this also because who knows these might become deprecated
@@ -59,6 +56,7 @@ def test__override_gspread_default_creds(datafiles, monkeypatch):
     # dry_run=True)
     g_creds_dir = profile.google_credentials_dir
 
+    project_name = "sheetwork_test"
     assert gspread.auth.DEFAULT_CONFIG_DIR == g_creds_dir
     assert gspread.auth.DEFAULT_CREDENTIALS_FILENAME == g_creds_dir.joinpath(f"{project_name}.json")
     assert gspread.auth.DEFAULT_AUTHORIZED_USER_FILENAME == g_creds_dir.joinpath(
