@@ -29,7 +29,6 @@ class Project:
         Args:
             flags (FlagParser): Inited flags object.
         """
-        # self.project_name = project_name
         self.project_dict: Dict[str, Union[str, bool]] = dict()
         self.target_schema: str = str()
         self.object_creation_dct: Dict[str, bool] = dict()
