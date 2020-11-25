@@ -1,1 +1,0 @@
-Poetry is now used a the package and dependencies manager

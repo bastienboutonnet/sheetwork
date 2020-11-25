@@ -1,2 +1,0 @@
-* Users can now use their **end user/personal** account. Previously, it was only possible to authenticate using a **service_account**. Thanks for recent changes in `gspread` the auth flow allows for differenciation between end user and service account that is much simpler so we ported this to here https://github.com/burnash/gspread/pull/762
-* **Internal Note/Curiosity**: To make `oauth` work we had to patch `gspread`'s default credential paths (see https://github.com/burnash/gspread/issues/826). Hopefully, this is temporary.

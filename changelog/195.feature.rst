@@ -1,1 +1,0 @@
-Sheetwork now checks for available updates on start (provided you have an internet connection)
