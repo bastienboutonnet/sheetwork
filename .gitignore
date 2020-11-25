@@ -107,3 +107,6 @@ sheetwork_logs/
 
 requirements.txt
 dev-requirements.txt
+
+
+*.tox/**
