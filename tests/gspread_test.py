@@ -7,4 +7,5 @@ def test_importing_gspread():
 
 
 def test_importing_with_get():
+    print(os.environ)
     print(os.getenv("APPDATA"))
