@@ -118,3 +118,9 @@ Under The Hood/Misc
 
 
 - `#218 <https://github.com/bastienboutonnet/sheetwork/issues/218>`_: When passing ``--log-level debug`` in CLI the format of the console output looks more like proper logs instead of the pretty prints to make following logs more easy
+
+
+Previous releases
+=================
+
+There have been releases before. But at the time we were managing things differently. The old changelog can be consulted in `_old_changelog.md <_old_changelog.md>`_

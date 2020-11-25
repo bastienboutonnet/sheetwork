@@ -16,7 +16,7 @@ def test_load_plugins(datafiles):
     from sheetwork.core.main import parser
 
     flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
-    project = Project(flags, "sheetwork_test")
+    project = Project(flags)
     profile = Profile(project, "dev")
     profile.read_profile()
 
