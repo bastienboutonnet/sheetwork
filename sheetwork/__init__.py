@@ -1,3 +1,3 @@
 """Version module and init for sheetwork."""
 
-__version__ = "1.0.1-alpha.0"
+__version__ = "1.0.1-alpha.1"
