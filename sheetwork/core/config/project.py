@@ -24,7 +24,6 @@ class Project:
     IS_TEST = False
 
     def __init__(self, flags: FlagParser) -> None:
-        # , project_name: str = str()):
         """Constructs project object.
 
         Args:

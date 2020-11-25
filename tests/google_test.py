@@ -53,7 +53,6 @@ def test__override_gspread_default_creds(datafiles, monkeypatch):
 
     # now make the replacements
     gsheet._override_gspread_default_creds()
-    # dry_run=True)
     g_creds_dir = profile.google_credentials_dir
 
     project_name = "sheetwork_test"
