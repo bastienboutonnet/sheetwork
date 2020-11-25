@@ -29,8 +29,6 @@ class Project:
 
         Args:
             flags (FlagParser): Inited flags object.
-            project_name (str, optional): Mainly used for unit testing no real use in practice.
-                Defaults to str().
         """
         # self.project_name = project_name
         self.project_dict: Dict[str, Union[str, bool]] = dict()
