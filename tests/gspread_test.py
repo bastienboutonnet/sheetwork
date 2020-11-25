@@ -5,4 +5,6 @@ def test_importing_gspread():
     # import gspread
     print(os.environ["APPDATA"])
 
-    pass
+
+def test_importing_with_get():
+    print(os.getenv("APPDATA"))
