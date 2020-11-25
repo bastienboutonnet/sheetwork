@@ -1,4 +1,0 @@
-Allows more granular control over table (and schema) creation via the `sheetwork_project.yml` file:
-- `always_create_table` is now the new way to ensure that tables always get created. Whether the table is going to be replaced or trucated is governed by the `desctructive_create_table` flag. Closes #251
-
-**IMPORTANT NOTE**: `always_create` is now internally remapped to `always_create_table` and will be deprecated in a future major release.

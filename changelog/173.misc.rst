@@ -1,1 +1,0 @@
-Sheetwork now uses an adaptor/plugin design to allow and facilitate extensions of the tool to other databases.

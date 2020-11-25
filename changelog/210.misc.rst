@@ -1,1 +1,0 @@
-Use and try to fix most warnings from Pylance in an attempt to have more strict typing

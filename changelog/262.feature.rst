@@ -1,1 +1,0 @@
-The target schema now gets created if `always_create_schema` is `True`. Under the hood: SnowflakeAdaptor checks if the schema already exists on the database before creating it.

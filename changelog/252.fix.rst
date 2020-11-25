@@ -1,1 +1,0 @@
-The logger file handler now always prints `DEBUG`-and-up level messages
