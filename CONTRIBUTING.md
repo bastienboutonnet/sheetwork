@@ -52,7 +52,7 @@ Please follow generally accepted git best practices by using **descriptive commi
 
 We'll squash your PR at merge time.
 
-#### Fork it, let's go!
+#### Fork it, let's go! 🥁
 
 Fork the repo and get going. If you're not too experienced with forks, feel free to shoot me a DM on [Discord](https://discord.gg/5GnNNb)
 
