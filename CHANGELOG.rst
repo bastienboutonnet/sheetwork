@@ -41,6 +41,9 @@ Features
   **IMPORTANT**:CLI flags will override whatever is already present in the project config
 
 
+- `#282 <https://github.com/bastienboutonnet/sheetwork/issues/282>`_: Sheetwork now retries obtaining google sheets up to 3 times (max duration 10s) if it hits an ``APIError`` because the end-user or service account was rate limited or other common service availability errors encountered by end users.
+
+  Check the PR to see the exact set of ``APIError`` that sheetwork will attempt retrying for.
 
 Under The Hood/Misc
 -------------------
