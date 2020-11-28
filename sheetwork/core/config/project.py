@@ -6,8 +6,8 @@ from typing import Dict, Union
 from sheetwork.core.exceptions import ProjectFileParserError
 from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
-from sheetwork.core.ui.printer import red, yellow
-from sheetwork.core.utils import PathFinder
+from sheetwork.core.ui.printer import yellow
+from sheetwork.core.utils import PathFinder, deprecate
 from sheetwork.core.yaml.yaml_helpers import open_yaml, validate_yaml
 from sheetwork.core.yaml.yaml_schema import project_schema
 
@@ -77,16 +77,16 @@ class Project:
             )
 
     # ! DEPRECATION "always_create"
-    def handle_deprecations(self) -> None:
+    def handle_deprecations(self, colour: str = "red") -> None:
         if self.project_dict.get("always_create"):
             msg = (
-                "\nDEPRECATION WANING: 'always_create' will be deprecated in a future major release\n"
-                "'always_create' now means 'always_create_table'. \n"
-                "Prefer using 'always_create_table' instead or 'always_create_all_objects' if you \n"
+                "'always_create' will be deprecated in a future major release "
+                "'always_create' now means 'always_create_table'. "
+                "Prefer using 'always_create_table' instead or 'always_create_all_objects' if you "
                 "want to make sheetwork create all objects (database, schemas and tables)."
             )
 
-            logger.warning(red(msg))
+            deprecate(message=msg, colour=colour)
             if type(self).IS_TEST is False:
                 time.sleep(4)
 
