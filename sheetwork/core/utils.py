@@ -1,5 +1,6 @@
 """Bunch of things needed by a bunch of other things which kinda don't have a better place to go."""
 import collections
+import warnings
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 from urllib.error import URLError
@@ -16,7 +17,10 @@ from sheetwork.core.exceptions import (
     UnsupportedDataTypeError,
 )
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
-from sheetwork.core.ui.printer import yellow
+from sheetwork.core.ui.printer import red, yellow
+
+DEPRECATION_WARNINGS_ENABLED = True
+_WARNINGS_ALREADY_ENABLED = False
 
 
 class PathFinder:
@@ -210,3 +214,38 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
     df = df.astype(overwrite_dict)
     logger.debug(f"Head of cast dataframe:\n {df.head()}")
     return df
+
+
+def deprecate(message: str, colour: str = "yellow") -> None:
+    """Handles deperecation messages more using proper DeprecationWarnings.
+
+    It also makes sure deprecatio warnings are enabled globally as certain shells might have them
+    turned off by default.
+
+    Args:
+        message (str): Deprecation message to print.
+        colour (str, optional): Colour name to wrap the decprecation message. For now only "yellow",
+            "red" or None are supported. Defaults to "yellow".
+    """
+    global DEPRECATION_WARNINGS_ENABLED, _WARNINGS_ALREADY_ENABLED
+
+    if colour == "yellow":
+        _message = yellow(message)
+    elif colour == "red":
+        _message = red(message)
+    elif colour is None:
+        _message = message
+    else:
+        logger.error(f"{colour} is not supported, painting error mesage 'yellow'")
+        _message = yellow(colour)
+
+    if DEPRECATION_WARNINGS_ENABLED and not _WARNINGS_ALREADY_ENABLED:
+        _WARNINGS_ALREADY_ENABLED = True
+        warnings.filterwarnings(
+            "default", ".*", category=DeprecationWarning, module="gspread_pandas"
+        )
+    if _WARNINGS_ALREADY_ENABLED and not DEPRECATION_WARNINGS_ENABLED:
+        warnings.filterwarnings(
+            "ignore", ".*", category=DeprecationWarning, module="gspread_pandas"
+        )
+    warnings.warn(_message, DeprecationWarning, stacklevel=2)
