@@ -16,9 +16,6 @@ from sheetwork.core.task.init import InitTask
 from sheetwork.core.ui.traceback_manager import SheetworkTracebackManager
 from sheetwork.core.utils import check_and_compare_version
 
-# to identify sheetwork code --we use this arg in `core.logger to shorten the traceback`
-__SHEETWORK_CODE = True
-
 
 def check_and_print_version() -> str:
     """Calls check_and_compare_version and formats a message that works both for main and argparse.
