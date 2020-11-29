@@ -1,6 +1,5 @@
 """Holds some fun stuff to allow for quantity of traceback printed to stout. Nothing too magical."""
-import sys
-import traceback
+import pretty_errors
 
 from sheetwork.core.flags import FlagParser
 
@@ -8,8 +7,7 @@ from sheetwork.core.flags import FlagParser
 class SheetworkTracebackManager:
     """Consumes from flags whether user wants full tracebacks and sets up approproate skipping.
 
-    This is for all tracebacks that are not part of the sheetwork code as identified by the
-    __SHEETWORK_CODE gobal which resides in main.py. It's kinda ugly but kinda nifty too...
+    This class now uses `pretty_errors` to manage traceback length, look and feel.
     """
 
     def __init__(self, flags: FlagParser) -> None:
@@ -21,29 +19,25 @@ class SheetworkTracebackManager:
         Args:
             flags (FlagParser): Initialised flags object.
         """
+        self._stack_depth: int = 4
         if flags.full_tracebacks:
-            # noop
-            pass
+            self._stack_depth = int()
 
-        else:
+        self.configure_pretty_errors()
 
-            def is_mycode(tb):
-                globs = tb.tb_frame.f_globals
-                return globs.__contains__("__sheetwork_code")
-
-            def mycode_traceback_levels(tb):
-                length = 0
-                while tb and is_mycode(tb):
-                    tb = tb.tb_next
-                length += 1
-                return length
-
-            def handle_exception(exception_type, value, tb):
-                # 1. skip custom assert code, e.g.
-                # while tb and is_custom_assert_code(tb):
-                #   tb = tb.tb_next
-                # 2. only display your code
-                length = mycode_traceback_levels(tb)
-                print("".join(traceback.format_exception(exception_type, value, tb, length)))
-
-            sys.excepthook = handle_exception
+    def configure_pretty_errors(self) -> None:
+        pretty_errors.configure(
+            separator_character="*",
+            line_number_first=False,
+            display_link=True,
+            lines_before=5,
+            lines_after=2,
+            line_color=pretty_errors.RED + "> " + pretty_errors.default_config.line_color,
+            code_color="  " + pretty_errors.default_config.line_color,
+            truncate_code=True,
+            display_locals=True,
+            stack_depth=self._stack_depth,
+            trace_lines_before=4,
+            trace_lines_after=0,
+            display_arrow=True,
+        )
