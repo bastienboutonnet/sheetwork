@@ -42,6 +42,20 @@ EXPECTED_SHEETWORK_PROJECT = {
     "destructive_create_table": True,
 }
 
+
+EXPECTED_SHEETWORK_PROJECT_ALL_CREATE = {
+    "name": "sheetwork_test",
+    "target_schema": "sand",
+    "always_create_objects": True,
+    "destructive_create_table": True,
+}
+
+EXPECTED_SHEETWORK_PROJECT_DEPRECATED = {
+    "name": "sheetwork_test",
+    "target_schema": "sand",
+    "always_create": True,
+}
+
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],

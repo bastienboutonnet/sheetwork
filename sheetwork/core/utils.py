@@ -191,7 +191,10 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
         # see https://github.com/bastienboutonnet/sheetwork/issues/204 for more details
         int="object",
         numeric="float64",
-        boolean="bool",
+        # ! HOT_FIX
+        # this is intentional pandas
+        # see https://github.com/bastienboutonnet/sheetwork/issues/288
+        boolean="object",
         timestamp_ntz="datetime64[ns]",
         date="datetime64[ns]",  # this intentional pandas doesn't really have just dates.
     )
@@ -211,6 +214,8 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
         overwrite_dict.update({col: dtypes_map[data_type]})
 
     # cast
+    logger.debug(f"DF BEFORE CASTING: {df.head()}")
+    logger.debug(f"DF BEFORE CASTING DTYPES: {df.dtypes}")
     df = df.astype(overwrite_dict)
     logger.debug(f"Head of cast dataframe:\n {df.head()}")
     return df
