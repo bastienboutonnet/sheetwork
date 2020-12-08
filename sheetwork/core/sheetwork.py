@@ -114,6 +114,7 @@ class SheetBag:
         df = self.rename_columns(df)
         self.push_anyway, df = self.run_cleanup(df)
         logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
+        logger.debug(f"Loaded SHEET HEAD: {df}")
         self.sheet_df = df
 
     def rename_columns(self, df: pandas.DataFrame):
