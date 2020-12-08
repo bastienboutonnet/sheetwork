@@ -2,7 +2,11 @@ from pathlib import Path
 
 import pytest
 
-from .mockers import EXPECTED_SHEETWORK_PROJECT
+from .mockers import (
+    EXPECTED_SHEETWORK_PROJECT,
+    EXPECTED_SHEETWORK_PROJECT_DEPRECATED,
+    EXPECTED_SHEETWORK_PROJECT_ALL_CREATE,
+)
 
 FIXTURE_DIR = Path(__file__).resolve().parent
 
