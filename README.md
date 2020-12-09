@@ -34,4 +34,4 @@ A handy package to load Google Sheets to your database right from the CLI and wi
 
 ## Installation & Documentation
 
-Head over to the pretty [documentation](https://bastienboutonnet.gitbook.io/sheetwork/).
+Head over to the pretty [documentation](https://bitpicky.gitbook.io/sheetwork/).
