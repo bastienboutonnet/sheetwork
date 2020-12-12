@@ -51,7 +51,8 @@ class SnowflakeAdapter(BaseSQLAdapter):
     def _create_schema(self) -> None:
         if self._has_connection is False:
             raise NoAcquiredConnectionError(
-                f"No acquired connection for {type(self).__name__}. Make sure you call `acquire_connection` before."
+                f"No acquired connection for {type(self).__name__}. Make sure you call "
+                "`acquire_connection` before."
             )
         try:
             if self.config.project.object_creation_dct["create_schema"]:

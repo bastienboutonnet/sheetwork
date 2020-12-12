@@ -2,7 +2,7 @@
 import collections
 import warnings
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 from urllib.error import URLError
 
 import luddite
@@ -11,6 +11,7 @@ from packaging.version import parse as semver_parse
 
 from sheetwork.core._version import __version__
 from sheetwork.core.exceptions import (
+    ColumnNotBooleanCompatibleError,
     ColumnNotFoundInDataFrame,
     DuplicatedColumnsInSheet,
     NearestFileNotFound,
@@ -194,7 +195,7 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
         # ! HOT_FIX
         # this is intentional pandas
         # see https://github.com/bastienboutonnet/sheetwork/issues/288
-        boolean="object",
+        boolean="boolean",
         timestamp_ntz="datetime64[ns]",
         date="datetime64[ns]",  # this intentional pandas doesn't really have just dates.
     )
@@ -216,8 +217,48 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
     # cast
     logger.debug(f"DF BEFORE CASTING: {df.head()}")
     logger.debug(f"DF BEFORE CASTING DTYPES: {df.dtypes}")
+
+    # handle boolean "manually" because .astype(bool) leads to everythin being true if not null.
+    df = handle_booleans(df, overwrite_dict=overwrite_dict)
+    # use pandas native function for all other data types as they are not problematic and we have
+    # already handled booleans specificatlly.
     df = df.astype(overwrite_dict)
     logger.debug(f"Head of cast dataframe:\n {df.head()}")
+    return df
+
+
+def handle_booleans(df: pandas.DataFrame, overwrite_dict: Dict[str, str]) -> pandas.DataFrame:
+    """Handles boolean conversion from "false" or "true" strings.
+
+    Takes a df and an overwrite dict of shape `{col: dtype}`, iterates through dict and if there are
+    any columns to be casted as boolean tests whether:
+        - whether the column is a string and contains 'false' and/or 'true' values only.
+        - remaps these strings to python boolean builtins
+
+    Args:
+        df (pandas.DataFrame): data frame of a google sheet to be cast.
+        overwrite_dict (Dict[str, str]): dict of shape `{column: dtype}`
+
+    Returns:
+        pandas.DataFrame: pandas dataframe with potential columns with boolean types casted as
+            Python booleans.
+    """
+    boolean_map_dict = {"true": True, "false": False}
+    for column, data_type in overwrite_dict.items():
+
+        if data_type == "boolean" and df[column].dtypes == "object":
+            df[column] = df[column].str.lower()
+
+            unique_boolean_values = df[column].unique().tolist()
+            if set(unique_boolean_values).issubset(boolean_map_dict.keys()):
+                df[column] = df[column].map(boolean_map_dict)
+            else:
+                raise ColumnNotBooleanCompatibleError(
+                    f"The following values in {column} cannot be turned into booleans: "
+                    f"{set(unique_boolean_values).difference(boolean_map_dict.keys())} "
+                    "Can only convert strings that map to 'false' or 'true'"
+                )
+
     return df
 
 

@@ -99,3 +99,7 @@ class InvalidOrMissingCommandError(SheetWorkError):
 
 class GoogleClientNotAuthenticatedError(SheetWorkError):
     """when you forgot to run authenticate or it failed."""
+
+
+class ColumnNotBooleanCompatibleError(SheetWorkError):
+    """when a column that is asked for being concerted to bool does not have compatible values"""
