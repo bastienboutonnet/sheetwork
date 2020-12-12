@@ -1,3 +1,14 @@
+sheetwork v1.0.3 Nicolas Jaar - Space Is Only Noise If You Can See (2020-12-12)
+===============================================================================
+
+Bug Fixes
+---------
+
+- `#290 <https://github.com/bastienboutonnet/sheetwork/issues/290>`_: Boolean data-type casting was buggy somewhere between ``v1.0.0`` and ``v1.0.2`` and resulted to all non null strings to be given a ``True`` value. We now handle boolean conversion explicitly by mapping strings ``false`` and ``true`` to python ``False`` and ``True`` that pandas can actually understand and expose to the database appropriately. **NOTE**: If the user asks for a column to be cast to boolean but this column contains any other string than the aforementioned ones (and capitalised
+  variants) ``sheetwork`` will throw a ``ColumnNotBooleanCompatibleError`` that will help the user locate the offending column as well as the offending value(s).
+
+
+
 sheetwork v1.0.2 Nicolas Jaar - Killing Time (2020-12-01)
 =========================================================
 
