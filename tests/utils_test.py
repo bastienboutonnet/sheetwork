@@ -4,6 +4,8 @@ CASTING_DICT = {
     "col_int": "int",
     "col_varchar": "varchar",
     "created_date": "date",
+    "col_bool": "boolean",
+    "col_numeric": "numeric",
 }
 
 

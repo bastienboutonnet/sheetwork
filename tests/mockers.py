@@ -70,6 +70,8 @@ TO_CAST_DF = {
     "col_int": ["1", "2", "32"],
     "col_varchar": ["foo", "bar", "fizz"],
     "created_date": ["2019/01/01", "2019/01/02", "2019/01/03"],
+    "col_bool": ["false", "False", "true"],
+    "col_numeric": ["1.2", "1.3", "1"],
 }
 
 CAST_DF = {
@@ -81,6 +83,8 @@ CAST_DF = {
         1: Timestamp("2019-01-02 00:00:00"),
         2: Timestamp("2019-01-03 00:00:00"),
     },
+    "col_bool": {0: False, 1: False, 2: True},
+    "col_numeric": {0: 1.2, 1: 1.3, 2: 1},
 }
 
 CASING_DF = {
