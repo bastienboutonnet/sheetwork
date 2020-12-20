@@ -26,9 +26,9 @@ It offers a "close to no code" workflow that can still live alongside your codeb
 
 ## Why use sheetwork?
 
-Getting google sheets into any database often requires writing custom Python code that interacts with the Google API. That's fine if you can write Python, but it may not always be an option. On top of that, if your workflow requires you to ingest a bunch of sheets you may find yourself **writing the same boiler plate code over and over**. Sheetwork offers a way to bring some DRY practices, standardisation, and simplification to basic google sheet ingestion. **It won't do a lot of transformations and doesn't have room for baking in much transformational logic because we believe this is best done by fully-fledged ETL open-source tools such as [dbt](https://www.getdbt.com/)**.
+Getting google sheets into any database often requires writing custom Python code that interacts with the Google API. That's fine if you can write Python, but it may not always be an option. On top of that, if your workflow requires you to ingest a bunch of sheets you may find yourself **writing the same boiler plate code over and over**.
 
-A handy package to load Google Sheets to your database right from the CLI and with easy configuration via YAML files.
+Sheetwork offers a way to bring some DRY practices, standardisation, and simplification to basic google sheet ingestion. **It won't do a lot of transformations and doesn't have room for baking in much transformational logic because we believe this is best done by fully-fledged ETL open-source tools such as [dbt](https://www.getdbt.com/)**.
 
 🙋🏻‍♂️ **Want to use `sheetwork` on other databases? Let's talk!** ([Make an issue](https://github.com/bastienboutonnet/sheetwork/issues/new/choose), or ping me on [Discord](https://discord.gg/5GnNNb))
 
