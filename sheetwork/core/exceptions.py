@@ -25,8 +25,8 @@ class NoWorkbookLoadedError(SheetWorkError):
     """When the workbook object is None."""
 
 
-class WorksheetNotFoundError(SheetWorkError):
-    """when a referred worksheet cannot be found in the workbook."""
+class SheetLoadingError(SheetWorkError):
+    """When a referred an error happens during sheet loading."""
 
 
 class YAMLFileEmptyError(SheetWorkError):

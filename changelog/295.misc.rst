@@ -1,0 +1,1 @@
+``make_df_from_worksheet()`` now throws more errors and wraps them into the a custom exception named ``SheetLoadingError``. The previous behaviour was causing too much silentness and prevented user from seeing errors such as the ones highlighted in #292

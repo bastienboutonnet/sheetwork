@@ -2,6 +2,8 @@ import logging
 
 from pathlib import Path
 from typing import Tuple
+from gspread.models import Spreadsheet
+import mock
 
 import pytest
 
@@ -64,3 +66,34 @@ def test__override_gspread_default_creds(datafiles, monkeypatch):
     assert gspread.auth.DEFAULT_SERVICE_ACCOUNT_FILENAME == g_creds_dir.joinpath(
         f"{project_name}_service_account.json"
     )
+
+
+@pytest.mark.parametrize("empty_workbook", [True, False])
+@pytest.mark.datafiles(FIXTURE_DIR)
+def test_make_df_from_worksheet(datafiles, monkeypatch, empty_workbook):
+    from sheetwork.core.clients.google import GoogleSpreadsheet
+    from sheetwork.core.config.profile import Profile
+    from sheetwork.core.flags import FlagParser
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.main import parser
+    from sheetwork.core.exceptions import SheetLoadingError, NoWorkbookLoadedError
+
+    flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
+    project = Project(flags)
+    profile = Profile(project)
+
+    def mock__check_google_creds_exist(self):
+        return True, Path()
+
+    monkeypatch.setattr(
+        GoogleSpreadsheet, "_check_google_creds_exist", mock__check_google_creds_exist
+    )
+    g = GoogleSpreadsheet(profile)
+    if empty_workbook:
+        with pytest.raises(NoWorkbookLoadedError):
+            g.workbook = None
+            g.make_df_from_worksheet()
+    else:
+        g.workbook = "dummy_non_empty_content"
+        with pytest.raises(SheetLoadingError):
+            g.make_df_from_worksheet()
