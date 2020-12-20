@@ -4,7 +4,7 @@ from typing import Any, List, Tuple
 
 import gspread
 import pandas
-from gspread.exceptions import SpreadsheetNotFound, WorksheetNotFound
+from gspread.exceptions import SpreadsheetNotFound
 
 from sheetwork.core.config.profile import Profile
 from sheetwork.core.exceptions import (
@@ -12,10 +12,10 @@ from sheetwork.core.exceptions import (
     GoogleCredentialsFileMissingError,
     GoogleSpreadSheetNotFound,
     NoWorkbookLoadedError,
-    WorksheetNotFoundError,
+    SheetLoadingError,
 )
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
-from sheetwork.core.ui.printer import green
+from sheetwork.core.ui.printer import green, yellow
 from sheetwork.core.utils import check_dupe_cols
 
 
@@ -155,9 +155,7 @@ class GoogleSpreadsheet:
                 df = pandas.DataFrame(values[1:], columns=values[0])
             else:
                 df = pandas.DataFrame(worksheet.get_all_values())
+            logger.debug(yellow(f"Raw obtained google sheet: \n {df.head()}"))
             return df
-        except WorksheetNotFound:
-            raise WorksheetNotFoundError(
-                f"Could not find {worksheet_name} in workbook. "
-                "If 'default sheet' not found all sheets in the workbook may be empty."
-            )
+        except Exception as e:
+            raise SheetLoadingError(f"Error loading sheet: \n {e}")
