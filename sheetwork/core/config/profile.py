@@ -59,7 +59,7 @@ class Profile:
                         self.profile_dict = target_profile
                 else:
                     raise ProfileParserError(
-                        f"Error finding and entry for  target: {self.target_name}, "
+                        f"Error finding and entry for target: {self.target_name}, "
                         f"under the {self.profile_name} profile."
                     )
             else:
