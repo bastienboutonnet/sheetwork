@@ -126,7 +126,7 @@ class SheetBag:
         self.sheet_df = df
 
     def count_empty_header_cols_in_df(self, df: pandas.DataFrame) -> int:
-        """Check how many headers are made of whitespaces only.
+        """Check how many header columns are made of whitespace only.
 
         Later on, it will raise an issue for the user to provide proper naming in order to write in the database.
 
