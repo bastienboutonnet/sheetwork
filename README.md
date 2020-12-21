@@ -8,7 +8,7 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/bastienboutonnet/sheetwork/dev/nicolas_jaar.svg)](https://results.pre-commit.ci/latest/github/bastienboutonnet/sheetwork/dev/nicolas_jaar)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 
-[![Discord](https://img.shields.io/discord/752101657218908281?label=discord)](https://discord.gg/ebSTWq)
+[![Discord](https://img.shields.io/discord/752101657218908281?label=discord)](https://discord.gg/bUk4MVTcqW)
 
 # sheetwork 💩🤦
 
@@ -25,7 +25,7 @@ It offers a "close to no code" workflow that can still live alongside your codeb
 > - Python: 3.6, 3.7, 3.8
 >   OS: Mac OSX >10.14, Linux
 > - So far all our unit tests work on Windows (tested in GitHub Actions) but no comprehensive testing has been done on this platform.
-> - sheetwork currently only offers support for cloud database Snowflake. However, its design follows an adapter pattern (currently in the making) and can be extended to interact with most databases. Feel free to check how you can [contribute](CONTRIBUTING.md) to the project or reach out on [Discord](https://discord.gg/5GnNNb)..
+> - sheetwork currently only offers support for cloud database Snowflake. However, its design follows an adapter pattern (currently in the making) and can be extended to interact with most databases. Feel free to check how you can [contribute](CONTRIBUTING.md) to the project or reach out on [Discord](https://discord.gg/bUk4MVTcqW)..
 
 ## Why use sheetwork?
 
@@ -33,7 +33,7 @@ Getting google sheets into any database often requires writing custom Python cod
 
 Sheetwork offers a way to bring some DRY practices, standardisation, and simplification to basic google sheet ingestion. **It won't do a lot of transformations and doesn't have room for baking in much transformational logic because we believe this is best done by fully-fledged ETL open-source tools such as [dbt](https://www.getdbt.com/)**.
 
-🙋🏻‍♂️ **Want to use `sheetwork` on other databases? Let's talk!** ([Make an issue](https://github.com/bastienboutonnet/sheetwork/issues/new/choose), or ping me on [Discord](https://discord.gg/5GnNNb))
+🙋🏻‍♂️ **Want to use `sheetwork` on other databases? Let's talk!** ([Make an issue](https://github.com/bastienboutonnet/sheetwork/issues/new/choose), or ping me on [Discord](https://discord.gg/bUk4MVTcqW))
 
 ## Installation & Documentation
 

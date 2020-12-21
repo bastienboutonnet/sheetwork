@@ -2,7 +2,7 @@
 
 Thanks for looking into making `sheetwork` better! We have some loosely defined rules, preferences etc. to make the process a bit smoother but above all, don't let that deter you from contributing.
 
-> ⚠️ **Wanna use `sheetwork` with another database than Snowflake?** ✨ Let's talk!! 🎉 I'm really eager to grow the database adapters for `sheetwork`. Create an issue on GitHub or DM me on [Discord](https://discord.gg/5GnNNb)
+> ⚠️ **Wanna use `sheetwork` with another database than Snowflake?** ✨ Let's talk!! 🎉 I'm really eager to grow the database adapters for `sheetwork`. Create an issue on GitHub or DM me on [Discord](https://discord.gg/bUk4MVTcqW)
 
 ## How can you contribute?
 
@@ -54,7 +54,7 @@ We'll squash your PR at merge time.
 
 #### Fork it, let's go! 🥁
 
-Fork the repo and get going. If you're not too experienced with forks, feel free to shoot me a DM on [Discord](https://discord.gg/5GnNNb)
+Fork the repo and get going. If you're not too experienced with forks, feel free to shoot me a DM on [Discord](https://discord.gg/bUk4MVTcqW)
 
 **Shit how do we do this fork thing?**
 In most cases it's pretty easy
@@ -94,7 +94,7 @@ In most cases it's pretty easy
 
 ### Development
 
-The whole package is managed using [Poetry](https://python-poetry.org/). It's really really good and ensures reproducibility. **If this is holding you up from contributing feel free to shoot me a DM on [Discord](https://discord.gg/5GnNNb) and I can deploy good old `setup.py` files for you to use `pip install -e .` in your venv management tool of choice, although I think `pip` install edidable from current folder should work --but not sure.**
+The whole package is managed using [Poetry](https://python-poetry.org/). It's really really good and ensures reproducibility. **If this is holding you up from contributing feel free to shoot me a DM on [Discord](https://discord.gg/bUk4MVTcqW) and I can deploy good old `setup.py` files for you to use `pip install -e .` in your venv management tool of choice, although I think `pip` install edidable from current folder should work --but not sure.**
 
 1. [Install Poetry on your system](https://python-poetry.org/docs/#installation) --I personally recommend installing it via [`pipx`](https://github.com/pipxproject/pipx) but that's entirely up to you.
 2. `cd` to your fork and run `poetry install` in the root folder of the repo. Poetry will create a virtual environment for python, install dependencies and install `sheetwork` in **editable** mode so that you can directly run and test `sheetwork` as you develop without having to install over and over.
@@ -112,4 +112,4 @@ pytests tests/
 
 ## Wow you're still reading!? Thanks a lot for taking the time to make sheetwork better! ✨
 
-Thanks for your interest in contributing. I really appreciate it and I hope those guidelines don't sound too much. If you have any questions feel free to DM me or reach out the community on [Discord](https://discord.gg/5GnNNb).
+Thanks for your interest in contributing. I really appreciate it and I hope those guidelines don't sound too much. If you have any questions feel free to DM me or reach out the community on [Discord](https://discord.gg/bUk4MVTcqW).
