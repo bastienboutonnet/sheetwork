@@ -6,6 +6,7 @@ from sheetwork.core.config.project import Project
 from sheetwork.core.exceptions import (
     SheetConfigParsingError,
     SheetWorkConfigMissingError,
+    TargetObjectNotProvided,
     TargetSchemaMissing,
 )
 from sheetwork.core.flags import FlagParser
@@ -51,7 +52,7 @@ class ConfigLoader:
         elif self.flags.sheet_key and self.flags.target_schema and self.flags.target_table:
             logger.debug("Reading config from command line.")
         elif self.flags.sheet_key and (not self.flags.target_schema or not self.target_table):
-            raise NotImplementedError(
+            raise TargetObjectNotProvided(
                 """
                 No target schema and or target was provided.
                 You must provide one when not reading from config file.

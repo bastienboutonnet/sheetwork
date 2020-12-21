@@ -85,6 +85,10 @@ class TargetSchemaMissing(SheetWorkError):
     """when no target schema whatsoever can be found."""
 
 
+class TargetObjectNotProvided(SheetWorkError):
+    """When no target object could be fround because it was not CLI or config provided."""
+
+
 class ProjectIsAlreadyCreated(SheetWorkError):
     """when using sheetwork init and a project is found."""
 

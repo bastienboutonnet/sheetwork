@@ -1,5 +1,9 @@
 from pathlib import Path
-from sheetwork.core.exceptions import SheetConfigParsingError, SheetWorkConfigMissingError
+from sheetwork.core.exceptions import (
+    SheetConfigParsingError,
+    SheetWorkConfigMissingError,
+    TargetObjectNotProvided,
+)
 
 
 import pytest
@@ -73,7 +77,7 @@ def test_set_config(datafiles, parse_from_cli, test_sheet_name):
 
     project = Project(flags)
     if parse_from_cli and test_sheet_name == "missing_schema_args":
-        with pytest.raises(NotImplementedError):
+        with pytest.raises(TargetObjectNotProvided):
             config = ConfigLoader(flags, project)
     elif parse_from_cli is False and test_sheet_name == "non_existant_sheet":
         with pytest.raises(SheetConfigParsingError):
