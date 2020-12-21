@@ -1,4 +1,6 @@
-from .mockers import CAST_DF, TO_CAST_DF, generate_test_df
+import pytest
+
+from .mockers import CAST_DF, EMPTY_HEADER_COLUMNS_DF, TO_CAST_DF, generate_test_df
 
 CASTING_DICT = {
     "col_int": "int",
@@ -49,3 +51,12 @@ def test_cast_pandas_dtypes():
     expected_cast = generate_test_df(CAST_DF)
 
     assert cast_df.to_dict() == expected_cast.to_dict()
+
+
+def test_assert_no_empty_header_cols():
+    from sheetwork.core.utils import assert_no_empty_header_cols
+    from sheetwork.core.exceptions import EmptyHeaderError
+
+    test_df = generate_test_df(EMPTY_HEADER_COLUMNS_DF)
+    with pytest.raises(EmptyHeaderError):
+        assert_no_empty_header_cols(test_df)
