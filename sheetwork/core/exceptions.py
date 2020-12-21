@@ -102,4 +102,8 @@ class GoogleClientNotAuthenticatedError(SheetWorkError):
 
 
 class ColumnNotBooleanCompatibleError(SheetWorkError):
-    """when a column that is asked for being concerted to bool does not have compatible values"""
+    """when a column that is asked for being concerted to bool does not have compatible values."""
+
+
+class EmptyHeaderError(SheetWorkError):
+    """when at least 1 column header is made of whitespaces only."""

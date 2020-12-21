@@ -13,6 +13,7 @@ from sheetwork.core.cleaner import SheetCleaner
 from sheetwork.core.clients.google import GoogleSpreadsheet
 from sheetwork.core.config.config import ConfigLoader
 from sheetwork.core.config.profile import Profile
+from sheetwork.core.exceptions import EmptyHeaderError
 from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import red, timed_message, yellow
@@ -94,8 +95,9 @@ class SheetBag:
         Sheet must have been shared with account admin email address used in storage.
 
         Raises:
-            TypeError: When loader does not return results that can be converted into a pandas
+            TypeError: when loader does not return results that can be converted into a pandas
             DataFrame a type error will be raised.
+            EmptyHeaderError: when at least 1 column header is made of whitespaces only.
         """
         if self.flags.sheet_name:
             logger.info(timed_message(f"Importing: {self.flags.sheet_name}"))
@@ -109,6 +111,12 @@ class SheetBag:
             raise TypeError("import_sheet did not return a pandas DataFrame")
         logger.debug(f"Columns imported from sheet: {df.columns.tolist()}")
 
+        # Check that headers are in the 1st row
+        if self.count_empty_headers(df) > 0:
+            raise EmptyHeaderError(
+                f"The google sheet contains {self.count_empty_headers(df)} column(s) with empty header."
+            )
+
         # Perform exclusions, renamings and cleanups before releasing the sheet.
         df = self.exclude_columns(df)
         df = self.rename_columns(df)
@@ -116,6 +124,20 @@ class SheetBag:
         logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
         logger.debug(f"Loaded SHEET HEAD: {df}")
         self.sheet_df = df
+
+    def count_empty_headers(self, df: pandas.DataFrame) -> int:
+        """Check how many headers are made of whitespaces only.
+
+        Later on, it will raise an issue for the user to provide proper naming in order to write in the database.
+
+        Args:
+            df (pandas.DataFrame): DataFrame downloaded from google sheet.
+
+        Returns:
+            int: number of columns with empty headers in df
+        """
+        cnt = (df.rename(columns=lambda x: x.strip()).columns == "").sum()
+        return cnt
 
     def rename_columns(self, df: pandas.DataFrame):
         if self.config.sheet_column_rename_dict:
