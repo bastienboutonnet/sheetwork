@@ -14,6 +14,7 @@ from sheetwork.core.exceptions import (
     ColumnNotBooleanCompatibleError,
     ColumnNotFoundInDataFrame,
     DuplicatedColumnsInSheet,
+    EmptyHeaderError,
     NearestFileNotFound,
     UnsupportedDataTypeError,
 )
@@ -295,3 +296,20 @@ def deprecate(message: str, colour: str = "yellow") -> None:
             "ignore", ".*", category=DeprecationWarning, module="gspread_pandas"
         )
     warnings.warn(_message, DeprecationWarning, stacklevel=2)
+
+
+def assert_no_empty_header_cols(df: pandas.DataFrame) -> bool:
+    """Check that no header cols are made of whitespaces only.
+
+    Args:
+        df (pandas.DataFrame): DataFrame downloaded from google sheet.
+
+    Returns:
+        bool: True if at least 1 header column is empty
+    """
+    count_empty_header_columns = (df.rename(columns=lambda x: x.strip()).columns == "").sum()
+    if count_empty_header_columns > 0:
+        raise EmptyHeaderError(
+            f"The google sheet contains {count_empty_header_columns} column(s) with empty header."
+        )
+    return True
