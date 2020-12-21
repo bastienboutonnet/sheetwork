@@ -51,7 +51,7 @@ class PathFinder:
 
     def find_nearest_dir_and_file(
         self, yaml_file: str, current: Path = Path.cwd()
-    ) -> Tuple[Path, Path]:
+    ) -> Tuple[Path, Path, bool]:
         """Looks for the yaml_file you ask for.
 
         Starting from the current directory and going up with
@@ -75,7 +75,7 @@ class PathFinder:
             if filename.exists():
                 project_dir = filename.parent
                 logger.debug(f"{filename} exists and was returned")
-                return project_dir, filename
+                return project_dir, filename, True
             current = current.parent
             filename = Path(current, yaml_file)
             self.iteration += 1
@@ -90,7 +90,7 @@ def check_columns_in_df(
     df: pandas.DataFrame,
     columns: Union[List[str], str],
     warn_only: bool = False,
-    suppress_warning: bool = False,
+    # suppress_warning: bool = False,
 ) -> Tuple[bool, List[str]]:
     """Checks if a bunch of columns are present in a dataframe.
 
@@ -116,16 +116,18 @@ def check_columns_in_df(
     cols_not_in_df = [x for x in columns if x not in df.columns.tolist()]
     reduced_cols = [x for x in columns if x in df.columns.tolist()]
     message = f"The following columns were not found in the sheet: {cols_not_in_df} "
-    if warn_only and not suppress_warning:
+    if warn_only:
+        # and not suppress_warning:
         logger.warning(
             yellow(message + "they were ignored. Consider cleaning your sheets.yml file")
         )
-    elif not warn_only and not suppress_warning:
+    elif not warn_only:
+        # and not suppress_warning:
         raise ColumnNotFoundInDataFrame(message + "Google Sheet or sheets.yml needs to be cleaned")
     return False, reduced_cols
 
 
-def check_dupe_cols(columns: List[str], suppress_warning: bool = False) -> Optional[List[str]]:
+def check_dupe_cols(columns: List[str]):
     """Checks dupes in a list."""
     columns_without_empty_strings = list(filter(None, columns))
     dupes = [
@@ -133,11 +135,10 @@ def check_dupe_cols(columns: List[str], suppress_warning: bool = False) -> Optio
         for item, count in collections.Counter(columns_without_empty_strings).items()
         if count > 1
     ]
-    if dupes and not suppress_warning:
+    if dupes:
         raise DuplicatedColumnsInSheet(
             f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
         )
-    return dupes
 
 
 def check_and_compare_version(external_version: Optional[str] = str()) -> Tuple[bool, str]:
@@ -193,9 +194,6 @@ def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> p
         # see https://github.com/bastienboutonnet/sheetwork/issues/204 for more details
         int="object",
         numeric="float64",
-        # ! HOT_FIX
-        # this is intentional pandas
-        # see https://github.com/bastienboutonnet/sheetwork/issues/288
         boolean="boolean",
         timestamp_ntz="datetime64[ns]",
         date="datetime64[ns]",  # this intentional pandas doesn't really have just dates.
@@ -244,10 +242,15 @@ def handle_booleans(df: pandas.DataFrame, overwrite_dict: Dict[str, str]) -> pan
         pandas.DataFrame: pandas dataframe with potential columns with boolean types casted as
             Python booleans.
     """
+    df = df.copy()
     boolean_map_dict = {"true": True, "false": False}
     for column, data_type in overwrite_dict.items():
 
         if data_type == "boolean" and df[column].dtypes == "object":
+            if not df[column].map(type).eq(str).all():
+                # in this case we need to convert all of the items to strings
+                bool_to_string_dict = {True: "true", False: "false"}
+                df[column] = df[column].replace(bool_to_string_dict)
             df[column] = df[column].str.lower()
 
             unique_boolean_values = df[column].unique().tolist()
@@ -288,13 +291,9 @@ def deprecate(message: str, colour: str = "yellow") -> None:
 
     if DEPRECATION_WARNINGS_ENABLED and not _WARNINGS_ALREADY_ENABLED:
         _WARNINGS_ALREADY_ENABLED = True
-        warnings.filterwarnings(
-            "default", ".*", category=DeprecationWarning, module="gspread_pandas"
-        )
+        warnings.filterwarnings("default", ".*", category=DeprecationWarning, module="sheetwork")
     if _WARNINGS_ALREADY_ENABLED and not DEPRECATION_WARNINGS_ENABLED:
-        warnings.filterwarnings(
-            "ignore", ".*", category=DeprecationWarning, module="gspread_pandas"
-        )
+        warnings.filterwarnings("ignore", ".*", category=DeprecationWarning, module="sheetwork")
     warnings.warn(_message, DeprecationWarning, stacklevel=2)
 
 
