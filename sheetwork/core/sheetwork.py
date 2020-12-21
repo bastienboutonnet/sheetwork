@@ -112,9 +112,9 @@ class SheetBag:
         logger.debug(f"Columns imported from sheet: {df.columns.tolist()}")
 
         # Check that headers are in the 1st row
-        if self.count_empty_headers(df) > 0:
+        if self.count_empty_header_cols_in_df(df) > 0:
             raise EmptyHeaderError(
-                f"The google sheet contains {self.count_empty_headers(df)} column(s) with empty header."
+                f"The google sheet contains {self.count_empty_header_cols_in_df(df)} column(s) with empty header."
             )
 
         # Perform exclusions, renamings and cleanups before releasing the sheet.
@@ -125,7 +125,7 @@ class SheetBag:
         logger.debug(f"Loaded SHEET HEAD: {df}")
         self.sheet_df = df
 
-    def count_empty_headers(self, df: pandas.DataFrame) -> int:
+    def count_empty_header_cols_in_df(self, df: pandas.DataFrame) -> int:
         """Check how many headers are made of whitespaces only.
 
         Later on, it will raise an issue for the user to provide proper naming in order to write in the database.
