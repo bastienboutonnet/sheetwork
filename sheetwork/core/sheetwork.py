@@ -16,7 +16,7 @@ from sheetwork.core.config.profile import Profile
 from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import red, timed_message, yellow
-from sheetwork.core.utils import check_columns_in_df
+from sheetwork.core.utils import assert_no_empty_header_cols, check_columns_in_df
 
 
 class SheetBag:
@@ -94,8 +94,9 @@ class SheetBag:
         Sheet must have been shared with account admin email address used in storage.
 
         Raises:
-            TypeError: When loader does not return results that can be converted into a pandas
+            TypeError: when loader does not return results that can be converted into a pandas
             DataFrame a type error will be raised.
+            EmptyHeaderError: when at least 1 column header is made of whitespaces only.
         """
         if self.flags.sheet_name:
             logger.info(timed_message(f"Importing: {self.flags.sheet_name}"))
@@ -108,6 +109,9 @@ class SheetBag:
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
         logger.debug(f"Columns imported from sheet: {df.columns.tolist()}")
+
+        # Check that headers are in the 1st row
+        _ = assert_no_empty_header_cols(df)
 
         # Perform exclusions, renamings and cleanups before releasing the sheet.
         df = self.exclude_columns(df)

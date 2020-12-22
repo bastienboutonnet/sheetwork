@@ -2,6 +2,7 @@ import os
 
 import mock
 import pytest
+from pandas.testing import assert_frame_equal
 
 from sheetwork.core.config.config import ConfigLoader
 from sheetwork.core.config.profile import Profile
@@ -13,6 +14,7 @@ from tests.mockers import (
     EXCLUDED_DF_COLS,
     RENAMED_COLS,
     RENAMED_DF,
+    NON_EMPTY_HEADER,
     generate_test_df,
 )
 
@@ -77,9 +79,9 @@ def test_load_sheet(datafiles):
     config = ConfigLoader(flags, project)
     profile = Profile(project)
     with mock.patch.object(
-        SheetBag, "_obtain_googlesheet", return_value=generate_test_df(DIRTY_DF)
+        SheetBag, "_obtain_googlesheet", return_value=generate_test_df(NON_EMPTY_HEADER)
     ):
         sheetbag = SheetBag(config, flags, profile)
         sheetbag.load_sheet()
         target_df = generate_test_df(RENAMED_DF)
-        assert target_df.equals(sheetbag.sheet_df)
+        assert_frame_equal(target_df, sheetbag.sheet_df)
