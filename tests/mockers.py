@@ -134,6 +134,15 @@ EMPTY_HEADER_COLUMNS_DF = {
     " col_1": [1, 2, 33],
 }
 
+NON_EMPTY_HEADER = {
+    "col_a": [1, 2, 32],
+    "col b": ["as .    ", "b", "   c"],
+    "1. col_one": ["aa", "bb", "cc"],
+    "col_1": [1, 2, 33],
+    "long ass name": ["foo", "bar", "fizz"],
+    "col_with_empty_string": ["1", "", "2"],
+}
+
 
 def generate_test_df(df):
     test_df = pandas.DataFrame.from_dict(df)
