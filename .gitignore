@@ -110,3 +110,6 @@ dev-requirements.txt
 
 
 /.tox/
+
+**/dummy/**
+**/dummy--force-credentials/**

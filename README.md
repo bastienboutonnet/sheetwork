@@ -7,6 +7,7 @@
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/bastienboutonnet/sheetwork/dev/nicolas_jaar.svg)](https://results.pre-commit.ci/latest/github/bastienboutonnet/sheetwork/dev/nicolas_jaar)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a1a0175f7b036041036e/maintainability)](https://codeclimate.com/github/bastienboutonnet/sheetwork/maintainability)
 
 [![Discord](https://img.shields.io/discord/752101657218908281?label=discord)](https://discord.gg/bUk4MVTcqW)
 
