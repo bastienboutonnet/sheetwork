@@ -19,7 +19,9 @@ def test_handle(datafiles, test_cli_args_index):
 
     # from sheetwork.core.flags import FlagParser
 
+    #! THE ORDER IS IMPORTANT WHEN RUNNING IN GH ACTIONS
     args_to_test = [
+        ["init", "--project-name", "dummy"],
         [
             "upload",
             "--sheet-key",  # this prevents having to read config and stuff
@@ -31,7 +33,6 @@ def test_handle(datafiles, test_cli_args_index):
             "--table",
             "dummy",
         ],
-        ["init", "--project-name", "dummy"],
         [
             "upload",
             "--sheet-key",
