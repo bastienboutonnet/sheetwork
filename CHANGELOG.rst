@@ -1,3 +1,22 @@
+sheetwork v1.0.4 Nicolas Jaar - Mi Mujer (2020-12-22)
+=============================
+
+Under The Hood/Misc
+-------------------
+
+- `#295 <https://github.com/bastienboutonnet/sheetwork/issues/295>`_: ``make_df_from_worksheet()`` now throws more errors and wraps them into the a custom exception named ``SheetLoadingError``. The previous behaviour was causing too much silentness and prevented user from seeing errors such as the ones highlighted in `#292 <https://github.com/bastienboutonnet/sheetwork/issues/292>`_
+
+
+- `#304 <https://github.com/bastienboutonnet/sheetwork/issues/304>`_: Empty headers are a pain, but not uncommon. More often than not, users have their google sheet start on the second or so row. This causes all sorts of unexpected behaviour when we're trying to land the table into the database as we don't know what column names to give.
+
+  This PR implements a check of whether the header contains empty column names and alerts raises an error asking the user to fix the GoogleSheet from the source.
+
+  In the next feature release (v1.1.0) we will allow users to specify the index of the header so that they do not have to change it in the source in case that is not an option or so.
+
+  **Contributed by:** `@jflairie <https://github.com/jflairie>`_
+
+
+
 sheetwork v1.0.3 Nicolas Jaar - Space Is Only Noise If You Can See (2020-12-12)
 ===============================================================================
 

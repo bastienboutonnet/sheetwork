@@ -1,1 +1,0 @@
-Adds test coverage to many more parts of the code bringing it from 67% to 80+
