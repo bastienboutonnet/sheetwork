@@ -39,7 +39,7 @@ jobs:
           PYTHONPATH=src/ poetry run python -m pytest --cov-report=xml:coverage-reports/coverage.xml --cov-report term-missing  --cov=sheetwork tests/
 
       - name: Upload coverage report to CodeCov for PRs
-        if: startsWith(github.event_name, 'pull_request')
+        if: startsWith(github.event_name, 'pull_request_target')
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
