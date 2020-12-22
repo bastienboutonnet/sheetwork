@@ -41,6 +41,8 @@ def test_handle(datafiles, test_cli_args_index):
             "test_sheet",
             "--project-dir",
             str(datafiles),
+            "--profile-dir",
+            str(datafiles),
             "--log-level",
             "debug",
             "--schema",
