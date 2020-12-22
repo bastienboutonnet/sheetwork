@@ -1,7 +1,7 @@
 """Main module for sheetwork. Sets up Arguments to parse and task handling. That's it!"""
 import argparse
 import sys
-from typing import Union
+from typing import List, Union
 
 import sheetwork.core.sheetwork as upload_task
 import sheetwork.core.task.init as init_task
@@ -130,8 +130,10 @@ init_sub.add_argument(
 )
 
 
-def handle(parser: argparse.ArgumentParser) -> Union[InitTask, SheetBag, None]:
-    """Pure orchestrator function.
+def handle(
+    parser: argparse.ArgumentParser, test_cli_args: List[str] = list(), run_task: bool = True
+) -> Union[InitTask, SheetBag, None]:
+    """Sheetwork's main orchestrator function.
 
     Calls pipeline based on the command asked for. It also sets up log levels and calls for CLI arg
     parsing JIT!.
@@ -143,7 +145,7 @@ def handle(parser: argparse.ArgumentParser) -> Union[InitTask, SheetBag, None]:
         Union[InitTask, SheetBag, None]: Ran object of type Task (need to rework TODO)
     """
     flag_parser = FlagParser(parser)
-    flag_parser.consume_cli_arguments()
+    flag_parser.consume_cli_arguments(test_cli_args=test_cli_args)
 
     # set up traceback override
     SheetworkTracebackManager(flag_parser)
@@ -153,35 +155,32 @@ def handle(parser: argparse.ArgumentParser) -> Union[InitTask, SheetBag, None]:
 
     if flag_parser.args.command == "init":
         task: Union[init_task.InitTask, upload_task.SheetBag] = init_task.InitTask(flag_parser)
-        return task.run()
+        if run_task:
+            return task.run()
+        return task
 
     if flag_parser.args.command == "upload":
         project = Project(flag_parser)
         config = ConfigLoader(flag_parser, project)
         profile = Profile(project)
         task = upload_task.SheetBag(config, flag_parser, profile)
-        return task.run()
+        if run_task:
+            return task.run()
+        return task
+    return None
 
-    raise NotImplementedError(f"{flag_parser.args.command} is not supported")
 
-
-def main(parser: argparse.ArgumentParser = parser):
+def main(parser: argparse.ArgumentParser = parser, test_cli_args: List[str] = list()) -> int:
     """Just your boring main."""
+    _cli_args = list()
+    if test_cli_args:
+        _cli_args = test_cli_args
+
     # print version on every run unless doing `--version` which is better handled by argparse
-    if "--version" not in sys.argv:
+    if "--version" not in sys.argv[1:]:
         version_message = check_and_print_version()
         print(version_message)
         print("\n")
 
-    if parser:
-        handle(parser)
-    else:
-        raise NotImplementedError(
-            """You did not parse any args to sheetwork.
-            If you are not sure how to use it consult the help by doing: sheetwork --help
-            """
-        )
-
-
-if __name__ == "__main__":
-    main()
+        handle(parser, _cli_args)
+    return 0

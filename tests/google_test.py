@@ -1,9 +1,6 @@
 import logging
-
 from pathlib import Path
 from typing import Tuple
-from gspread.models import Spreadsheet
-import mock
 
 import pytest
 
@@ -68,9 +65,9 @@ def test__override_gspread_default_creds(datafiles, monkeypatch):
     )
 
 
-@pytest.mark.parametrize("empty_workbook", [True, False])
+@pytest.mark.parametrize("empty_workbook, worksheet_name", [(True, str()), (False, "sheet_1")])
 @pytest.mark.datafiles(FIXTURE_DIR)
-def test_make_df_from_worksheet(datafiles, monkeypatch, empty_workbook):
+def test_make_df_from_worksheet(datafiles, monkeypatch, empty_workbook, worksheet_name):
     from sheetwork.core.clients.google import GoogleSpreadsheet
     from sheetwork.core.config.profile import Profile
     from sheetwork.core.flags import FlagParser
@@ -92,8 +89,32 @@ def test_make_df_from_worksheet(datafiles, monkeypatch, empty_workbook):
     if empty_workbook:
         with pytest.raises(NoWorkbookLoadedError):
             g.workbook = None
-            g.make_df_from_worksheet()
+            g.make_df_from_worksheet(worksheet_name=worksheet_name)
     else:
         g.workbook = "dummy_non_empty_content"
         with pytest.raises(SheetLoadingError):
-            g.make_df_from_worksheet()
+            g.make_df_from_worksheet(worksheet_name=worksheet_name)
+
+
+@pytest.mark.parametrize("simulate_missing_creds", [False, True])
+@pytest.mark.datafiles(FIXTURE_DIR)
+def test__check_google_creds_exits(datafiles, simulate_missing_creds):
+    from sheetwork.core.config.profile import Profile
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.main import parser
+    from sheetwork.core.flags import FlagParser
+    from sheetwork.core.clients.google import GoogleSpreadsheet
+    from sheetwork.core.exceptions import GoogleCredentialsFileMissingError
+
+    print(str(datafiles))
+    flags = FlagParser(parser, profile_dir=str(datafiles), project_dir=str(datafiles))
+    project = Project(flags)
+    profile = Profile(project, "dev")
+
+    g = GoogleSpreadsheet(profile)
+    if simulate_missing_creds:
+        g._profile.google_credentials_dir = Path(g._profile.google_credentials_dir).parent
+        with pytest.raises(GoogleCredentialsFileMissingError):
+            g._check_google_creds_exist()
+    else:
+        g._check_google_creds_exist()

@@ -3,9 +3,9 @@
 This class which will instanciate CLI args default and/or
 consume CLI arguments.
 """
+import sys
 from argparse import ArgumentParser
-
-from sheetwork.core.exceptions import InvalidOrMissingCommandError
+from typing import List
 
 
 class FlagParser:
@@ -59,8 +59,12 @@ class FlagParser:
         self.force_credentials = False
         self.full_tracebacks = False
 
-    def consume_cli_arguments(self):
-        self.args = self.parser.parse_args()
+    def consume_cli_arguments(self, test_cli_args: List[str] = list()) -> None:
+        if test_cli_args:
+            _cli_args = test_cli_args
+        else:
+            _cli_args = sys.argv[1:]
+        self.args = self.parser.parse_args(_cli_args)
         self.task = self.args.command
 
         # these only come into the flags if task is upload so we have to jump over.
@@ -80,10 +84,7 @@ class FlagParser:
         elif self.task == "init":
             self.project_name = self.args.project_name
             self.force_credentials = self.args.force_credentials_folders
-        else:
-            raise InvalidOrMissingCommandError(
-                "No task or invalid task was provided. Run `sheetwork --help` to learn how to use sheetwork."
-            )
+
         # put these out cos they apply to both tasks or would be escaped by error.
         self.log_level = self.args.log_level
         self.profile_dir = self.args.profile_dir

@@ -6,6 +6,7 @@ from sheetwork.core.config.project import Project
 from sheetwork.core.exceptions import (
     SheetConfigParsingError,
     SheetWorkConfigMissingError,
+    TargetObjectNotProvided,
     TargetSchemaMissing,
 )
 from sheetwork.core.flags import FlagParser
@@ -50,12 +51,16 @@ class ConfigLoader:
             self.load_config_from_file()
         elif self.flags.sheet_key and self.flags.target_schema and self.flags.target_table:
             logger.debug("Reading config from command line.")
-        else:
-            raise NotImplementedError(
+        elif self.flags.sheet_key and (not self.flags.target_schema or not self.target_table):
+            raise TargetObjectNotProvided(
                 """
                 No target schema and or target was provided.
                 You must provide one when not reading from config file.
                 """
+            )
+        else:
+            raise SheetWorkConfigMissingError(
+                "No --sheet-name not --sheet-key was provided cannot load any config"
             )
 
     def load_config_from_file(self):
@@ -97,6 +102,7 @@ class ConfigLoader:
     def get_sheet_config(self):
         if self.flags.sheet_name:
             sheets = self.config["sheets"]
+            print(f"KJSKDJHSDKJH {self.flags.sheet_name}")
             sheet_config = [
                 sheet for sheet in sheets if sheet.get("sheet_name") == self.flags.sheet_name
             ]
@@ -117,8 +123,6 @@ class ConfigLoader:
                     self.lowercase(column_dict) for column_dict in self.sheet_config.get("columns")  # type: ignore
                 ]
                 logger.debug(f"Cols after lowercasing: {self.sheet_config.get('columns')}")
-        else:
-            raise SheetWorkConfigMissingError("No sheet name was provided, cannot fetch config.")
 
     def _generate_column_type_override_dict(self):
         """Generates {col: dtype} dict for data type casting.

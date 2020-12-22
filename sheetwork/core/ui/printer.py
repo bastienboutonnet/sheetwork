@@ -12,8 +12,8 @@ CL_YELLOW = COLOURS["yellow"]
 CL_RESET_ALL = COLOURS["reset_all"]
 
 
-def colour(message: str, colour: str) -> str:  # noqa D103
-    if USE_COLOURS:
+def colour(message: str, colour: str, use_colours: bool = USE_COLOURS) -> str:  # noqa D103
+    if use_colours:
         return f"{colour}{message}{CL_RESET_ALL}"
     return message
 

@@ -1,11 +1,8 @@
 """System related interaction methods."""
 import sys
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 
 def open_dir_cmd() -> str:

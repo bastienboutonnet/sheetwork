@@ -4,8 +4,6 @@ import pytest
 
 from .mockers import (
     EXPECTED_SHEETWORK_PROJECT,
-    EXPECTED_SHEETWORK_PROJECT_DEPRECATED,
-    EXPECTED_SHEETWORK_PROJECT_ALL_CREATE,
 )
 
 FIXTURE_DIR = Path(__file__).resolve().parent
@@ -19,7 +17,6 @@ def test_load_project_from_yaml(datafiles):
 
     flags = FlagParser(parser, project_dir=str(datafiles))
     project = Project(flags)
-    project.load_project_from_yaml()
 
     assert project.project_dict == EXPECTED_SHEETWORK_PROJECT
 
@@ -56,26 +53,20 @@ def test_decide_object_creation(monkeypatch, datafiles, project_name):
     assert project.destructive_create_table is True
 
 
-@pytest.mark.parametrize(
-    "project_name",
-    ["sheetwork_project", "sheetwork_project_all_create", "sheetwork_project_deprecated"],
-)
 @pytest.mark.datafiles(FIXTURE_DIR)
-def test_override_object_creation_from_flags(monkeypatch, datafiles, project_name):
+def test_override_object_creation_from_flags(monkeypatch, datafiles):
     from sheetwork.core.flags import FlagParser
     from sheetwork.core.config.profile import Project
     from sheetwork.core.main import parser
 
-    def mock_consume_cli_arguments(self):
-        self.create_table = True
-        self.destructive_create_table = True
-
-    monkeypatch.setattr(FlagParser, "consume_cli_arguments", mock_consume_cli_arguments)
     flags = FlagParser(parser, project_dir=str(datafiles))
-    flags.consume_cli_arguments()
+    flags.create_table = True
+    flags.create_schema = True
+    flags.destructive_create_table = True
 
     project = Project(flags)
     project.decide_object_creation()
+    project.override_object_creation_from_flags()
 
     assert project.object_creation_dct["create_table"] is True
     assert project.object_creation_dct["create_schema"] is True

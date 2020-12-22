@@ -50,7 +50,7 @@ class Project:
 
     def load_project_from_yaml(self):
         if self.project_file_fullpath == Path("dumpy_path"):
-            _, self.project_file_fullpath = PathFinder().find_nearest_dir_and_file(
+            _, self.project_file_fullpath, _ = PathFinder().find_nearest_dir_and_file(
                 type(self).PROJECT_FILENAME
             )
         project_yaml = open_yaml(self.project_file_fullpath)
