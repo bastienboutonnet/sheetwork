@@ -1,3 +1,4 @@
+Badges
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bastienboutonnet/sheetwork?include_prereleases) [![codecov](https://codecov.io/gh/bastienboutonnet/sheetwork/branch/dev%2Fnicolas_jaar/graph/badge.svg)](https://codecov.io/gh/bastienboutonnet/sheetwork)
 
 ![python](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8-blue)
