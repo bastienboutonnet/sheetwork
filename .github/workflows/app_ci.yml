@@ -1,9 +1,10 @@
 name: sheetwork build, test, cov report
 
 on:
-  [pull_request_target]
-  # pull_request_target:
-  #   types: [assigned, opened, synchronize, reopened]
+  # [pull_request_target
+  pull_request_target:
+    types: [assigned, opened, synchronize, reopened]
+  push:
 
 jobs:
   build:
