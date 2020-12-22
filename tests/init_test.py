@@ -1,5 +1,5 @@
 import pytest
-from pathlib import PosixPath, Path
+from pathlib import Path
 
 
 def test_assert_project_name():
