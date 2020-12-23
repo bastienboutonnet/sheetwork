@@ -122,7 +122,15 @@ DROP_COL_DF = {
     "to_exclude": ["garbage1", "garbage2", "garbage3"],
 }
 
-RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "col_1", "renamed_col", "col_with_empty_string"]
+RENAMED_COLS = [
+    "col_a",
+    "col b",
+    "1. ??col_one",
+    "",
+    "col_1",
+    "renamed_col",
+    "col_with_empty_string",
+]
 
 EXCLUDED_DF_COLS = ["col_a", "col b", "1. col_one", "", "long ass name"]
 
