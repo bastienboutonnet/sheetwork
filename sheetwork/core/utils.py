@@ -311,6 +311,8 @@ def assert_no_empty_header_cols(df: pandas.DataFrame) -> bool:
     count_empty_header_columns = (df.rename(columns=lambda x: x.strip()).columns == "").sum()
     if count_empty_header_columns > 0:
         raise EmptyHeaderError(
-            f"The google sheet contains {count_empty_header_columns} column(s) with empty header."
+            f"The google sheet contains {count_empty_header_columns} "
+            f"{'column' if count_empty_header_columns  < 2 else 'columns'} "
+            "with empty header. All columns should have a name. \n"
         )
     return True
