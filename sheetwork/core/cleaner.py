@@ -34,27 +34,30 @@ class SheetCleaner:
 
         return clean_df
 
+    # ! DOCUMENT THIS HEAVILY IN USER SPACE
     @staticmethod
     def columns_cleanups(
         df: pandas.DataFrame,
         default_replacement: str = "_",
         characters_to_replace: Union[List[str], str] = list(),
     ) -> pandas.DataFrame:
+        df = df.copy()
         # when provided, ensure characters_to_replace is a list
         if isinstance(characters_to_replace, str):
             characters_to_replace = [characters_to_replace]
 
-        # only keep alphanumeric by default
-        regex_string = "[^a-zA-Z0-9]+"
+        # only keep alphanumeric by default, this is the base behaviour from sheetwork
+        regex_string = r"\W+"
 
-        # or, replace a given list of characters when specified
+        # or, replace a given list of characters when specified,
+        # we join the characters with an escaped slash to make
         if characters_to_replace:
-            escaped_slash = "\\"
             if len(characters_to_replace) > 1:
-                characters_to_replace = escaped_slash.join(characters_to_replace)
+                characters_to_replace = "".join(characters_to_replace)
             else:
                 characters_to_replace = characters_to_replace[0]
-            regex_string = r"[{0}{1}]+".format(escaped_slash, characters_to_replace)
+
+            regex_string = fr"[{characters_to_replace}]+"
 
         # replace specified characters with the default_replacement and remove consecutive and
         # trailing whitespace and default_replacement
