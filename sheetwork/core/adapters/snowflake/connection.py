@@ -1,4 +1,4 @@
-"""Concrete Database Connection classes. This may be broken into db specific modules down the road."""
+"""Concrete Snowflake Database Connection classes."""
 from typing import Dict
 
 from snowflake.sqlalchemy import URL
