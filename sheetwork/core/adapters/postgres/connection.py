@@ -41,7 +41,7 @@ class PostgresCredentials:
         self.host: str = str()
         self.port: str = str()
         self.database: str = str()
-        self.schema: str = str()
+        self.target_schema: str = str()
 
     def parse_and_validate_credentials(self) -> None:
         """Parse and validate credentials using pydandic model.
@@ -61,7 +61,7 @@ class PostgresCredentials:
         self.host = self.credentials["host"]
         self.port = self.credentials["port"]
         self.database = self.credentials["database"]
-        self.schema = self.credentials["target_schema"]
+        self.target_schema = self.credentials["target_schema"]
 
 
 class PostgresConnection(BaseConnection):

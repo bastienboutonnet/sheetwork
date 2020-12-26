@@ -23,7 +23,7 @@ EXPECTED_DEV_TEST_PROFILE = {
     "role": "d",
     "database": "e",
     "warehouse": "f",
-    "schema": "g",
+    "target_schema": "g",
     "guser": "sheetwork_test@blahh.iam.gserviceaccount.com",
 }
 

@@ -26,5 +26,5 @@ def test_parse_and_validate_credentials(datafiles):
     assert credentials.host == "localhost"
     assert credentials.port == "5432"
     assert credentials.database == "sheetwork_test"
-    assert credentials.schema == "sheetwork_test_schema"
+    assert credentials.target_schema == "sheetwork_test_schema"
     assert credentials._db_type == "postgres"

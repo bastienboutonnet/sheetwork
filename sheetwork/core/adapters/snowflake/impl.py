@@ -77,9 +77,9 @@ class SnowflakeAdapter(BaseSQLAdapter):
 
         # potentially override target schema from config.
         if override_schema:
-            schema = override_schema
+            target_schema = override_schema
         else:
-            schema = self.config.target_schema
+            target_schema = self.config.target_schema
 
         # write to csv and try to talk to db
         temp = tempfile.NamedTemporaryFile()
@@ -101,7 +101,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
                 try:
                     df.head(0).to_sql(
                         name=self.config.target_table,
-                        schema=schema,
+                        schema=target_schema,
                         con=self.con,
                         if_exists=_if_exists,
                         index=False,
@@ -115,7 +115,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
                         logger.warning(
                             yellow(
                                 f"{self._database}"
-                                f".{schema}.{self.config.target_table} already exists and was not\n"
+                                f".{target_schema}.{self.config.target_table} already exists and was not\n"
                                 "recreated because 'destructive_create_table' is set to False in your profile \n"
                                 "APPENDING instead."
                             )
@@ -156,6 +156,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
         return None
 
     def check_table(self, target_schema: str, target_table: str) -> None:
+        # TODO: Rework this into a non injectible query
         columns_query = f"""
                 select count(*)
                 from {self._database}.information_schema.columns
@@ -164,7 +165,8 @@ class SnowflakeAdapter(BaseSQLAdapter):
                 and table_name = '{target_table.upper()}'
                 ;
                 """
-        rows_query = rows_query = f"select count(*) from {target_schema}.{target_table}"
+        # TODO: Rework this into a non injectible query
+        rows_query = rows_query = f"select count(*) from {target_schema}.{target_table};"
         columns = self.excecute_query(columns_query, return_results=True)
         rows = self.excecute_query(rows_query, return_results=True)
         if columns and rows:

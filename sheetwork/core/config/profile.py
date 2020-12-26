@@ -56,7 +56,7 @@ class Profile:
                 if target_profile and is_valid_yaml:
                     is_valid_profile = self._validate_profile(target_profile)
                     if is_valid_profile:
-                        self.profile_dict = target_profile
+                        self.profile_dict = self._remap_profile_fields(target_profile)
                 else:
                     raise ProfileParserError(
                         f"Error finding and entry for target: {self.target_name}, "
@@ -81,3 +81,14 @@ class Profile:
                 )
             return True
         raise ProfileParserError(f"Error finding and entry for {self.target_name}.")
+
+    # ! DEPRECATE: This should be removed when we deprecate the `schema:` foeld from profiles.yml
+    # TODO: Add a deprecation warning.
+    def _remap_profile_fields(self, profile_dict: Dict[str, str]) -> Dict[str, str]:
+        """Implemented to rename profile.yml keys internally.
+
+        This was introduced because we will aim to use pydantic for schema validation and some of
+        the keywords we allowed users to specify in their yamls are reserved for pydantic.
+        """
+        profile_dict["target_schema"] = profile_dict.pop("schema")
+        return profile_dict

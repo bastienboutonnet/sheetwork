@@ -8,6 +8,23 @@ from sheetwork.core.adapters.base.connection import BaseConnection, BaseCredenti
 from sheetwork.core.config.profile import Profile
 from sheetwork.core.exceptions import CredentialsParsingError
 
+# from pydantic import BaseModel, validator
+
+
+# class SnowflakeCredentialsModel(BaseModel):
+#     account: str
+#     user: str
+#     password: str
+#     role: str
+#     database: str
+#     warehouse: str
+#     target_schema: str
+
+#     @validator("db_type")
+#     def check_db_type_compatibility(cls, value):
+#         assert value == "snowflake"
+#         return value
+
 
 class SnowflakeCredentials(BaseCredentials):
     """This should be a base class down the line but for now it's kinda adhoc until all works fine."""
@@ -37,7 +54,7 @@ class SnowflakeCredentials(BaseCredentials):
                 "role",
                 "database",
                 "warehouse",
-                "schema",
+                "target_schema",
             }
             keys_missing = must_have_keys.difference(self.profile.keys())
             if keys_missing:
@@ -56,7 +73,7 @@ class SnowflakeCredentials(BaseCredentials):
                 "role",
                 "database",
                 "warehouse",
-                "schema",
+                "target_schema",
             }
             for key in must_have_keys:
                 self.credentials.update({key: self.profile.get(key, str())})
@@ -85,6 +102,6 @@ class SnowflakeConnection(BaseConnection):
                 role=self.credentials.credentials.get("role"),
                 warehouse=self.credentials.credentials.get("warehouse"),
                 database=self.credentials.credentials.get("database"),
-                schema=self.credentials.credentials.get("schema"),
+                schema=self.credentials.credentials.get("target_schema"),
             )
         )

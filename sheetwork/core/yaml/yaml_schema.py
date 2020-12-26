@@ -79,6 +79,8 @@ profiles_schema = {
                             "database": {"required": False, "type": "string"},
                             "warehouse": {"required": False, "type": "string"},
                             "schema": {"required": False, "type": "string"},
+                            # ! new and prefered from v1.1.0
+                            "target_schema": {"required": False, "type": "string"},
                             "guser": {"required": True, "type": "string"},
                             "is_service_account": {"required": False, "type": "boolean"},
                         },
