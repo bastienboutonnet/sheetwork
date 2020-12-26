@@ -73,6 +73,8 @@ profiles_schema = {
                             "account": {"required": False, "type": "string"},
                             "user": {"required": True, "type": "string"},
                             "password": {"required": True, "type": "string"},
+                            "host": {"required": False, "type": "string"},
+                            "port": {"required": False, "type": "string"},
                             "role": {"required": False, "type": "string"},
                             "database": {"required": False, "type": "string"},
                             "warehouse": {"required": False, "type": "string"},

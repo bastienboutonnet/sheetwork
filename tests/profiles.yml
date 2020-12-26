@@ -23,3 +23,11 @@ profiles:
         schema: g
         guser: sheetwork_test@blahh.iam.gserviceaccount.com
         is_service_account: False
+      postgres_test:
+        db_type: postgres
+        user: sheetwork_user
+        password: magical_password
+        host: localhost
+        database: sheetwork_test
+        schema: sheetwork_test_schema
+        guser: sheetwork_test@blahh.iam.gserviceaccount.com
