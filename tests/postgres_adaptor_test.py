@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+import sqlalchemy
 
 FIXTURE_DIR = Path(__file__).resolve().parent
 
@@ -28,3 +29,28 @@ def test_parse_and_validate_credentials(datafiles):
     assert credentials.database == "sheetwork_test"
     assert credentials.target_schema == "sheetwork_test_schema"
     assert credentials._db_type == "postgres"
+
+
+@pytest.mark.datafiles(FIXTURE_DIR)
+def test_generate_engine(datafiles):
+    from sheetwork.core.config.profile import Profile
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.flags import FlagParser
+    from sheetwork.core.main import parser
+    from sheetwork.core.adapters.postgres.connection import PostgresCredentials
+    from sheetwork.core.adapters.postgres.connection import PostgresConnection
+
+    flags = FlagParser(parser, profile_dir=str(datafiles), project_dir=str(datafiles))
+    project = Project(flags)
+    profile = Profile(project, target_name="postgres_test")
+
+    credentials = PostgresCredentials(profile)
+    credentials.parse_and_validate_credentials()
+
+    connection = PostgresConnection(credentials)
+
+    assert isinstance(connection.engine, sqlalchemy.engine.Engine)
+    assert (
+        connection._engine_str
+        == "postgresql+psycopg2://sheetwork_user:magical_password@localhost:5432/sheetwork_test"
+    )

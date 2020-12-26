@@ -82,4 +82,5 @@ class PostgresConnection(BaseConnection):
             f"{':'+self._credentials.port if self._credentials.port else str()}"
             f"{'/'+self._credentials.database if self._credentials.database else str()}"
         )
+        self._engine_str = engine_str
         self.engine = create_engine(engine_str)
