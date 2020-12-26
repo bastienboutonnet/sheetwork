@@ -6,7 +6,7 @@ import pandas
 from sqlalchemy.schema import CreateSchema
 
 from sheetwork.core.adapters.base.impl import BaseSQLAdapter
-from sheetwork.core.adapters.connection import SnowflakeConnection
+from sheetwork.core.adapters.snowflake.connection import SnowflakeConnection
 from sheetwork.core.config.config import ConfigLoader
 from sheetwork.core.exceptions import DatabaseError, NoAcquiredConnectionError, TableDoesNotExist
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
