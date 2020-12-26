@@ -1,6 +1,6 @@
 """Module containing all Database Specific classes."""
 import tempfile
-from typing import Any, Optional
+from typing import Any, Optional, Tuple
 
 import pandas
 from sqlalchemy.schema import CreateSchema
@@ -155,7 +155,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
         self.close_connection()
         return None
 
-    def check_table(self, target_schema: str, target_table: str) -> None:
+    def check_table(self, target_schema: str, target_table: str) -> Tuple[int, int]:
         # TODO: Rework this into a non injectible query
         columns_query = f"""
                 select count(*)
@@ -179,6 +179,7 @@ class SnowflakeAdapter(BaseSQLAdapter):
                     )
                 )
             )
+            return columns[0][0], rows[0][0]
         else:
             raise TableDoesNotExist(
                 f"Table {self._database}.{target_schema}.{target_table} seems empty"
