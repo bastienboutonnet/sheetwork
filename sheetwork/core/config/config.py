@@ -60,7 +60,7 @@ class ConfigLoader:
             )
         else:
             raise SheetWorkConfigMissingError(
-                "No --sheet-name not --sheet-key was provided cannot load any config"
+                "No --sheet-name nor --sheet-key was provided cannot load any config"
             )
 
     def load_config_from_file(self):

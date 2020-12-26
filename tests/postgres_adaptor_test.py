@@ -103,12 +103,27 @@ def test_upload(datafiles):
     from sheetwork.core.main import parser
     from sheetwork.core.adapters.postgres.connection import PostgresCredentials
     from sheetwork.core.adapters.postgres.connection import PostgresConnection
-    from sheetwork.core.exceptions import TableDoesNotExist
 
     df = pandas.DataFrame({"col_a": [1, 2, 3], "col_b": ["unicorn", "rainbow", "sparkles"]})
 
-    flags = FlagParser(parser, profile_dir=str(datafiles), project_dir=str(datafiles))
-    flags.consume_cli_arguments(["upload", "-sn", "test_sheet"])
+    flags = FlagParser(parser)
+    flags.consume_cli_arguments(
+        [
+            "upload",
+            "--sheet-key",
+            "test_sheet",
+            "--project-dir",
+            str(datafiles),
+            "--profile-dir",
+            str(datafiles),
+            "--sheet-config-dir",
+            str(datafiles),
+            "--schema",
+            "sheetwork_test_schema",
+            "--table",
+            "magical_table",
+        ]
+    )
     project = Project(flags)
     config = ConfigLoader(flags, project)
     profile = Profile(project, target_name="postgres_test")
