@@ -90,5 +90,6 @@ class Profile:
         This was introduced because we will aim to use pydantic for schema validation and some of
         the keywords we allowed users to specify in their yamls are reserved for pydantic.
         """
-        profile_dict["target_schema"] = profile_dict.pop("schema")
+        if "schema" in profile_dict.keys():
+            profile_dict["target_schema"] = profile_dict.pop("schema")
         return profile_dict
