@@ -12,6 +12,8 @@ from sheetwork.core.exceptions import CredentialsParsingError
 
 
 # class SnowflakeCredentialsModel(BaseModel):
+#     """Pydantic credentials validator model for Snowflake adaptor."""
+
 #     account: str
 #     user: str
 #     password: str
@@ -77,6 +79,15 @@ class SnowflakeCredentials(BaseCredentials):
             }
             for key in must_have_keys:
                 self.credentials.update({key: self.profile.get(key, str())})
+
+    # def parse_and_validate_credentials(self) -> None:
+    #     """Parses profile.yml to obtain snowflake credientials and passes it throught pydantic."""
+
+    #     try:
+    #         _credentials = SnowflakeCredentialsModel(**self.profile)
+    #     except ValidationError as e:
+    #         raise CredentialsParsingError(f"Your profile is not valid \n {e}")
+    #     self.credentials = _credentials.dict()
 
 
 class SnowflakeConnection(BaseConnection):
