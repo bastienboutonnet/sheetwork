@@ -36,6 +36,6 @@ jobs:
           PLATFORM: ${{ matrix.platform }}
 
       - name: Test with tox (wheels)
-        run: tox --require-poetry --wheel -e py
+        run: tox --wheel --require-poetry -e py
         env:
           PLATFORM: ${{ matrix.platform }}
