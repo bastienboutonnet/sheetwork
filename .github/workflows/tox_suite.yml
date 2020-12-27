@@ -18,7 +18,7 @@ jobs:
         run: docker-compose -f ./tests/docker_postgres/docker-compose.yml up -d
 
       - name: Check for Container
-        run: docker p
+        run: docker ps
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
