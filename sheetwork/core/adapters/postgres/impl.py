@@ -11,7 +11,12 @@ from sqlalchemy.schema import CreateSchema
 from sheetwork.core.adapters.base.impl import BaseSQLAdapter
 from sheetwork.core.adapters.postgres.connection import PostgresConnection
 from sheetwork.core.config.config import ConfigLoader
-from sheetwork.core.exceptions import DatabaseError, NoAcquiredConnectionError, TableDoesNotExist
+from sheetwork.core.exceptions import (
+    DatabaseError,
+    NoAcquiredConnectionError,
+    TableDoesNotExist,
+    UploadError,
+)
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import green, red, timed_message, yellow
 from sheetwork.core.utils import cast_pandas_dtypes
@@ -72,6 +77,7 @@ class PostgresAdaptor(BaseSQLAdapter):
             raise DatabaseError(str(e))
 
     # TODO: Rework the API here, I don't see a need to pass the target schema as it
+    # ! THIS ACTUALLY COULD CREATE A SHITTY BUG!
     # should be accessed from the config.
     def upload(self, df: pandas.DataFrame, target_schema: str) -> None:
         df = cast_pandas_dtypes(df, overwrite_dict=self._config.sheet_columns)
@@ -80,11 +86,20 @@ class PostgresAdaptor(BaseSQLAdapter):
         self.acquire_connection()
         self._create_schema()
 
-        _if_schema_exists = "fail"
+        _if_schema_exists = "append"
         if self._config.project.object_creation_dct["create_table"] is True:
             if self._config.project.destructive_create_table:
                 _if_schema_exists = "replace"
 
+            if _if_schema_exists == "append":
+                logger.warning(
+                    yellow(
+                        f"{self._database}"
+                        f".{target_schema}.{self._config.target_table} already exists and was not\n"
+                        "recreated because 'destructive_create_table' is set to False in your profile \n"
+                        "APPENDING instead."
+                    )
+                )
             try:
                 df.to_sql(
                     name=self._config.target_table,
@@ -94,18 +109,8 @@ class PostgresAdaptor(BaseSQLAdapter):
                     index=False,
                     dtype=dtypes_dict,
                 )
-            except ValueError as e:
-                if _if_schema_exists == "fail":
-                    logger.warning(
-                        yellow(
-                            f"{self._database}"
-                            f".{target_schema}.{self._config.target_table} already exists and was not\n"
-                            "recreated because 'destructive_create_table' is set to False in your profile \n"
-                            "APPENDING instead."
-                        )
-                    )
-                else:
-                    raise DatabaseError(str(e))
+            except Exception as e:
+                raise UploadError(str(e))
             finally:
                 logger.debug("Closing connection")
                 self.close_connection()

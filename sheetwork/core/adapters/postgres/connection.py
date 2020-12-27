@@ -11,7 +11,7 @@ from sheetwork.core.exceptions import CredentialsParsingError
 
 
 class PostgresCredentialsModel(BaseModel):
-    """Pydantic credentials validator model."""
+    """Pydantic credentials validator model for postgres adaptor."""
 
     db_type: str
     user: str
