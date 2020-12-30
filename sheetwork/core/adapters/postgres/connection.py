@@ -72,16 +72,6 @@ class PostgresConnection(BaseConnection):
 
     def generate_engine(self) -> None:
         """Creates a Postgress connection engine."""
-        # engine_str = (
-        #     "postgresql+psycopg2://"
-        #     f"{self._credentials.user}"
-        #     f":{self._credentials.password}"
-        #     f"@{self._credentials.host}"
-        #     f"{':'+self._credentials.port if self._credentials.port else str()}"
-        #     f"{'/'+self._credentials.database if self._credentials.database else str()}"
-        # )
-        # self._engine_str = engine_str
-        # self.engine = create_engine(engine_str)
         self._engine_url = url.URL(
             drivername="postgresql+psycopg2",
             host=self._credentials.host,

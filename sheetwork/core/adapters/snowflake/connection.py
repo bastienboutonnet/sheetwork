@@ -29,11 +29,6 @@ class SnowflakeCredentialsModel(BaseModel):
         check_db_type_compatibility
     )
 
-    # @validator("db_type", allow_reuse=True, check_fields=False)
-    # def check_db_type_compatibility(cls, value):
-    #     assert value == "snowflake"
-    #     return value
-
     class Config:
         """Handles field remapping to avoid keyword collision."""
 
