@@ -50,42 +50,6 @@ class SnowflakeCredentials(BaseCredentials):
         self.credentials: Dict[str, str] = dict()
         self.parse_and_validate_credentials()
 
-    def validate_credentials(self):
-        # check that all necessary keys are in the profile (nullity will have been handled by
-        # the yaml validator upsteam)
-        db_type = self.profile.get("db_type", str())
-        if db_type == "snowflake":
-            must_have_keys = {
-                "account",
-                "user",
-                "password",
-                "role",
-                "database",
-                "warehouse",
-                "target_schema",
-            }
-            keys_missing = must_have_keys.difference(self.profile.keys())
-            if keys_missing:
-                raise CredentialsParsingError(
-                    f"The following keys: {keys_missing} must be in your profile."
-                )
-            self.are_valid_credentials = True
-            self.db_type = db_type
-
-    def parse_credentials(self):
-        if self.profile.get("db_type") == "snowflake":
-            must_have_keys = {
-                "account",
-                "user",
-                "password",
-                "role",
-                "database",
-                "warehouse",
-                "target_schema",
-            }
-            for key in must_have_keys:
-                self.credentials.update({key: self.profile.get(key, str())})
-
     def parse_and_validate_credentials(self) -> None:
         """Parse and validate credentials using pydandic model.
 
