@@ -94,5 +94,5 @@ sheets:
     target_schema: sand
     target_table: bb_test_sheetwork
     custom_column_name_cleanup:
-      default_replacement: ' '
-      characters_to_replace: ['aa', 'bb']
+      default_replacement: " "
+      characters_to_replace: ["aa", "bb"]

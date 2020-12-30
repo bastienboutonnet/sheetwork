@@ -111,3 +111,7 @@ class ColumnNotBooleanCompatibleError(SheetWorkError):
 
 class EmptyHeaderError(SheetWorkError):
     """when at least 1 column header is made of whitespaces only."""
+
+
+class UploadError(SheetWorkError):
+    """when an error happens during upload."""
