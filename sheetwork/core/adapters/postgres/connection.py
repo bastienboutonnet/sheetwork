@@ -26,6 +26,11 @@ class PostgresCredentialsModel(BaseModel):
         assert value == "postgres"
         return value
 
+    # class Config:
+    #     """Handles field renamings."""
+
+    #     fields = {"target_schema": "schema"}  # "schema" is a reserved keyword by pydantic.
+
 
 class PostgresCredentials:
     """Parses and sets up Postgres credentials object."""
