@@ -43,6 +43,7 @@ class Profile:
     def read_profile(self):
         logger.debug(f"Profile Name: {self.profile_name}")
         filename = Path(self.profile_dir, "profiles.yml")
+        target_profile = dict()
         if filename.exists():
             yaml_dict = open_yaml(filename)
             is_valid_yaml = validate_yaml(yaml_dict, profiles_schema)
@@ -56,7 +57,7 @@ class Profile:
                 if target_profile and is_valid_yaml:
                     is_valid_profile = self._validate_profile(target_profile)
                     if is_valid_profile:
-                        self.profile_dict = self._remap_profile_fields(target_profile)
+                        self.profile_dict = target_profile
                 else:
                     raise ProfileParserError(
                         f"Error finding and entry for target: {self.target_name}, "
