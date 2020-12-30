@@ -51,6 +51,7 @@ def test_generate_engine(datafiles):
     from sheetwork.core.main import parser
     from sheetwork.core.adapters.postgres.connection import PostgresCredentials
     from sheetwork.core.adapters.postgres.connection import PostgresConnection
+    from sqlalchemy.engine import url
 
     flags = FlagParser(parser, profile_dir=str(datafiles), project_dir=str(datafiles))
     project = Project(flags)
@@ -61,11 +62,16 @@ def test_generate_engine(datafiles):
 
     connection = PostgresConnection(credentials)
 
-    assert isinstance(connection.engine, sqlalchemy.engine.Engine)
-    assert (
-        connection._engine_str
-        == "postgresql+psycopg2://sheetwork_user:magical_password@localhost:5432/sheetwork_test"
+    expected_engine_url = url.URL(
+        drivername="postgresql+psycopg2",
+        host="localhost",
+        username="sheetwork_user",
+        password="magical_password",
+        database="sheetwork_test",
+        port="5432",
     )
+    assert isinstance(connection.engine, sqlalchemy.engine.Engine)
+    assert connection._engine_url == expected_engine_url
 
 
 @pytest.mark.parametrize("is_valid_table", [True, False])

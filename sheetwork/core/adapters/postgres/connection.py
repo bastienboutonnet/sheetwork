@@ -3,9 +3,9 @@
 from typing import Dict
 
 from pydantic import BaseModel, ValidationError, validator
-from sqlalchemy.engine import create_engine
+from sqlalchemy.engine import create_engine, url
 
-from sheetwork.core.adapters.base.connection import BaseConnection
+from sheetwork.core.adapters.base.connection import BaseConnection, check_db_type_compatibility
 from sheetwork.core.config.profile import Profile
 from sheetwork.core.exceptions import CredentialsParsingError
 
@@ -13,7 +13,6 @@ from sheetwork.core.exceptions import CredentialsParsingError
 class PostgresCredentialsModel(BaseModel):
     """Pydantic credentials validator model for postgres adaptor."""
 
-    db_type: str
     user: str
     password: str
     database: str
@@ -21,10 +20,14 @@ class PostgresCredentialsModel(BaseModel):
     port: str = "5432"
     target_schema: str
 
-    @validator("db_type")
-    def check_db_type_compatibility(cls, value):
-        assert value == "postgres"
-        return value
+    db_type = validator("db_type", "postgres", allow_reuse=True, check_fields=False)(
+        check_db_type_compatibility
+    )
+
+    class Config:
+        """Handles field remapping to avoid keyword collision."""
+
+        fields = {"target_schema": "schema"}
 
 
 class PostgresCredentials:
@@ -56,12 +59,12 @@ class PostgresCredentials:
         self.credentials = _credentials.dict()
         self._db_type = self._profile.get("db_type", str())
         self.are_valid_credentials = True
-        self.user = self.credentials["user"]
-        self.password = self.credentials["password"]
-        self.host = self.credentials["host"]
-        self.port = self.credentials["port"]
-        self.database = self.credentials["database"]
-        self.target_schema = self.credentials["target_schema"]
+        self.user = self.credentials.get("user", str())
+        self.password = self.credentials.get("password", str())
+        self.host = self.credentials.get("host", str())
+        self.port = self.credentials.get("port", str())
+        self.database = self.credentials.get("database", str())
+        self.target_schema = self.credentials.get("target_schema", str())
 
 
 class PostgresConnection(BaseConnection):
@@ -74,13 +77,12 @@ class PostgresConnection(BaseConnection):
 
     def generate_engine(self) -> None:
         """Creates a Postgress connection engine."""
-        engine_str = (
-            "postgresql+psycopg2://"
-            f"{self._credentials.user}"
-            f":{self._credentials.password}"
-            f"@{self._credentials.host}"
-            f"{':'+self._credentials.port if self._credentials.port else str()}"
-            f"{'/'+self._credentials.database if self._credentials.database else str()}"
+        self._engine_url = url.URL(
+            drivername="postgresql+psycopg2",
+            host=self._credentials.host,
+            username=self._credentials.user,
+            password=self._credentials.password,
+            database=self._credentials.database,
+            port=self._credentials.port,
         )
-        self._engine_str = engine_str
-        self.engine = create_engine(engine_str)
+        self.engine = create_engine(self._engine_url)
