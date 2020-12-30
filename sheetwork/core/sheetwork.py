@@ -210,7 +210,7 @@ class SheetBag:
         self.sql_adapter.upload(self.sheet_df, self.target_schema)
 
     def check_table(self):
-        self.sql_adapter.check_table(self.target_schema, self.target_table)
+        _, _ = self.sql_adapter.check_table(self.target_schema, self.target_table)
 
     def run(self):
         self.load_sheet()

@@ -1,4 +1,4 @@
-"""Concrete Database Connection classes. This may be broken into db specific modules down the road."""
+"""Concrete Snowflake Database Connection classes."""
 from typing import Dict
 
 from snowflake.sqlalchemy import URL
@@ -7,6 +7,25 @@ from sqlalchemy import create_engine
 from sheetwork.core.adapters.base.connection import BaseConnection, BaseCredentials
 from sheetwork.core.config.profile import Profile
 from sheetwork.core.exceptions import CredentialsParsingError
+
+# from pydantic import BaseModel, validator
+
+
+# class SnowflakeCredentialsModel(BaseModel):
+#     """Pydantic credentials validator model for Snowflake adaptor."""
+
+#     account: str
+#     user: str
+#     password: str
+#     role: str
+#     database: str
+#     warehouse: str
+#     target_schema: str
+
+#     @validator("db_type")
+#     def check_db_type_compatibility(cls, value):
+#         assert value == "snowflake"
+#         return value
 
 
 class SnowflakeCredentials(BaseCredentials):
@@ -37,7 +56,7 @@ class SnowflakeCredentials(BaseCredentials):
                 "role",
                 "database",
                 "warehouse",
-                "schema",
+                "target_schema",
             }
             keys_missing = must_have_keys.difference(self.profile.keys())
             if keys_missing:
@@ -56,10 +75,19 @@ class SnowflakeCredentials(BaseCredentials):
                 "role",
                 "database",
                 "warehouse",
-                "schema",
+                "target_schema",
             }
             for key in must_have_keys:
                 self.credentials.update({key: self.profile.get(key, str())})
+
+    # def parse_and_validate_credentials(self) -> None:
+    #     """Parses profile.yml to obtain snowflake credientials and passes it throught pydantic."""
+
+    #     try:
+    #         _credentials = SnowflakeCredentialsModel(**self.profile)
+    #     except ValidationError as e:
+    #         raise CredentialsParsingError(f"Your profile is not valid \n {e}")
+    #     self.credentials = _credentials.dict()
 
 
 class SnowflakeConnection(BaseConnection):
@@ -85,6 +113,6 @@ class SnowflakeConnection(BaseConnection):
                 role=self.credentials.credentials.get("role"),
                 warehouse=self.credentials.credentials.get("warehouse"),
                 database=self.credentials.credentials.get("database"),
-                schema=self.credentials.credentials.get("schema"),
+                schema=self.credentials.credentials.get("target_schema"),
             )
         )

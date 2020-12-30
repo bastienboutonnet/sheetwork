@@ -1,6 +1,6 @@
 """Abstract definition of what a basic SQL adaptor should look like to satisfy the rest of the contracts."""
 import abc
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 import pandas
 from sqlalchemy.types import BOOLEAN, DATE, INTEGER, TIMESTAMP, VARCHAR, Numeric
@@ -18,7 +18,7 @@ class BaseSQLAdapter(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def upload(self, df: pandas.DataFrame, override_schema: str = str()) -> None:
+    def upload(self, df: pandas.DataFrame, target_schema: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -26,7 +26,7 @@ class BaseSQLAdapter(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def check_table(self, target_schema: str, target_table: str) -> None:
+    def check_table(self, target_schema: str, target_table: str) -> Tuple[int, int]:
         raise NotImplementedError()
 
     @staticmethod
