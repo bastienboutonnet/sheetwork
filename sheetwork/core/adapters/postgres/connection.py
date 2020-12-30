@@ -24,6 +24,11 @@ class PostgresCredentialsModel(BaseModel):
         check_db_type_compatibility
     )
 
+    class Config:
+        """Handles field remapping to avoid keyword collision."""
+
+        fields = {"target_schema": "schema"}
+
 
 class PostgresCredentials:
     """Parses and sets up Postgres credentials object."""
