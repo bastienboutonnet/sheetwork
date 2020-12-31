@@ -10,6 +10,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/a1a0175f7b036041036e/maintainability)](https://codeclimate.com/github/bastienboutonnet/sheetwork/maintainability)
 
 [![Discord](https://img.shields.io/discord/752101657218908281?label=discord)](https://discord.gg/bUk4MVTcqW)
+[![Downloads](https://pepy.tech/badge/sheetwork)](https://pepy.tech/project/sheetwork)
 
 # sheetwork 💩🤦
 
