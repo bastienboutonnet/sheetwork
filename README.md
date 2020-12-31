@@ -1,11 +1,12 @@
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bastienboutonnet/sheetwork?include_prereleases) [![codecov](https://codecov.io/gh/bastienboutonnet/sheetwork/branch/dev%2Fnicolas_jaar/graph/badge.svg)](https://codecov.io/gh/bastienboutonnet/sheetwork)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bastienboutonnet/sheetwork?include_prereleases)
 
 ![python](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8-blue)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 ![Checked with mypy](https://img.shields.io/badge/mypy-checked-blue?style=flat&logo=python)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/bastienboutonnet/sheetwork/dev/nicolas_jaar.svg)](https://results.pre-commit.ci/latest/github/bastienboutonnet/sheetwork/dev/nicolas_jaar)
+ [![codecov](https://codecov.io/gh/bastienboutonnet/sheetwork/branch/dev%2Fnicolas_jaar/graph/badge.svg)](https://codecov.io/gh/bastienboutonnet/sheetwork)
+ [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/bastienboutonnet/sheetwork/dev/nicolas_jaar.svg)](https://results.pre-commit.ci/latest/github/bastienboutonnet/sheetwork/dev/nicolas_jaar)
 ![Sheetwork Build](https://github.com/bastienboutonnet/sheetwork/workflows/Sheetwork%20CI/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a1a0175f7b036041036e/maintainability)](https://codeclimate.com/github/bastienboutonnet/sheetwork/maintainability)
 
