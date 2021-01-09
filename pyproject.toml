@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
 ]
-documentation = "https://bastienboutonnet.gitbook.io/sheetwork/"
+documentation = "https://bitpicky.gitbook.io/sheetwork/"
 repository = "https://github.com/bastienboutonnet/sheetwork"
 homepage = "https://github.com/bastienboutonnet/sheetwork"
 keywords = ["googlesheets", "snowflake", "cli", "ingest", "data engineering"]
