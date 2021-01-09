@@ -93,6 +93,7 @@ template = "changelog/_template.rst"
 legacy_tox_ini = """
 [tox]
 envlist = {py3611,py37,py38}-{cover,nocov}-{linux,windows}
+isolated_build=true
 requires =
     tox-poetry-dev-dependencies
     tox-wheel
