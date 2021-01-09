@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sheetwork"
-version = "1.0.4"
+version = "1.0.5"
 description = "A handy CLI tool to ingest GoogleSheets into your database without writing a single line of code"
 authors = ["Bastien Boutonnet <bastien.b1@gmail.com>"]
 maintainers = ["Bastien Boutonnet <bastien.b1@gmail.com>"]
