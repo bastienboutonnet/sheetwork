@@ -2,6 +2,15 @@ This is an automatically generated changelog. Please consult the reformatted one
 
 .. towncrier release notes start
 
+sheetwork v1.0.5 (2021-01-09)
+=============================
+
+Bug Fixes
+---------
+
+- `#320 <https://github.com/bastienboutonnet/sheetwork/issues/320>`_: ``--version`` was broken because of a bad indentation choice. It is now fixed. This PR also removed some ugly left over prints. Apologies about this...
+
+
 sheetwork v1.0.4 (2020-12-22)
 =============================
 

@@ -1,3 +1,11 @@
+sheetwork v1.0.5 Nicolas Jaar - Encore (2021-01-09)
+===================================================
+
+Bug Fixes
+---------
+
+- `#320 <https://github.com/bastienboutonnet/sheetwork/issues/320>`_: ``--version`` was broken because of a bad indentation choice. It is now fixed. This PR also removed some ugly left over prints. Apologies about this 🤦
+
 sheetwork v1.0.4 Nicolas Jaar - Mi Mujer (2020-12-22)
 =============================
 
