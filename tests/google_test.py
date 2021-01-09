@@ -106,7 +106,6 @@ def test__check_google_creds_exits(datafiles, simulate_missing_creds):
     from sheetwork.core.clients.google import GoogleSpreadsheet
     from sheetwork.core.exceptions import GoogleCredentialsFileMissingError
 
-    print(str(datafiles))
     flags = FlagParser(parser, profile_dir=str(datafiles), project_dir=str(datafiles))
     project = Project(flags)
     profile = Profile(project, "dev")

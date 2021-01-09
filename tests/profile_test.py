@@ -26,8 +26,6 @@ def test_read_profile(datafiles, target_name, profile_name, profile_dir):
 
     flags = FlagParser(parser, project_dir=str(datafiles), profile_dir=str(datafiles))
     project = Project(flags)
-    print(f"TARGET_NAME {target_name}")
-    print(f"PROFILE_NAME {profile_name}")
     if target_name == "non_existant" and profile_name == "sheetwork_test":
         with pytest.raises(ProfileParserError):
             profile = Profile(project, target_name)
