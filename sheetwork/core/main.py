@@ -182,5 +182,5 @@ def main(parser: argparse.ArgumentParser = parser, test_cli_args: List[str] = li
         print(version_message)
         print("\n")
 
-        handle(parser, _cli_args)
+    handle(parser, _cli_args)
     return 0

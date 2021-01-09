@@ -38,5 +38,5 @@ def validate_yaml(yaml: Dict[Any, Any], validation_schema: Dict[Any, Any]) -> bo
     v = Validator()
     is_valid_yaml: bool = v.validate(yaml, validation_schema)  # type: ignore
     if not is_valid_yaml:
-        raise SheetConfigParsingError(f"scheet.yml is not formatted properly. \n {v.errors}")  # type: ignore
+        raise SheetConfigParsingError(f"sheet.yml is not formatted properly. \n {v.errors}")  # type: ignore
     return is_valid_yaml

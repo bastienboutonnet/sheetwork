@@ -102,7 +102,6 @@ class ConfigLoader:
     def get_sheet_config(self):
         if self.flags.sheet_name:
             sheets = self.config["sheets"]
-            print(f"KJSKDJHSDKJH {self.flags.sheet_name}")
             sheet_config = [
                 sheet for sheet in sheets if sheet.get("sheet_name") == self.flags.sheet_name
             ]
