@@ -1,7 +1,8 @@
 from pathlib import Path
-from sheetwork.core.main import handle
 
 import pytest
+import numpy as np
+import pandas
 from pandas.testing import assert_frame_equal
 from .mockers import CAST_DF, TO_CAST_DF, generate_test_df
 
@@ -95,12 +96,17 @@ def test_handle_booleans(has_good_booleans):
     from sheetwork.core.utils import handle_booleans
     from sheetwork.core.exceptions import ColumnNotBooleanCompatibleError
 
+    expectation = generate_test_df(
+        {"col_a": [False, True, pandas.NA], "col_b": [True, False, False]}
+    )
     illegal_booleans_df = {"col_a": [False, "True"], "col_b": ["bad", "food"]}
-    good_booleans_df = {"col_a": [False, True], "col_b": [True, "False"]}
+    good_booleans_df = {"col_a": [False, True, np.nan], "col_b": [True, "False", False]}
     col_casting_dict = {"col_a": "boolean", "col_b": "boolean"}
     if has_good_booleans:
         df = generate_test_df(good_booleans_df)
         df = handle_booleans(df, col_casting_dict)
+        assert df["col_a"].values.tolist() == expectation["col_a"].values.tolist()
+        assert df["col_b"].values.tolist() == expectation["col_b"].values.tolist()
     else:
         with pytest.raises(ColumnNotBooleanCompatibleError):
             df = generate_test_df(illegal_booleans_df)
