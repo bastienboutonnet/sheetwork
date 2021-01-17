@@ -1,3 +1,10 @@
+sheetwork v1.0.6 Nicolas Jaar - Garden of Eden (2021-01-17)
+===========================================================
+
+Bug Fixes
+---------
+
+- `#323 <https://github.com/bastienboutonnet/sheetwork/issues/323>`_: Columns to be converted to booleans which contained empty strings were converted as ``np.nan`` after sheet ingestion. Because this value had not been added to the allowable values for boolean conversion, users who had null values in their sheets could have ran into the app raising an error and not wanting to convert. Given that it is perfectly fine to have ``null`` values among booleans it is not made possible.
 sheetwork v1.0.5 Nicolas Jaar - Encore (2021-01-09)
 ===================================================
 
