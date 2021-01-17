@@ -6,6 +6,7 @@ from typing import Dict, List, Optional, Tuple, Union
 from urllib.error import URLError
 
 import luddite
+import numpy as np
 import pandas
 from packaging.version import parse as semver_parse
 
@@ -243,7 +244,7 @@ def handle_booleans(df: pandas.DataFrame, overwrite_dict: Dict[str, str]) -> pan
             Python booleans.
     """
     df = df.copy()
-    boolean_map_dict = {"true": True, "false": False}
+    boolean_map_dict = {"true": True, "false": False, np.nan: pandas.NA}
     for column, data_type in overwrite_dict.items():
 
         if data_type == "boolean" and df[column].dtypes == "object":
@@ -256,6 +257,7 @@ def handle_booleans(df: pandas.DataFrame, overwrite_dict: Dict[str, str]) -> pan
             unique_boolean_values = df[column].unique().tolist()
             if set(unique_boolean_values).issubset(boolean_map_dict.keys()):
                 df[column] = df[column].map(boolean_map_dict)
+
             else:
                 raise ColumnNotBooleanCompatibleError(
                     f"The following values in {column} cannot be turned into booleans: "
