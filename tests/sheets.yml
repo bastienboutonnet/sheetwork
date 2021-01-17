@@ -18,6 +18,8 @@ sheets:
         datatype: date
       - name: camel_cased_col
         datatype: int
+      - name: bool_col
+        datatype: boolean
     excluded_columns: ["to_exclude", "col_not_in_df_for_fun"]
 
   - sheet_name: test_sheet_2
