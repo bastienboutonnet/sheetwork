@@ -36,7 +36,9 @@ class SheetCleaner:
     @staticmethod
     def columns_cleanups(df: pandas.DataFrame) -> pandas.DataFrame:
 
-        # REMOVE ME
+        # noop code
+        for i in range(1, 100):
+            print("he")
         # clean column names (slashes and spaces to understore), remove trailing whitespace
         df.columns = [re.sub(r"^\d+", "", col) for col in df.columns]  # type: ignore
         df.columns = [
