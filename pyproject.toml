@@ -54,6 +54,7 @@ pytest-sugar = "^0.9.4"
 pytest-instafail = "^0.4.2"
 tox-poetry-installer = "^0.6.1"
 pre-commit = "^2.9.3"
+tox = "3.20.0"
 
 [tool.poetry.extras]
 test = ["pytest", "tox"]
@@ -90,44 +91,44 @@ template = "changelog/_template.rst"
     name = "Under The Hood/Misc"
     showcontent = true
 
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = {py3611,py37,py38}-{cover,nocov}-{linux,windows}
-isolated_build=true
-requires =
-    tox-poetry-dev-dependencies
-    tox-wheel
+# [tool.tox]
+# legacy_tox_ini = """
+# [tox]
+# envlist = {py3611,py37,py38}-{cover,nocov}-{linux,windows}
+# isolated_build=true
+# requires =
+#     tox-poetry-dev-dependencies
+#     tox-wheel
 
-[gh-actions]
-python =
-    3.8: py38
-    3.6: py3611
-    3.7: py37
+# [gh-actions]
+# python =
+#     3.8: py38
+#     3.6: py3611
+#     3.7: py37
 
-[gh-actions:env]
-PLATFORM =
-    ubuntu-latest: linux
-    windows-latest: windows
+# [gh-actions:env]
+# PLATFORM =
+#     ubuntu-latest: linux
+#     windows-latest: windows
 
-[testenv]
-poetry_experimental_add_locked_dependencies = True
-poetry_add_dev_dependencies = True
-wheel =
-    cover: false
-    nocover: true
-setenv =
-    APPDATA = "''"
-whitelist_externals = echo
-commands =
-    echo {env:APPDATA}
-    pytest
+# [testenv]
+# poetry_experimental_add_locked_dependencies = True
+# poetry_add_dev_dependencies = True
+# wheel =
+#     cover: false
+#     nocover: true
+# setenv =
+#     APPDATA = "''"
+# whitelist_externals = echo
+# commands =
+#     echo {env:APPDATA}
+#     pytest
 
-[testenv:package]
-skip_install = True
-deps =
-    twine
-commands =
-    python3 -m poetry build
-    python3 -m twine check dist/*
-"""
+# [testenv:package]
+# skip_install = True
+# deps =
+#     twine
+# commands =
+#     python3 -m poetry build
+#     python3 -m twine check dist/*
+# """
