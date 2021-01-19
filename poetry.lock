@@ -336,7 +336,7 @@ testing = ["packaging", "pep517", "importlib-resources (>=1.3)"]
 
 [[package]]
 name = "importlib-resources"
-version = "5.0.0"
+version = "5.1.0"
 description = "Read resources from Python packages"
 category = "dev"
 optional = false
@@ -749,14 +749,14 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 name = "pytest-cov"
-version = "2.10.1"
+version = "2.11.0"
 description = "Pytest plugin for measuring coverage."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-coverage = ">=4.4"
+coverage = ">=5.2.1"
 pytest = ">=4.6"
 
 [package.extras]
@@ -1050,21 +1050,6 @@ tox = ">=3.0.0,<4.0.0"
 poetry = ["poetry (>=1.0.0,<2.0.0)"]
 
 [[package]]
-name = "tox-poetry-installer"
-version = "0.6.1"
-description = "Tox plugin to install Tox environment dependencies using the Poetry backend and lockfile"
-category = "dev"
-optional = false
-python-versions = ">=3.6.1,<4.0.0"
-
-[package.dependencies]
-poetry-core = ">=1.0.0,<2.0.0"
-tox = ">=3.0.0,<4.0.0"
-
-[package.extras]
-poetry = ["poetry (>=1.0.0,<2.0.0)"]
-
-[[package]]
 name = "typed-ast"
 version = "1.4.2"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
@@ -1131,7 +1116,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.1,<4.0"
-content-hash = "80e792d96f236c6bb416e4f2477f97b6405c704f75ff02b12006a23f9d4f1767"
+content-hash = "42c65e11fbca736f8de375a4fb24678621ff31a77bac4eeaa691cea8fe0d05f2"
 
 [metadata.files]
 appdirs = [
@@ -1313,6 +1298,10 @@ cryptography = [
     {file = "cryptography-3.3.1-cp36-abi3-win_amd64.whl", hash = "sha256:0e85aaae861d0485eb5a79d33226dd6248d2a9f133b81532c8f5aae37de10ff7"},
     {file = "cryptography-3.3.1.tar.gz", hash = "sha256:7e177e4bea2de937a584b13645cab32f25e3d96fc0bc4a4cf99c27dc77682be6"},
 ]
+dataclasses = [
+    {file = "dataclasses-0.8-py3-none-any.whl", hash = "sha256:0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf"},
+    {file = "dataclasses-0.8.tar.gz", hash = "sha256:8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97"},
+]
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
     {file = "distlib-0.3.1.zip", hash = "sha256:edf6116872c863e1aa9d5bb7cb5e05a022c519a4594dc703843343a9ddd9bff1"},
@@ -1350,8 +1339,8 @@ importlib-metadata = [
     {file = "importlib_metadata-1.7.0.tar.gz", hash = "sha256:90bb658cdbbf6d1735b6341ce708fc7024a3e14e99ffdc5783edea9f9b077f83"},
 ]
 importlib-resources = [
-    {file = "importlib_resources-5.0.0-py3-none-any.whl", hash = "sha256:ea17df80a0ff04b5dbd3d96dbeab1842acfd1c6c902eaeb8c8858abf2720161e"},
-    {file = "importlib_resources-5.0.0.tar.gz", hash = "sha256:4743f090ed8946e713745ec0e660249ef9fb0b9843eacc5b5ff931d2fd5aa67f"},
+    {file = "importlib_resources-5.1.0-py3-none-any.whl", hash = "sha256:885b8eae589179f661c909d699a546cf10d83692553e34dca1bf5eb06f7f6217"},
+    {file = "importlib_resources-5.1.0.tar.gz", hash = "sha256:bfdad047bce441405a49cf8eb48ddce5e56c696e185f59147a8b79e75e9e6380"},
 ]
 incremental = [
     {file = "incremental-17.5.0-py2.py3-none-any.whl", hash = "sha256:717e12246dddf231a349175f48d74d93e2897244939173b01974ab6661406b9f"},
@@ -1674,8 +1663,8 @@ pytest = [
     {file = "pytest-6.2.1.tar.gz", hash = "sha256:66e419b1899bc27346cb2c993e12c5e5e8daba9073c1fbce33b9807abc95c306"},
 ]
 pytest-cov = [
-    {file = "pytest-cov-2.10.1.tar.gz", hash = "sha256:47bd0ce14056fdd79f93e1713f88fad7bdcc583dcd7783da86ef2f085a0bb88e"},
-    {file = "pytest_cov-2.10.1-py2.py3-none-any.whl", hash = "sha256:45ec2d5182f89a81fc3eb29e3d1ed3113b9e9a873bcddb2a71faaab066110191"},
+    {file = "pytest-cov-2.11.0.tar.gz", hash = "sha256:e90e034cde61dacb1394639a33f449725c591025b182d69752c1dd0bfec639a7"},
+    {file = "pytest_cov-2.11.0-py2.py3-none-any.whl", hash = "sha256:626a8a6ab188656c4f84b67d22436d6c494699d917e567e0048dda6e7f59e028"},
 ]
 pytest-datafiles = [
     {file = "pytest-datafiles-2.0.tar.gz", hash = "sha256:143329cbb1dbbb07af24f88fa4668e2f59ce233696cf12c49fd1c98d1756dbf9"},
@@ -1810,10 +1799,6 @@ towncrier = [
 tox = [
     {file = "tox-3.21.1-py2.py3-none-any.whl", hash = "sha256:8a28facf65275c84b3bfde102afe24541d2ce02fd83ea07ce906537c3a74ed2d"},
     {file = "tox-3.21.1.tar.gz", hash = "sha256:31379f2662393034203c5d6b2ebb7b86c67452cfc689784475c1c6e4a3cbc0cd"},
-]
-tox-poetry-installer = [
-    {file = "tox-poetry-installer-0.6.1.tar.gz", hash = "sha256:8dfdf09004ad0bc628dacc258c2b8fe4a3708b038b5ab3d5ed7ec4045f6ae409"},
-    {file = "tox_poetry_installer-0.6.1-py3-none-any.whl", hash = "sha256:4fad20530b28b91171e3bc5933796f6082d17d0e1d2b163ebd009c7c1c47af9d"},
 ]
 tox-poetry-installer = [
     {file = "tox-poetry-installer-0.6.1.tar.gz", hash = "sha256:8dfdf09004ad0bc628dacc258c2b8fe4a3708b038b5ab3d5ed7ec4045f6ae409"},
