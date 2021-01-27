@@ -1084,7 +1084,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.1,<4.0"
-content-hash = "8c3da778117ce5d369a737d0797cbdd40946d590f7a403e86917b84646231db5"
+content-hash = "2c9c4b2319b0fac0d03afbccaf7dc4447588b9cc49f05949ccb4050e1340b3f6"
 
 [metadata.files]
 appdirs = [
