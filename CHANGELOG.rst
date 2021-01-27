@@ -1,3 +1,11 @@
+sheetwork 1.0.7 Nicolas Jaar - A Coin in Nine Hands (2021-01-27)
+================================================================
+
+Features
+--------
+
+- `#337 <https://github.com/bastienboutonnet/sheetwork/issues/337>`_: "Yes" and "No" strings will now get mapped to ``True`` and ``False`` if a user asks for a column with such content to be cast to boolean.
+
 sheetwork v1.0.6 Nicolas Jaar - Garden of Eden (2021-01-17)
 ===========================================================
 

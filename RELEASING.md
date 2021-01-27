@@ -36,7 +36,7 @@ I'm writing this down here because I always forget...
 - build a new temporary `venv` and try to install it from PyPI test:
 
   ```bash
-  pip install --index-url https://test.pypi.org/simple/ sheetwork
+  pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ sheetwork
   ```
 
 - if it installs and runs on a test sheet and all that fun stuff then publish it to **the real PyPI** :sparkles:
