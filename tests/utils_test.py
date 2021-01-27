@@ -97,10 +97,13 @@ def test_handle_booleans(has_good_booleans):
     from sheetwork.core.exceptions import ColumnNotBooleanCompatibleError
 
     expectation = generate_test_df(
-        {"col_a": [False, True, pandas.NA], "col_b": [True, False, False]}
+        {"col_a": [False, True, pandas.NA, True], "col_b": [True, False, False, pandas.NA]}
     )
-    illegal_booleans_df = {"col_a": [False, "True"], "col_b": ["bad", "food"]}
-    good_booleans_df = {"col_a": [False, True, np.nan], "col_b": [True, "False", False]}
+    illegal_booleans_df = {"col_a": [False, "True", "yes"], "col_b": ["bad", "food", ""]}
+    good_booleans_df = {
+        "col_a": [False, True, np.nan, True],
+        "col_b": [True, "False", False, np.nan],
+    }
     col_casting_dict = {"col_a": "boolean", "col_b": "boolean"}
     if has_good_booleans:
         df = generate_test_df(good_booleans_df)
