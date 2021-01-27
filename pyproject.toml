@@ -102,7 +102,7 @@ requires =
 python =
     3.8: py38
     3.6: py3611
-    3.7: py37
+    3.7: py379
 
 [gh-actions:env]
 PLATFORM =
