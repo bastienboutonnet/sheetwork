@@ -244,7 +244,14 @@ def handle_booleans(df: pandas.DataFrame, overwrite_dict: Dict[str, str]) -> pan
             Python booleans.
     """
     df = df.copy()
-    boolean_map_dict = {"true": True, "false": False, np.nan: pandas.NA}
+    boolean_map_dict = {
+        "true": True,
+        "false": False,
+        np.nan: pandas.NA,
+        "yes": True,
+        "no": False,
+        "": pandas.NA,
+    }
     for column, data_type in overwrite_dict.items():
 
         if data_type == "boolean" and df[column].dtypes == "object":
