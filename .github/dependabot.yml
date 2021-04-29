@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: monthly
+      time: "04:00"
+    open-pull-requests-limit: 10
+    target-branch: main
+    ignore:
+      - dependency-name: requests
+        versions:
+          - ">= 2.23.a, < 2.24"
+      - dependency-name: requests
+        versions:
+          - ">= 2.24.a, < 2.25"
+      - dependency-name: requests
+        versions:
+          - ">= 2.25.a, < 2.26"
+      - dependency-name: pre-commit
+        versions:
+          - 2.10.1
+      - dependency-name: tox
+        versions:
+          - 3.22.0
