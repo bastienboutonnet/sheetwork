@@ -45,6 +45,7 @@ class PostgresCredentials:
         self.port: str = str()
         self.database: str = str()
         self.target_schema: str = str()
+        self.parse_and_validate_credentials()
 
     def parse_and_validate_credentials(self) -> None:
         """Parse and validate credentials using pydandic model.

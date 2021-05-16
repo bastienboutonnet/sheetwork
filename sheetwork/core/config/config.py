@@ -1,6 +1,6 @@
 """Configuration class module. Loads project-wide params and all that fun stuff."""
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Sequence, Union
 
 from sheetwork.core.config.project import Project
 from sheetwork.core.exceptions import (
@@ -40,6 +40,7 @@ class ConfigLoader:
         self.sheet_column_rename_dict: Dict[str, str] = dict()
         self.sheet_columns: Dict[str, str] = dict()
         self.excluded_columns: Dict = dict()
+        self.included_columns: Sequence[str] = []
         self.flags = flags
         self.project = project
         self.yml_folder: Path = project.sheet_config_dir

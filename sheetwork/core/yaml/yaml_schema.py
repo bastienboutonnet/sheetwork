@@ -37,6 +37,11 @@ config_schema = {
                     "required": False,
                     "schema": {"type": "string"},
                 },
+                "included_columns": {
+                    "anyof_type": ["list", "string"],
+                    "required": False,
+                    "schema": {"type": "string"},
+                },
                 "custom_column_name_cleanup": {
                     "type": "dict",
                     "required": False,

@@ -9,9 +9,34 @@ import sqlalchemy
 FIXTURE_DIR = Path(__file__).resolve().parent
 
 
-@pytest.mark.parametrize("is_valid_postgres_profile", [True, False])
 @pytest.mark.datafiles(FIXTURE_DIR)
-def test_parse_and_validate_credentials(datafiles, is_valid_postgres_profile):
+def test_parse_and_validate_credentials(datafiles):
+    from sheetwork.core.adapters.postgres.connection import PostgresCredentials
+    from sheetwork.core.config.profile import Profile
+    from sheetwork.core.config.project import Project
+    from sheetwork.core.flags import FlagParser
+    from sheetwork.core.main import parser
+
+    target_name = "postgres_test"
+
+    flags = FlagParser(parser, profile_dir=str(datafiles), project_dir=str(datafiles))
+    project = Project(flags)
+    profile = Profile(project, target_name=target_name)
+
+    credentials = PostgresCredentials(profile)
+    credentials.parse_and_validate_credentials()
+    assert credentials.are_valid_credentials is True
+    assert credentials.user == "sheetwork_user"
+    assert credentials.password == "magical_password"
+    assert credentials.host == "localhost"
+    assert credentials.port == "5432"
+    assert credentials.database == "sheetwork_test"
+    assert credentials.target_schema == "sheetwork_test_schema"
+    assert credentials._db_type == "postgres"
+
+
+@pytest.mark.datafiles(FIXTURE_DIR)
+def test_parse_and_validate_credentials_invalid_profile(datafiles):
     from sheetwork.core.adapters.postgres.connection import PostgresCredentials
     from sheetwork.core.config.profile import Profile
     from sheetwork.core.config.project import Project
@@ -20,27 +45,13 @@ def test_parse_and_validate_credentials(datafiles, is_valid_postgres_profile):
     from sheetwork.core.main import parser
 
     target_name = "invalid_profile_test"
-    if is_valid_postgres_profile:
-        target_name = "postgres_test"
 
     flags = FlagParser(parser, profile_dir=str(datafiles), project_dir=str(datafiles))
     project = Project(flags)
     profile = Profile(project, target_name=target_name)
 
-    credentials = PostgresCredentials(profile)
-    if is_valid_postgres_profile is False:
-        with pytest.raises(CredentialsParsingError):
-            credentials.parse_and_validate_credentials()
-    else:
-        credentials.parse_and_validate_credentials()
-        assert credentials.are_valid_credentials is True
-        assert credentials.user == "sheetwork_user"
-        assert credentials.password == "magical_password"
-        assert credentials.host == "localhost"
-        assert credentials.port == "5432"
-        assert credentials.database == "sheetwork_test"
-        assert credentials.target_schema == "sheetwork_test_schema"
-        assert credentials._db_type == "postgres"
+    with pytest.raises(CredentialsParsingError):
+        credentials = PostgresCredentials(profile)
 
 
 @pytest.mark.datafiles(FIXTURE_DIR)
