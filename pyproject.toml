@@ -114,6 +114,7 @@ PLATFORM =
 [testenv]
 poetry_experimental_add_locked_dependencies = True
 poetry_add_dev_dependencies = True
+require_poetry = True
 wheel =
     cover: false
     nocover: true
