@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tox==3.23.1 tox-gh-actions pytest tox-poetry-installer poetry
+          pip install tox==3.23.1 tox-gh-actions pytest tox-poetry-installer==0.8.0 poetry
       - name: Test with tox
         run: tox --require-poetry -e py
         env:
