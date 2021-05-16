@@ -59,7 +59,7 @@ EXPECTED_SHEETWORK_PROJECT_DEPRECATED = {
 DIRTY_DF = {
     "col_a": [1, 2, 32],
     "col b": ["as .    ", "b", "   c"],
-    "1. col_one": ["aa", "bb", "cc"],
+    "1. ??col_one": ["aa", "bb", "cc"],
     "": ["q", "q", "q"],
     "col_1": [1, 2, 33],
     "long ass name": ["foo", "bar", "fizz"],
@@ -99,7 +99,7 @@ CAMEL_CASED_COLS = ["CamelCasedCol", "SnakeCasedCol"]
 CLEAN_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
     "col_b": {0: "as .", 1: "b", 2: "c"},
-    "col_one": {0: "aa", 1: "bb", 2: "cc"},
+    "1_col_one": {0: "aa", 1: "bb", 2: "cc"},
     "col_1": {0: 1, 1: 2, 2: 33},
     "long_ass_name": {0: "foo", 1: "bar", 2: "fizz"},
     "col_with_empty_string": {0: "1", 1: "", 2: "2"},
@@ -108,7 +108,7 @@ CLEAN_DF = {
 RENAMED_DF = {
     "col_a": {0: 1, 1: 2, 2: 32},
     "col_b": {0: "as .", 1: "b", 2: "c"},
-    "col_one": {0: "aa", 1: "bb", 2: "cc"},
+    "1_col_one": {0: "aa", 1: "bb", 2: "cc"},
     "col_1": {0: 1, 1: 2, 2: 33},
     "renamed_col": {0: "foo", 1: "bar", 2: "fizz"},
 }
@@ -122,7 +122,15 @@ DROP_COL_DF = {
     "to_exclude": ["garbage1", "garbage2", "garbage3"],
 }
 
-RENAMED_COLS = ["col_a", "col b", "1. col_one", "", "col_1", "renamed_col", "col_with_empty_string"]
+RENAMED_COLS = [
+    "col_a",
+    "col b",
+    "1. ??col_one",
+    "",
+    "col_1",
+    "renamed_col",
+    "col_with_empty_string",
+]
 
 EXCLUDED_DF_COLS = ["col_a", "col b", "1. col_one", "", "long ass name"]
 

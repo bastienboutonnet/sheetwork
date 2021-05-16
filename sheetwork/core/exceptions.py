@@ -13,6 +13,10 @@ class SheetWorkConfigMissingError(SheetWorkError):
     """When a sheet config cannot be found."""
 
 
+class SheetWorkConfigError(SheetWorkError):
+    """When something isn't so valid with the config."""
+
+
 class GoogleCredentialsFileMissingError(SheetWorkError):
     """When the google credentials file could not be located."""
 
@@ -111,3 +115,7 @@ class ColumnNotBooleanCompatibleError(SheetWorkError):
 
 class EmptyHeaderError(SheetWorkError):
     """when at least 1 column header is made of whitespaces only."""
+
+
+class UploadError(SheetWorkError):
+    """when an error happens during upload."""

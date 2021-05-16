@@ -1,0 +1,12 @@
+version: "2"
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: "sheetwork_user"
+      POSTGRES_PASSWORD: "magical_password"
+      POSTGRES_DB: "sheetwork_test"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./seed_db.sql:/docker-entrypoint-initdb.d/seed_db.sql

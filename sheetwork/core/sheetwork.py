@@ -13,6 +13,7 @@ from sheetwork.core.cleaner import SheetCleaner
 from sheetwork.core.clients.google import GoogleSpreadsheet
 from sheetwork.core.config.config import ConfigLoader
 from sheetwork.core.config.profile import Profile
+from sheetwork.core.exceptions import SheetWorkConfigError
 from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import red, timed_message, yellow
@@ -114,7 +115,7 @@ class SheetBag:
         _ = assert_no_empty_header_cols(df)
 
         # Perform exclusions, renamings and cleanups before releasing the sheet.
-        df = self.exclude_columns(df)
+        df = self.exclude_or_include_columns(df)
         df = self.rename_columns(df)
         self.push_anyway, df = self.run_cleanup(df)
         logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
@@ -127,27 +128,52 @@ class SheetBag:
             df = df.rename(columns=self.config.sheet_column_rename_dict)  # type: ignore
         return df
 
-    def exclude_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
-        """Drops columns referred to by their identifier.
+    def exclude_or_include_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
+        """Drops or keeps columns referred to by their identifier.
 
         The identifier is the exact string in the google sheet when
-        a list is provided in the "excluded_columns" field of a sheet yml file.
+        a list is provided in the "excluded_columns" or "included_columns" field of a
+        sheet yml file.
 
         Args:
             df (pandas.DataFrame): DataFrame downloaded from google sheet.
 
         Returns:
-            pandas.DataFrame: Either the same dataframe as originally provided or one with dropped
-            columns as required.
+            pandas.DataFrame: Either the same dataframe as originally provided or a filtered
+            dataframe based on the inclusion or exlusion lists provided in the config.
         """
         cols_to_exclude: Union[str, List[str]] = self.config.sheet_config.get(  # type: ignore
             "excluded_columns", list(str())
         )
+        if isinstance(cols_to_exclude, str):
+            cols_to_exclude = [cols_to_exclude]
+        cols_to_include: Union[str, List[str]] = self.config.sheet_config.get("included_columns", [])  # type: ignore
+        if isinstance(cols_to_include, str):
+            cols_to_include = [cols_to_include]
+
+        # check if the lists are mutually exclusive if not raise?
+        if cols_to_include and cols_to_exclude:
+            common_elements = set(cols_to_include).intersection(set(cols_to_exclude))
+            if common_elements:
+                raise SheetWorkConfigError(
+                    f"The column exclusion and inclusion lists contain common items: {common_elements}. "
+                    "A column cannot both be included and excluded at the same time."
+                )
+
         if cols_to_exclude:
-            _, filtered_columns = check_columns_in_df(df, cols_to_exclude, warn_only=True)
-            if filtered_columns:
-                df = df.drop(filtered_columns, axis=1)
-            return df
+            _, filtered_columns_to_exclude = check_columns_in_df(
+                df, cols_to_exclude, warn_only=True
+            )
+            if filtered_columns_to_exclude:
+                df = df.drop(filtered_columns_to_exclude, axis=1)
+        if cols_to_include:
+            _, filtered_columns_to_include = check_columns_in_df(
+                df, cols_to_include, warn_only=True
+            )
+            print(filtered_columns_to_include)
+            print(df.head())
+            if filtered_columns_to_include:
+                df = df[filtered_columns_to_include]
         return df
 
     @staticmethod
@@ -210,7 +236,7 @@ class SheetBag:
         self.sql_adapter.upload(self.sheet_df, self.target_schema)
 
     def check_table(self):
-        self.sql_adapter.check_table(self.target_schema, self.target_table)
+        _, _ = self.sql_adapter.check_table(self.target_schema, self.target_table)
 
     def run(self):
         self.load_sheet()

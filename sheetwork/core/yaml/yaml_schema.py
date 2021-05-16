@@ -37,10 +37,28 @@ config_schema = {
                     "required": False,
                     "schema": {"type": "string"},
                 },
+                "included_columns": {
+                    "anyof_type": ["list", "string"],
+                    "required": False,
+                    "schema": {"type": "string"},
+                },
+                "custom_column_name_cleanup": {
+                    "type": "dict",
+                    "required": False,
+                    "schema": {
+                        "default_replacement": {"type": "string", "required": False},
+                        "characters_to_replace": {
+                            "anyof_type": ["list", "string"],
+                            "required": False,
+                            "schema": {"type": "string"},
+                        },
+                    },
+                },
             },
         },
-    }
+    },
 }
+
 
 profiles_schema = {
     "profiles": {
@@ -60,10 +78,14 @@ profiles_schema = {
                             "account": {"required": False, "type": "string"},
                             "user": {"required": True, "type": "string"},
                             "password": {"required": True, "type": "string"},
+                            "host": {"required": False, "type": "string"},
+                            "port": {"required": False, "type": "string"},
                             "role": {"required": False, "type": "string"},
                             "database": {"required": False, "type": "string"},
                             "warehouse": {"required": False, "type": "string"},
                             "schema": {"required": False, "type": "string"},
+                            # ! new and prefered from v1.1.0
+                            "target_schema": {"required": False, "type": "string"},
                             "guser": {"required": True, "type": "string"},
                             "is_service_account": {"required": False, "type": "boolean"},
                         },
