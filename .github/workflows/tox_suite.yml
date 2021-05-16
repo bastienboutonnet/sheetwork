@@ -30,6 +30,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox==3.23.1 tox-gh-actions pytest tox-poetry-installer poetry
       - name: Test with tox
-        run: tox --require_poetry -e py
+        run: tox --require-poetry -e py
         env:
           PLATFORM: ${{ matrix.platform }}
