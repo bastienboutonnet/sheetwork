@@ -13,11 +13,11 @@ from sheetwork.core.cleaner import SheetCleaner
 from sheetwork.core.clients.google import GoogleSpreadsheet
 from sheetwork.core.config.config import ConfigLoader
 from sheetwork.core.config.profile import Profile
+from sheetwork.core.exceptions import SheetWorkConfigError
 from sheetwork.core.flags import FlagParser
 from sheetwork.core.logger import GLOBAL_LOGGER as logger
 from sheetwork.core.ui.printer import red, timed_message, yellow
 from sheetwork.core.utils import assert_no_empty_header_cols, check_columns_in_df
-from sheetwork.core.exceptions import SheetWorkConfigError
 
 
 class SheetBag:
@@ -156,7 +156,8 @@ class SheetBag:
             common_elements = set(cols_to_include).intersection(set(cols_to_exclude))
             if common_elements:
                 raise SheetWorkConfigError(
-                    f"The column exclusion and inclusion lists contain common items: {common_elements}. A column cannot both be included and excluded at the same time."
+                    f"The column exclusion and inclusion lists contain common items: {common_elements}. "
+                    "A column cannot both be included and excluded at the same time."
                 )
 
         if cols_to_exclude:
