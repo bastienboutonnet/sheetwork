@@ -12,6 +12,8 @@ class SheetWorkError(Exception):
 class SheetWorkConfigMissingError(SheetWorkError):
     """When a sheet config cannot be found."""
 
+class SheetWorkConfigError(SheetWorkError):
+    """When something isn't so valid with the config."""
 
 class GoogleCredentialsFileMissingError(SheetWorkError):
     """When the google credentials file could not be located."""

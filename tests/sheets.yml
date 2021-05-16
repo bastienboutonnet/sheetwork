@@ -35,16 +35,17 @@ sheets:
 
   - sheet_name: test_sheet_3
     sheet_key: 16nYKVY5UEKspYGbcMb5DG2GrOla-8HrvNOPIutKfdV4
-    worksheet: Sheet2
+    worksheet: Sheet1
     target_schema: sand
     target_table: bb_test_sheetwork
     included_columns: ['column_to_include_or_exclude']
 
-  - sheet_name: test_sheet_3
-    sheet_key: 10J52dhgTRqtI_lm4bf9B02nQu4zu5u6r0h2VIDTjRXg
-    worksheet: Sheet2
+  - sheet_name: test_sheet_4
+    sheet_key: 16nYKVY5UEKspYGbcMb5DG2GrOla-8HrvNOPIutKfdV4
+    worksheet: Sheet1
     target_schema: sand
     target_table: bb_test_sheetwork
+    excluded_columns: ['column_to_include_or_exclude']
 
   - sheet_name: df_renamer
     sheet_key: sample

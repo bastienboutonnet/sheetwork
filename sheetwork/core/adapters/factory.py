@@ -30,7 +30,21 @@ class AdapterContainer:
                     "module": "sheetwork.core.adapters.snowflake.connection",
                     "class_name": "SnowflakeCredentials",
                 },
-            }
+            },
+            "postgres": {
+                "sql_adapter": {
+                    "module": "sheetwork.core.adapters.postgres.impl",
+                    "class_name": "PostgresAdaptor",
+                },
+                "connection_adapter": {
+                    "module": "sheetwork.core.adapters.postgres.connection",
+                    "class_name": "PostgresConnection",
+                },
+                "credentials_adapter": {
+                    "module": "sheetwork.core.adapters.postgres.connection",
+                    "class_name": "PostgresCredentials",
+                },
+            },
         }
         self.adapter_name: str = str()
         self.credentials_adapter: Type[BaseCredentials] = BaseCredentials

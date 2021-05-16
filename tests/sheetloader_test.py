@@ -58,7 +58,8 @@ def test_exclude_columns(datafiles):
     profile = Profile(project)
     config = ConfigLoader(flags, project)
     df = generate_test_df(DROP_COL_DF)
-    excluded_df = SheetBag(config, flags, profile).exclude_columns(df)
+    print(df)
+    excluded_df = SheetBag(config, flags, profile).exclude_or_include_columns(df)
 
     assert excluded_df.columns.tolist() == EXCLUDED_DF_COLS
 

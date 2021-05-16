@@ -147,7 +147,7 @@ class SheetBag:
         )
         if isinstance(cols_to_exclude, str):
             cols_to_exclude = [cols_to_exclude]
-        cols_to_include: Union[str, List[str]] = self.config.sheet_config.get("included_columns", [""])  # type: ignore
+        cols_to_include: Union[str, List[str]] = self.config.sheet_config.get("included_columns", [])  # type: ignore
         if isinstance(cols_to_include, str):
             cols_to_include = [cols_to_include]
 
@@ -169,8 +169,10 @@ class SheetBag:
             _, filtered_columns_to_include = check_columns_in_df(
                 df, cols_to_include, warn_only=True
             )
+            print(filtered_columns_to_include)
+            print(df.head())
             if filtered_columns_to_include:
-                df = df[[filtered_columns_to_include]]
+                df = df[filtered_columns_to_include]
         return df
 
     @staticmethod
