@@ -38,14 +38,14 @@ sheets:
     worksheet: Sheet1
     target_schema: sand
     target_table: bb_test_sheetwork
-    included_columns: ['column_to_include_or_exclude']
+    included_columns: ["column_to_include_or_exclude"]
 
   - sheet_name: test_sheet_4
     sheet_key: 16nYKVY5UEKspYGbcMb5DG2GrOla-8HrvNOPIutKfdV4
     worksheet: Sheet1
     target_schema: sand
     target_table: bb_test_sheetwork
-    excluded_columns: ['column_to_include_or_exclude']
+    excluded_columns: ["column_to_include_or_exclude"]
 
   - sheet_name: df_renamer
     sheet_key: sample
