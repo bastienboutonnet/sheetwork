@@ -26,6 +26,7 @@ repos:
         entry: mypy sheetwork/core
         pass_filenames: false
         args: [--ignore-missing-imports]
+        additional_dependencies: [types-all]
   - repo: https://github.com/PyCQA/isort
     rev: "5.9.1"
     hooks:
