@@ -647,7 +647,7 @@ virtualenv = ">=20.0.8"
 
 [[package]]
 name = "pretty-errors"
-version = "1.2.20"
+version = "1.2.23"
 description = "Prettifies Python exception output to make it legible."
 category = "main"
 optional = false
@@ -1663,8 +1663,8 @@ pre-commit = [
     {file = "pre_commit-2.12.1.tar.gz", hash = "sha256:900d3c7e1bf4cf0374bb2893c24c23304952181405b4d88c9c40b72bda1bb8a9"},
 ]
 pretty-errors = [
-    {file = "pretty_errors-1.2.20-py3-none-any.whl", hash = "sha256:844a0713830e89e62bc112639b5a0da0454aea566937695446f2aaf6314f9d8a"},
-    {file = "pretty_errors-1.2.20.tar.gz", hash = "sha256:2dc179f339bbb2cf406fda1b16267f7a4758ebd73ef61d0255be7cf34e405e18"},
+    {file = "pretty_errors-1.2.23-py3-none-any.whl", hash = "sha256:2c6a228d1c13d6dde56c5af52bc9b63f95561c7123433e4476b3bc5fec8cecd5"},
+    {file = "pretty_errors-1.2.23.tar.gz", hash = "sha256:e8a5abbad5cd70302f2f435709d82ce97d1c05b1d4d6c1636e4ff1ffbf517360"},
 ]
 psycopg2 = [
     {file = "psycopg2-2.8.6-cp27-cp27m-win32.whl", hash = "sha256:068115e13c70dc5982dfc00c5d70437fe37c014c808acce119b5448361c03725"},
