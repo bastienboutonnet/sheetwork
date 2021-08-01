@@ -446,7 +446,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "luddite"
-version = "1.0.1"
+version = "1.0.2"
 description = "Checks for out-of-date package versions"
 category = "main"
 optional = false
@@ -1493,7 +1493,8 @@ jmespath = [
     {file = "jmespath-0.10.0.tar.gz", hash = "sha256:b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9"},
 ]
 luddite = [
-    {file = "luddite-1.0.1-py2.py3-none-any.whl", hash = "sha256:af6b66317a86e173257627a1fde0c7e6265f57a03fdf354d25e3ec8b13670c43"},
+    {file = "luddite-1.0.2-py2.py3-none-any.whl", hash = "sha256:5d4cd45c91e7876465330b84e18e6994d44b77ee8f723fdc384d5fd7ff160c04"},
+    {file = "luddite-1.0.2.tar.gz", hash = "sha256:8bec9f75247716320da307ff84df141b57fbd1f7e81a8bc2a7d7db88531cebc5"},
 ]
 markupsafe = [
     {file = "MarkupSafe-2.0.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:2efaeb1baff547063bad2b2893a8f5e9c459c4624e1a96644bbba08910ae34e0"},
