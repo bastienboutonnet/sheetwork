@@ -53,7 +53,7 @@ towncrier = "^21.3.0"
 pytest-sugar = "^0.9.4"
 pytest-instafail = "^0.4.2"
 tox-poetry-installer = "^0.8.0"
-tox = "^3.23.1"
+tox = "^3.24.1"
 pre-commit = "^2.13.0"
 
 [tool.poetry.extras]

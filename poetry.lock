@@ -1069,7 +1069,7 @@ dev = ["packaging"]
 
 [[package]]
 name = "tox"
-version = "3.23.1"
+version = "3.24.1"
 description = "tox is a generic virtualenv management and test command line tool"
 category = "dev"
 optional = false
@@ -1172,7 +1172,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.1,<4.0"
-content-hash = "16444a6a218f59929ec2fd996ee369e968abc70c73f3c8773f0c741a7db54482"
+content-hash = "a33c3c09335e76b5db3b0ae5aeca3c4047a3a85ef7133bace1a34b11a9bdc42e"
 
 [metadata.files]
 appdirs = [
@@ -1942,8 +1942,8 @@ towncrier = [
     {file = "towncrier-21.3.0.tar.gz", hash = "sha256:6eed0bc924d72c98c000cb8a64de3bd566e5cb0d11032b73fcccf8a8f956ddfe"},
 ]
 tox = [
-    {file = "tox-3.23.1-py2.py3-none-any.whl", hash = "sha256:b0b5818049a1c1997599d42012a637a33f24c62ab8187223fdd318fa8522637b"},
-    {file = "tox-3.23.1.tar.gz", hash = "sha256:307a81ddb82bd463971a273f33e9533a24ed22185f27db8ce3386bff27d324e3"},
+    {file = "tox-3.24.1-py2.py3-none-any.whl", hash = "sha256:60eda26fa47b7130e6fc1145620b1fd897963af521093c3685c3f63d1c394029"},
+    {file = "tox-3.24.1.tar.gz", hash = "sha256:9850daeb96d21b4abf049bc5f197426123039e383ebfed201764e9355fc5a880"},
 ]
 tox-poetry-installer = [
     {file = "tox-poetry-installer-0.8.0.tar.gz", hash = "sha256:6df71f3ea34300b45d0642591946a0f413ce14de2c67d1b5f3c0b84ee28466be"},
