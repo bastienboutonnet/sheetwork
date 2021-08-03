@@ -23,7 +23,7 @@ keywords = ["googlesheets", "snowflake", "cli", "ingest", "data engineering"]
 [tool.poetry.dependencies]
 python = ">=3.6.1,<4.0"
 requests = "<2.23.0"
-gspread = "^3.6"
+gspread = ">=3.6,<5.0"
 sqlalchemy = "^1.3.19"
 cerberus = "^1.3.2"
 pandas = "~1.1.5"

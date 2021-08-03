@@ -314,11 +314,11 @@ docs = ["sphinx"]
 
 [[package]]
 name = "gspread"
-version = "3.7.0"
+version = "4.0.0"
 description = "Google Spreadsheets Python API"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.4, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.dependencies]
 google-auth = ">=1.12.0"
@@ -1172,7 +1172,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.1,<4.0"
-content-hash = "16444a6a218f59929ec2fd996ee369e968abc70c73f3c8773f0c741a7db54482"
+content-hash = "2bbbf0c7cc8562c0675257cc0044065b41c7e855012f06a0698882f5035e4244"
 
 [metadata.files]
 appdirs = [
@@ -1445,8 +1445,8 @@ greenlet = [
     {file = "greenlet-1.1.0.tar.gz", hash = "sha256:c87df8ae3f01ffb4483c796fe1b15232ce2b219f0b18126948616224d3f658ee"},
 ]
 gspread = [
-    {file = "gspread-3.7.0-py3-none-any.whl", hash = "sha256:056ceb9fb4f439c15ec39d84c91653c6435f775a1c8afc8fe7f909f8393821fb"},
-    {file = "gspread-3.7.0.tar.gz", hash = "sha256:4bda4ab8c5edb9e41cf4ae40d4d5fb30447522b4e43608e05c01351ab1b96912"},
+    {file = "gspread-4.0.0-py3-none-any.whl", hash = "sha256:8409f93f40eb6dd9a5fed50eba90a9f90027ce9c7882b14424e70fd9bd1a4b7e"},
+    {file = "gspread-4.0.0.tar.gz", hash = "sha256:b557a4aea9d6aa74cd411123df2f35dcde43c1faf085333efb0ede7c9f8c545d"},
 ]
 httplib2 = [
     {file = "httplib2-0.19.1-py3-none-any.whl", hash = "sha256:2ad195faf9faf079723f6714926e9a9061f694d07724b846658ce08d40f522b4"},
