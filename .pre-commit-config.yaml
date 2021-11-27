@@ -5,20 +5,20 @@ repos:
       - id: seed-isort-config
         name: Seed isort
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 21.11b1
     hooks:
       - id: black
         language_version: python3
         args: [--line-length=100, --target-version=py37]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.0.1
     hooks:
       - id: end-of-file-fixer
         exclude: ^.bumpversion.cfg
       - id: trailing-whitespace
         exclude: ^.bumpversion.cfg
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v0.812"
+    rev: "v0.910-1"
     hooks:
       - id: mypy
         name: Lint core with mypy
@@ -26,19 +26,20 @@ repos:
         entry: mypy sheetwork/core
         pass_filenames: false
         args: [--ignore-missing-imports]
+        additional_dependencies: [types-all]
   - repo: https://github.com/PyCQA/isort
-    rev: "5.7.0"
+    rev: "5.10.1"
     hooks:
       - id: isort
         name: Sort import with isort
         args: ["-m3", "-w 100", "--tc"]
         exclude: ^tests/
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v2.2.1" # Use the sha or tag you want to point at
+    rev: "v2.4.1" # Use the sha or tag you want to point at
     hooks:
       - id: prettier
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: "3.8.4" # pick a git hash / tag to point to
+  - repo: https://github.com/PyCQA/flake8
+    rev: "4.0.1" # pick a git hash / tag to point to
     hooks:
       - id: flake8
         exclude: ^tests/
