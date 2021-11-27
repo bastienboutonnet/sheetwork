@@ -113,3 +113,5 @@ dev-requirements.txt
 
 **/dummy/**
 **/dummy--force-credentials/**
+
+poetry.lock
