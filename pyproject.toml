@@ -52,7 +52,7 @@ pytest-datafiles = "^2.0"
 towncrier = "^21.3.0"
 pytest-sugar = "^0.9.4"
 pytest-instafail = "^0.4.2"
-tox-poetry-installer = "^0.8.0"
+tox-poetry-installer = "^0.8.2"
 tox = "^3.23.1"
 pre-commit = "^2.13.0"
 
