@@ -647,7 +647,7 @@ virtualenv = ">=20.0.8"
 
 [[package]]
 name = "pretty-errors"
-version = "1.2.23"
+version = "1.2.25"
 description = "Prettifies Python exception output to make it legible."
 category = "main"
 optional = false
@@ -785,18 +785,18 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 name = "pytest-cov"
-version = "3.0.0"
+version = "2.12.0"
 description = "Pytest plugin for measuring coverage."
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
 coverage = {version = ">=5.2.1", extras = ["toml"]}
 pytest = ">=4.6"
 
 [package.extras]
-testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
+testing = ["fields", "hunter", "process-tests (==2.0.2)", "six", "pytest-xdist", "virtualenv"]
 
 [[package]]
 name = "pytest-datafiles"
@@ -1172,7 +1172,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.1,<4.0"
-content-hash = "665fb9dd0ae3e575ad101d647d8e8df637b5c031f8b3c42cb55a8bb5fdbadbd3"
+content-hash = "16444a6a218f59929ec2fd996ee369e968abc70c73f3c8773f0c741a7db54482"
 
 [metadata.files]
 appdirs = [
@@ -1665,8 +1665,8 @@ pre-commit = [
     {file = "pre_commit-2.13.0.tar.gz", hash = "sha256:764972c60693dc668ba8e86eb29654ec3144501310f7198742a767bec385a378"},
 ]
 pretty-errors = [
-    {file = "pretty_errors-1.2.23-py3-none-any.whl", hash = "sha256:2c6a228d1c13d6dde56c5af52bc9b63f95561c7123433e4476b3bc5fec8cecd5"},
-    {file = "pretty_errors-1.2.23.tar.gz", hash = "sha256:e8a5abbad5cd70302f2f435709d82ce97d1c05b1d4d6c1636e4ff1ffbf517360"},
+    {file = "pretty_errors-1.2.25-py3-none-any.whl", hash = "sha256:8ce68ccd99e0f2a099265c8c1f1c23b7c60a15d69bb08816cb336e237d5dc983"},
+    {file = "pretty_errors-1.2.25.tar.gz", hash = "sha256:a16ba5c752c87c263bf92f8b4b58624e3b1e29271a9391f564f12b86e93c6755"},
 ]
 psycopg2 = [
     {file = "psycopg2-2.8.6-cp27-cp27m-win32.whl", hash = "sha256:068115e13c70dc5982dfc00c5d70437fe37c014c808acce119b5448361c03725"},
@@ -1796,8 +1796,8 @@ pytest = [
     {file = "pytest-6.2.4.tar.gz", hash = "sha256:50bcad0a0b9c5a72c8e4e7c9855a3ad496ca6a881a3641b4260605450772c54b"},
 ]
 pytest-cov = [
-    {file = "pytest-cov-3.0.0.tar.gz", hash = "sha256:e7f0f5b1617d2210a2cabc266dfe2f4c75a8d32fb89eafb7ad9d06f6d076d470"},
-    {file = "pytest_cov-3.0.0-py3-none-any.whl", hash = "sha256:578d5d15ac4a25e5f961c938b85a05b09fdaae9deef3bb6de9a6e766622ca7a6"},
+    {file = "pytest-cov-2.12.0.tar.gz", hash = "sha256:8535764137fecce504a49c2b742288e3d34bc09eed298ad65963616cc98fd45e"},
+    {file = "pytest_cov-2.12.0-py2.py3-none-any.whl", hash = "sha256:95d4933dcbbacfa377bb60b29801daa30d90c33981ab2a79e9ab4452c165066e"},
 ]
 pytest-datafiles = [
     {file = "pytest-datafiles-2.0.tar.gz", hash = "sha256:143329cbb1dbbb07af24f88fa4668e2f59ce233696cf12c49fd1c98d1756dbf9"},
