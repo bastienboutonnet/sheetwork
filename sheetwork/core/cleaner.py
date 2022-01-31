@@ -57,7 +57,7 @@ class SheetCleaner:
             else:
                 characters_to_replace = characters_to_replace[0]
 
-            regex_string = fr"[{characters_to_replace}]+"
+            regex_string = rf"[{characters_to_replace}]+"
 
         # replace specified characters with the default_replacement and remove consecutive and
         # trailing whitespace and default_replacement
