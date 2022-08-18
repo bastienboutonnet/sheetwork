@@ -118,7 +118,7 @@ class SheetBag:
         df = self.exclude_or_include_columns(df)
         df = self.rename_columns(df)
         self.push_anyway, df = self.run_cleanup(df)
-        logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
+        logger.info(f"Columns after cleanups and exclusions: {df.columns}")
         logger.debug(f"Loaded SHEET HEAD: {df}")
         self.sheet_df = df
 
@@ -126,6 +126,18 @@ class SheetBag:
         if self.config.sheet_column_rename_dict:
             _, _ = check_columns_in_df(df, list(self.config.sheet_column_rename_dict.keys()))
             df = df.rename(columns=self.config.sheet_column_rename_dict)  # type: ignore
+        # If empty col headers, auto-generate a name
+        cols = list()
+        current_cols = df.columns.tolist()
+        col_pos = 0
+        for c in current_cols:
+            if c.strip() == "":
+                cols.append(f"col{col_pos}")
+            else:
+                cols.append(c)
+            col_pos += 1
+        df.columns = cols
+        logger.info(cols)
         return df
 
     def exclude_or_include_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
