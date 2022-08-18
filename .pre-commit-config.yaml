@@ -5,20 +5,20 @@ repos:
       - id: seed-isort-config
         name: Seed isort
   - repo: https://github.com/psf/black
-    rev: 22.1.0
+    rev: 22.6.0
     hooks:
       - id: black
         language_version: python3
         args: [--line-length=100, --target-version=py37]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.3.0
     hooks:
       - id: end-of-file-fixer
         exclude: ^.bumpversion.cfg
       - id: trailing-whitespace
         exclude: ^.bumpversion.cfg
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v0.931"
+    rev: "v0.971"
     hooks:
       - id: mypy
         name: Lint core with mypy
@@ -35,11 +35,11 @@ repos:
         args: ["-m3", "-w 100", "--tc"]
         exclude: ^tests/
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v2.5.1" # Use the sha or tag you want to point at
+    rev: "v2.7.1" # Use the sha or tag you want to point at
     hooks:
       - id: prettier
   - repo: https://github.com/PyCQA/flake8
-    rev: "4.0.1" # pick a git hash / tag to point to
+    rev: "5.0.4" # pick a git hash / tag to point to
     hooks:
       - id: flake8
         exclude: ^tests/
