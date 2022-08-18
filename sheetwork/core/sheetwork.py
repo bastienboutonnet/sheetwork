@@ -103,9 +103,7 @@ class SheetBag:
             logger.info(timed_message(f"Importing: {self.flags.sheet_name}"))
             logger.debug(f"Importing data from: {self.config.sheet_config['sheet_key']}")
         else:
-            logger.info(
-                timed_message(f"Importing data from: {self.config.sheet_config.get('sheet_key')}")
-            )
+            logger.info(timed_message(f"Importing data from: {self.config.sheet_config.get('sheet_key')}"))
         df = self._obtain_googlesheet()
         if not isinstance(df, pandas.DataFrame):
             raise TypeError("import_sheet did not return a pandas DataFrame")
@@ -118,7 +116,7 @@ class SheetBag:
         df = self.exclude_or_include_columns(df)
         df = self.rename_columns(df)
         self.push_anyway, df = self.run_cleanup(df)
-        logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
+        logger.info(f"Columns after cleanups and exclusions: {df.columns}")
         logger.debug(f"Loaded SHEET HEAD: {df}")
         self.sheet_df = df
 
@@ -126,6 +124,18 @@ class SheetBag:
         if self.config.sheet_column_rename_dict:
             _, _ = check_columns_in_df(df, list(self.config.sheet_column_rename_dict.keys()))
             df = df.rename(columns=self.config.sheet_column_rename_dict)  # type: ignore
+        # If empty col headers, auto-generate a name
+        cols = list()
+        current_cols = df.columns.tolist()
+        col_pos = 0
+        for c in current_cols:
+            if c.strip() == "":
+                cols.append(f"col{col_pos}")
+            else:
+                cols.append(c)
+            col_pos += 1
+        df.columns = cols
+        logger.info(cols)
         return df
 
     def exclude_or_include_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
@@ -161,15 +171,11 @@ class SheetBag:
                 )
 
         if cols_to_exclude:
-            _, filtered_columns_to_exclude = check_columns_in_df(
-                df, cols_to_exclude, warn_only=True
-            )
+            _, filtered_columns_to_exclude = check_columns_in_df(df, cols_to_exclude, warn_only=True)
             if filtered_columns_to_exclude:
                 df = df.drop(filtered_columns_to_exclude, axis=1)
         if cols_to_include:
-            _, filtered_columns_to_include = check_columns_in_df(
-                df, cols_to_include, warn_only=True
-            )
+            _, filtered_columns_to_include = check_columns_in_df(df, cols_to_include, warn_only=True)
             print(filtered_columns_to_include)
             print(df.head())
             if filtered_columns_to_include:
@@ -206,18 +212,14 @@ class SheetBag:
         # check for interactive mode
         if self.flags.interactive:
             logger.info(
-                yellow(
-                    "PRE-CLEANING PREVIEW: The DataFrame you would push to the database would look like this:"
-                )
+                yellow("PRE-CLEANING PREVIEW: The DataFrame you would push to the database would look like this:")
             )
             self._show_dry_run_preview(df)
             clean_up = self._collect_and_check_answer()
 
         if clean_up is True:
             logger.debug("Performing clean ups")
-            clean_df = SheetCleaner(
-                df, bool(self.config.sheet_config.get("snake_case_camel", False))
-            ).cleanup()
+            clean_df = SheetCleaner(df, bool(self.config.sheet_config.get("snake_case_camel", False))).cleanup()
             if self.flags.dry_run or self.flags.interactive:
                 logger.info(yellow("\nPOST-CLEANING PREVIEW:"))
                 self._show_dry_run_preview(clean_df)

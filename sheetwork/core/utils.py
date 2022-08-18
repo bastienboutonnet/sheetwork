@@ -50,9 +50,7 @@ class PathFinder:
         self.max_iter = max_iter
         self.iteration = 0
 
-    def find_nearest_dir_and_file(
-        self, yaml_file: str, current: Path = Path.cwd()
-    ) -> Tuple[Path, Path, bool]:
+    def find_nearest_dir_and_file(self, yaml_file: str, current: Path = Path.cwd()) -> Tuple[Path, Path, bool]:
         """Looks for the yaml_file you ask for.
 
         Starting from the current directory and going up with
@@ -82,8 +80,7 @@ class PathFinder:
             self.iteration += 1
         else:
             raise NearestFileNotFound(
-                f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} "
-                "iterations upwards."
+                f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} " "iterations upwards."
             )
 
 
@@ -119,9 +116,7 @@ def check_columns_in_df(
     message = f"The following columns were not found in the sheet: {cols_not_in_df} "
     if warn_only:
         # and not suppress_warning:
-        logger.warning(
-            yellow(message + "they were ignored. Consider cleaning your sheets.yml file")
-        )
+        logger.warning(yellow(message + "they were ignored. Consider cleaning your sheets.yml file"))
     elif not warn_only:
         # and not suppress_warning:
         raise ColumnNotFoundInDataFrame(message + "Google Sheet or sheets.yml needs to be cleaned")
@@ -131,11 +126,7 @@ def check_columns_in_df(
 def check_dupe_cols(columns: List[str]):
     """Checks dupes in a list."""
     columns_without_empty_strings = list(filter(None, columns))
-    dupes = [
-        item
-        for item, count in collections.Counter(columns_without_empty_strings).items()
-        if count > 1
-    ]
+    dupes = [item for item, count in collections.Counter(columns_without_empty_strings).items() if count > 1]
     if dupes:
         raise DuplicatedColumnsInSheet(
             f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
@@ -164,9 +155,7 @@ def check_and_compare_version(external_version: Optional[str] = str()) -> Tuple[
         needs_update = semver_parse(pypi_version) > semver_parse(installed_version)
         if needs_update:
             logger.warning(
-                yellow(
-                    f"Looks like you're a bit behind. A newer version of Sheetwork v{pypi_version} is available."
-                )
+                yellow(f"Looks like you're a bit behind. A newer version of Sheetwork v{pypi_version} is available.")
             )
         return needs_update, pypi_version
 
@@ -313,10 +302,10 @@ def assert_no_empty_header_cols(df: pandas.DataFrame) -> bool:
         df (pandas.DataFrame): DataFrame downloaded from google sheet.
 
     Returns:
-        bool: True if at least 1 header column is empty
+        bool: True if at least all header columns are empty. We will auto-generate headers if some are
     """
     count_empty_header_columns = (df.rename(columns=lambda x: x.strip()).columns == "").sum()
-    if count_empty_header_columns > 0:
+    if count_empty_header_columns == len(df.columns):
         raise EmptyHeaderError(
             f"The google sheet contains {count_empty_header_columns} "
             f"{'column' if count_empty_header_columns  < 2 else 'columns'} "
