@@ -128,13 +128,22 @@ class SheetBag:
             df = df.rename(columns=self.config.sheet_column_rename_dict)  # type: ignore
         # If empty col headers, auto-generate a name
         cols = list()
+        col_counter = dict()
         current_cols = df.columns.tolist()
         col_pos = 0
         for c in current_cols:
+            # In the event of an unnamed column, we assign a generic name
             if c.strip() == "":
-                cols.append(f"col{col_pos}")
+                col = f"col{col_pos}"
             else:
-                cols.append(c)
+                col = c.lower()
+            # In the event of a duplicate, we increment (ex col, col2, col3)
+            if col in col_counter.items():
+                col = f"{col}{col_counter['col']}"
+                col_counter[col] += 1
+            else:
+                col_counter[col] = 1
+            cols.append(col)
             col_pos += 1
         df.columns = cols
         logger.info(cols)
