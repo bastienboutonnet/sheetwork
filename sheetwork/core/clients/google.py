@@ -151,8 +151,27 @@ class GoogleSpreadsheet:
             logger.debug(green("Sheet loaded successfully"))
             if grab_header:
                 values: List[Any] = worksheet.get_all_values()
-                check_dupe_cols(values[0])
-                df = pandas.DataFrame(values[1:], columns=values[0])
+                
+                cols = list()
+                col_counter = dict()
+                current_cols = values[0]
+                col_pos = 0
+                for c in current_cols:
+                    # In the event of an unnamed column, we assign a generic name
+                    if c.strip() == "":
+                        col = f"col{col_pos}"
+                    else:
+                        col = c.lower()
+                    # In the event of a duplicate, we increment (ex col, col2, col3)
+                    if col in col_counter.keys():
+                        col_counter[col] += 1
+                        col = f"{col}{col_counter[col]}"
+                    else:
+                        col_counter[col] = 1
+                    cols.append(col)
+                    col_pos += 1
+
+                df = pandas.DataFrame(values[1:], columns=cols)
             else:
                 df = pandas.DataFrame(worksheet.get_all_values())
             logger.debug(yellow(f"Raw obtained google sheet: \n {df.head()}"))
