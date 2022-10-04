@@ -12,6 +12,7 @@ config_schema = {
                 "target_schema": {"required": False, "type": "string"},
                 "target_table": {"required": True, "type": "string"},
                 "snake_case_camel": {"required": False, "type": "boolean"},
+                "skip_rows": {"required": False, "type": "integer"},
                 "columns": {
                     "type": "list",
                     "required": False,

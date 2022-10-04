@@ -49,6 +49,7 @@ class SheetBag:
         self.profile = profile
         self.push_anyway = False
         self.sheet_key: str = str(config.sheet_config.get("sheet_key", str()))
+        self.skip_rows: int = int(config.sheet_config.get("skip_rows", 0))
         self.credentials_adapter: Optional[BaseCredentials] = None
         self.connection_adapter: Optional[BaseConnection] = None
         self.sql_adapter: Optional[BaseSQLAdapter] = None
@@ -80,7 +81,7 @@ class SheetBag:
             google_sheet = GoogleSpreadsheet(self.profile, self.sheet_key)
             google_sheet.authenticate()
             google_sheet.open_workbook()
-            df = google_sheet.make_df_from_worksheet(worksheet_name=worksheet)
+            df = google_sheet.make_df_from_worksheet(worksheet_name=worksheet, skip_rows=self.skip_rows)
         except APIError as e:
             error = str(e)
             if any(x in error for x in ["RESOURCE_EXHAUSTED", "UNAVAILABLE", "INTERNAL"]) and any(

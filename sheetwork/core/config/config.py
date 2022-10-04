@@ -30,7 +30,7 @@ class ConfigLoader:
             project (Project): Parsed project object.
         """
         self.config: Dict[str, List[Dict[str, Any]]] = dict()
-        self.sheet_config: Dict[str, Union[str, bool, List[Union[str, Dict[str, str]]]]] = dict(
+        self.sheet_config: Dict[str, Union[str, bool, int, List[Union[str, Dict[str, str]]]]] = dict(
             sheet_key=flags.sheet_key,
             target_schema=flags.target_schema,
             target_table=flags.target_table,
