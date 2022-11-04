@@ -14,21 +14,6 @@ from sheetwork.core.logger import log_manager
 from sheetwork.core.sheetwork import SheetBag
 from sheetwork.core.task.init import InitTask
 from sheetwork.core.ui.traceback_manager import SheetworkTracebackManager
-from sheetwork.core.utils import check_and_compare_version
-
-
-def check_and_print_version() -> str:
-    """Calls check_and_compare_version and formats a message that works both for main and argparse.
-
-    Returns:
-        str: version info message ready for printing
-    """
-    needs_update, latest_version = check_and_compare_version()
-    installed_version_message = f"Installed Sheetwork version: {__version__}".rjust(40)
-    latest_version_message = f"Latest Sheetwork version: {latest_version}".rjust(40)
-    if latest_version:
-        return "\n".join([installed_version_message, latest_version_message])
-    return installed_version_message
 
 
 # general parser
@@ -38,7 +23,6 @@ parser = argparse.ArgumentParser(
     description="CLI tool to load google sheets onto a DB.",
     epilog="Select one of these sub-commands to find specific help for those.",
 )
-parser.add_argument("-v", "--version", action="version", version=check_and_print_version())
 
 # base sub parser
 base_subparser = argparse.ArgumentParser(add_help=False)
@@ -64,19 +48,13 @@ base_subparser.add_argument(
 subs = parser.add_subparsers(title="Available sub commands", dest="command")
 
 # Upload task parser
-upload_sub = subs.add_parser(
-    "upload", parents=[base_subparser], help="Pull, sanitize and upload a google sheet."
-)
+upload_sub = subs.add_parser("upload", parents=[base_subparser], help="Pull, sanitize and upload a google sheet.")
 upload_sub.set_defaults(cls=upload_task.SheetBag, which="upload")
 upload_sub.add_argument("--schema", help="Target Schema Name", type=str, default=None)
 upload_sub.add_argument("--table", help="Target Table Name", type=str, default=None)
-upload_sub.add_argument(
-    "-sn", "--sheet-name", help="Name of your sheet from config", type=str, default=None
-)
+upload_sub.add_argument("-sn", "--sheet-name", help="Name of your sheet from config", type=str, default=None)
 upload_sub.add_argument("-sk", "--sheet-key", help="Google sheet Key", type=str, default=None)
-upload_sub.add_argument(
-    "--dry-run", help="Skips pushing to database", action="store_true", default=False
-)
+upload_sub.add_argument("--dry-run", help="Skips pushing to database", action="store_true", default=False)
 upload_sub.add_argument(
     "-i",
     "--interactive",
@@ -117,9 +95,7 @@ upload_sub.add_argument(
 )
 
 # Init task parser
-init_sub = subs.add_parser(
-    "init", parents=[base_subparser], help="Initialise your sheetwork project"
-)
+init_sub = subs.add_parser("init", parents=[base_subparser], help="Initialise your sheetwork project")
 init_sub.set_defaults(cls=init_task.InitTask, which="init")
 init_sub.add_argument("--project-name", help="Name you want to init your dbt project with")
 init_sub.add_argument(
@@ -175,12 +151,6 @@ def main(parser: argparse.ArgumentParser = parser, test_cli_args: List[str] = li
     _cli_args = list()
     if test_cli_args:
         _cli_args = test_cli_args
-
-    # print version on every run unless doing `--version` which is better handled by argparse
-    if "--version" not in sys.argv[1:]:
-        version_message = check_and_print_version()
-        print(version_message)
-        print("\n")
 
     handle(parser, _cli_args)
     return 0
