@@ -49,6 +49,7 @@ class SheetBag:
         self.profile = profile
         self.push_anyway = False
         self.sheet_key: str = str(config.sheet_config.get("sheet_key", str()))
+        self.skip_rows: int = int(config.sheet_config.get("skip_rows", 0))
         self.credentials_adapter: Optional[BaseCredentials] = None
         self.connection_adapter: Optional[BaseConnection] = None
         self.sql_adapter: Optional[BaseSQLAdapter] = None
@@ -80,7 +81,7 @@ class SheetBag:
             google_sheet = GoogleSpreadsheet(self.profile, self.sheet_key)
             google_sheet.authenticate()
             google_sheet.open_workbook()
-            df = google_sheet.make_df_from_worksheet(worksheet_name=worksheet)
+            df = google_sheet.make_df_from_worksheet(worksheet_name=worksheet, skip_rows=self.skip_rows)
         except APIError as e:
             error = str(e)
             if any(x in error for x in ["RESOURCE_EXHAUSTED", "UNAVAILABLE", "INTERNAL"]) and any(
@@ -118,7 +119,7 @@ class SheetBag:
         df = self.exclude_or_include_columns(df)
         df = self.rename_columns(df)
         self.push_anyway, df = self.run_cleanup(df)
-        logger.debug(f"Columns after cleanups and exclusions: {df.columns}")
+        logger.info(f"Columns after cleanups and exclusions: {df.columns}")
         logger.debug(f"Loaded SHEET HEAD: {df}")
         self.sheet_df = df
 
@@ -126,6 +127,18 @@ class SheetBag:
         if self.config.sheet_column_rename_dict:
             _, _ = check_columns_in_df(df, list(self.config.sheet_column_rename_dict.keys()))
             df = df.rename(columns=self.config.sheet_column_rename_dict)  # type: ignore
+        # If empty col headers, auto-generate a name
+        cols = list()
+        current_cols = df.columns.tolist()
+        col_pos = 0
+        for c in current_cols:
+            if c.strip() == "":
+                cols.append(f"col{col_pos}")
+            else:
+                cols.append(c)
+            col_pos += 1
+        df.columns = cols
+        logger.info(cols)
         return df
 
     def exclude_or_include_columns(self, df: pandas.DataFrame) -> pandas.DataFrame:
