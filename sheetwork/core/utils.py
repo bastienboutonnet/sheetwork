@@ -7,7 +7,6 @@ from urllib.error import URLError
 
 import numpy as np
 import pandas
-from packaging.version import parse as semver_parse
 
 from sheetwork.core._version import __version__
 from sheetwork.core.exceptions import (
