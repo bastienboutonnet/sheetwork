@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 from urllib.error import URLError
 
-import luddite
 import numpy as np
 import pandas
 from packaging.version import parse as semver_parse
@@ -50,9 +49,7 @@ class PathFinder:
         self.max_iter = max_iter
         self.iteration = 0
 
-    def find_nearest_dir_and_file(
-        self, yaml_file: str, current: Path = Path.cwd()
-    ) -> Tuple[Path, Path, bool]:
+    def find_nearest_dir_and_file(self, yaml_file: str, current: Path = Path.cwd()) -> Tuple[Path, Path, bool]:
         """Looks for the yaml_file you ask for.
 
         Starting from the current directory and going up with
@@ -82,8 +79,7 @@ class PathFinder:
             self.iteration += 1
         else:
             raise NearestFileNotFound(
-                f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} "
-                "iterations upwards."
+                f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} " "iterations upwards."
             )
 
 
@@ -119,9 +115,7 @@ def check_columns_in_df(
     message = f"The following columns were not found in the sheet: {cols_not_in_df} "
     if warn_only:
         # and not suppress_warning:
-        logger.warning(
-            yellow(message + "they were ignored. Consider cleaning your sheets.yml file")
-        )
+        logger.warning(yellow(message + "they were ignored. Consider cleaning your sheets.yml file"))
     elif not warn_only:
         # and not suppress_warning:
         raise ColumnNotFoundInDataFrame(message + "Google Sheet or sheets.yml needs to be cleaned")
@@ -131,47 +125,11 @@ def check_columns_in_df(
 def check_dupe_cols(columns: List[str]):
     """Checks dupes in a list."""
     columns_without_empty_strings = list(filter(None, columns))
-    dupes = [
-        item
-        for item, count in collections.Counter(columns_without_empty_strings).items()
-        if count > 1
-    ]
+    dupes = [item for item, count in collections.Counter(columns_without_empty_strings).items() if count > 1]
     if dupes:
         raise DuplicatedColumnsInSheet(
             f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
         )
-
-
-def check_and_compare_version(external_version: Optional[str] = str()) -> Tuple[bool, str]:
-    """Checks what the currently installed version of sheetwork is and compares it to the one on PyPI.
-
-    This requires an internet connection. In the case where this doesn't happen a URLError will
-    probably be thrown and in that case we just return False not to cause annoying user experience.
-
-    Args:
-        external_version (Optional[str], optional): Mainly for testing purposes. Defaults to str().
-
-    Returns:
-        bool: True when sheetwork needs an update. False when good.
-    """
-    try:
-        pypi_version: str = luddite.get_version_pypi("sheetwork")
-        if external_version:
-            installed_version = external_version
-        else:
-            installed_version = __version__
-
-        needs_update = semver_parse(pypi_version) > semver_parse(installed_version)
-        if needs_update:
-            logger.warning(
-                yellow(
-                    f"Looks like you're a bit behind. A newer version of Sheetwork v{pypi_version} is available."
-                )
-            )
-        return needs_update, pypi_version
-
-    except URLError:
-        return False, str()
 
 
 def cast_pandas_dtypes(df: pandas.DataFrame, overwrite_dict: dict = dict()) -> pandas.DataFrame:

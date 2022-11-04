@@ -1,0 +1,6 @@
+sheets:
+  - sheet_name: test_sheet
+    sheet_key: 1m7ZXzbVB4A2cqum2DmjYvxYoiX8PoE8u6Izp6-kyWwQ
+    target_schema: sand
+    target_table: test_table
+    snake_case_camel: True
