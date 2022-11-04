@@ -44,20 +44,27 @@ class SnowflakeAdapter(BaseSQLAdapter):
             self.con.close()
             self._has_connection = False
         except AttributeError:
-            raise DatabaseError(red("SnowflakeAdaptor did not create a connection so it cannot be closed"))
+            raise DatabaseError(
+                red("SnowflakeAdaptor did not create a connection so it cannot be closed")
+            )
 
     def _create_schema(self) -> None:
         if self._has_connection is False:
             raise NoAcquiredConnectionError(
-                f"No acquired connection for {type(self).__name__}. Make sure you call " "`acquire_connection` before."
+                f"No acquired connection for {type(self).__name__}. Make sure you call "
+                "`acquire_connection` before."
             )
         try:
             if self.config.project.object_creation_dct["create_schema"]:
                 schema_exists = (
-                    True if self.config.target_schema in self.con.dialect.get_schema_names(self.con) else False
+                    True
+                    if self.config.target_schema in self.con.dialect.get_schema_names(self.con)
+                    else False
                 )
                 if schema_exists is False:
-                    logger.debug(yellow(f"Creating schema: {self.config.target_schema} in {self._database}"))
+                    logger.debug(
+                        yellow(f"Creating schema: {self.config.target_schema} in {self._database}")
+                    )
                     self.con.execute(CreateSchema(self.config.target_schema))
         except Exception as e:
             raise DatabaseError(str(e))
@@ -119,7 +126,9 @@ class SnowflakeAdapter(BaseSQLAdapter):
 
             # Now push the actual data --the pandas create above is only for creation the logic below
             # is actually faster as pandas does it row by row
-            qualified_table = f"{self._database}.{self.config.target_schema}.{self.config.target_table}"
+            qualified_table = (
+                f"{self._database}.{self.config.target_schema}.{self.config.target_table}"
+            )
             self.con.execute(
                 f"""
                 create or replace temporary stage {self.config.target_table}_stg
@@ -132,7 +141,10 @@ class SnowflakeAdapter(BaseSQLAdapter):
             self.con.execute(f"drop stage {self.config.target_table}_stg")
             if exists:
                 self.__add_missing_cols(
-                    self.config.target_schema, self.config.target_table, old_cols, df.columns.to_list()
+                    self.config.target_schema,
+                    self.config.target_table,
+                    old_cols,
+                    df.columns.to_list(),
                 )
         except Exception as e:
             raise DatabaseError(str(e))
@@ -151,7 +163,9 @@ class SnowflakeAdapter(BaseSQLAdapter):
         self.close_connection()
         return None
 
-    def __add_missing_cols(self, target_schema: str, target_table: str, old_cols: List, new_cols: List) -> None:
+    def __add_missing_cols(
+        self, target_schema: str, target_table: str, old_cols: List, new_cols: List
+    ) -> None:
         cols_to_add = [x for x in old_cols if x not in new_cols]
         for x in cols_to_add:
             self.excecute_query(
@@ -164,7 +178,8 @@ class SnowflakeAdapter(BaseSQLAdapter):
         old_cols = []
         try:
             data = self.excecute_query(
-                f"show columns in table {self._database}.{target_schema}.{target_table}", return_results=True
+                f"show columns in table {self._database}.{target_schema}.{target_table}",
+                return_results=True,
             )
             exists = True
             old_cols = [x[2].lower() for x in data]
@@ -198,4 +213,6 @@ class SnowflakeAdapter(BaseSQLAdapter):
             )
             return columns[0][0], rows[0][0]
         else:
-            raise TableDoesNotExist(f"Table {self._database}.{target_schema}.{target_table} seems empty")
+            raise TableDoesNotExist(
+                f"Table {self._database}.{target_schema}.{target_table} seems empty"
+            )

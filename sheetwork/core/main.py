@@ -15,7 +15,6 @@ from sheetwork.core.sheetwork import SheetBag
 from sheetwork.core.task.init import InitTask
 from sheetwork.core.ui.traceback_manager import SheetworkTracebackManager
 
-
 # general parser
 parser = argparse.ArgumentParser(
     prog="sheetwork",
@@ -48,13 +47,19 @@ base_subparser.add_argument(
 subs = parser.add_subparsers(title="Available sub commands", dest="command")
 
 # Upload task parser
-upload_sub = subs.add_parser("upload", parents=[base_subparser], help="Pull, sanitize and upload a google sheet.")
+upload_sub = subs.add_parser(
+    "upload", parents=[base_subparser], help="Pull, sanitize and upload a google sheet."
+)
 upload_sub.set_defaults(cls=upload_task.SheetBag, which="upload")
 upload_sub.add_argument("--schema", help="Target Schema Name", type=str, default=None)
 upload_sub.add_argument("--table", help="Target Table Name", type=str, default=None)
-upload_sub.add_argument("-sn", "--sheet-name", help="Name of your sheet from config", type=str, default=None)
+upload_sub.add_argument(
+    "-sn", "--sheet-name", help="Name of your sheet from config", type=str, default=None
+)
 upload_sub.add_argument("-sk", "--sheet-key", help="Google sheet Key", type=str, default=None)
-upload_sub.add_argument("--dry-run", help="Skips pushing to database", action="store_true", default=False)
+upload_sub.add_argument(
+    "--dry-run", help="Skips pushing to database", action="store_true", default=False
+)
 upload_sub.add_argument(
     "-i",
     "--interactive",
@@ -95,7 +100,9 @@ upload_sub.add_argument(
 )
 
 # Init task parser
-init_sub = subs.add_parser("init", parents=[base_subparser], help="Initialise your sheetwork project")
+init_sub = subs.add_parser(
+    "init", parents=[base_subparser], help="Initialise your sheetwork project"
+)
 init_sub.set_defaults(cls=init_task.InitTask, which="init")
 init_sub.add_argument("--project-name", help="Name you want to init your dbt project with")
 init_sub.add_argument(

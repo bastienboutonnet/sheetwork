@@ -136,7 +136,7 @@ class GoogleSpreadsheet:
             )
 
     def make_df_from_worksheet(
-        self, worksheet_name: str = str(), skip_rows:int = 0, grab_header: bool = True
+        self, worksheet_name: str = str(), skip_rows: int = 0, grab_header: bool = True
     ) -> pandas.DataFrame:
         if not self.workbook:
             raise NoWorkbookLoadedError(
@@ -151,7 +151,7 @@ class GoogleSpreadsheet:
             logger.debug(green("Sheet loaded successfully"))
             if grab_header:
                 values: List[Any] = worksheet.get_all_values()
-                
+
                 cols = list()
                 col_counter = dict()
                 current_cols = values[0 + skip_rows]
@@ -171,7 +171,7 @@ class GoogleSpreadsheet:
                     cols.append(col)
                     col_pos += 1
 
-                df = pandas.DataFrame(values[1 + skip_rows:], columns=cols)
+                df = pandas.DataFrame(values[1 + skip_rows :], columns=cols)
             else:
                 df = pandas.DataFrame(worksheet.get_all_values())
             logger.debug(yellow(f"Raw obtained google sheet: \n {df.head()}"))

@@ -81,7 +81,9 @@ class SheetBag:
             google_sheet = GoogleSpreadsheet(self.profile, self.sheet_key)
             google_sheet.authenticate()
             google_sheet.open_workbook()
-            df = google_sheet.make_df_from_worksheet(worksheet_name=worksheet, skip_rows=self.skip_rows)
+            df = google_sheet.make_df_from_worksheet(
+                worksheet_name=worksheet, skip_rows=self.skip_rows
+            )
         except APIError as e:
             error = str(e)
             if any(x in error for x in ["RESOURCE_EXHAUSTED", "UNAVAILABLE", "INTERNAL"]) and any(

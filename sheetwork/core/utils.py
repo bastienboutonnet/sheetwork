@@ -48,7 +48,9 @@ class PathFinder:
         self.max_iter = max_iter
         self.iteration = 0
 
-    def find_nearest_dir_and_file(self, yaml_file: str, current: Path = Path.cwd()) -> Tuple[Path, Path, bool]:
+    def find_nearest_dir_and_file(
+        self, yaml_file: str, current: Path = Path.cwd()
+    ) -> Tuple[Path, Path, bool]:
         """Looks for the yaml_file you ask for.
 
         Starting from the current directory and going up with
@@ -78,7 +80,8 @@ class PathFinder:
             self.iteration += 1
         else:
             raise NearestFileNotFound(
-                f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} " "iterations upwards."
+                f"Unable to find {yaml_file} in the nearby directories after {self.max_iter} "
+                "iterations upwards."
             )
 
 
@@ -114,7 +117,9 @@ def check_columns_in_df(
     message = f"The following columns were not found in the sheet: {cols_not_in_df} "
     if warn_only:
         # and not suppress_warning:
-        logger.warning(yellow(message + "they were ignored. Consider cleaning your sheets.yml file"))
+        logger.warning(
+            yellow(message + "they were ignored. Consider cleaning your sheets.yml file")
+        )
     elif not warn_only:
         # and not suppress_warning:
         raise ColumnNotFoundInDataFrame(message + "Google Sheet or sheets.yml needs to be cleaned")
@@ -124,7 +129,11 @@ def check_columns_in_df(
 def check_dupe_cols(columns: List[str]):
     """Checks dupes in a list."""
     columns_without_empty_strings = list(filter(None, columns))
-    dupes = [item for item, count in collections.Counter(columns_without_empty_strings).items() if count > 1]
+    dupes = [
+        item
+        for item, count in collections.Counter(columns_without_empty_strings).items()
+        if count > 1
+    ]
     if dupes:
         raise DuplicatedColumnsInSheet(
             f"Duplicate column names found in Google Sheet: {dupes}. Aborting. Fix your sheet."
