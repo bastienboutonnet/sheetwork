@@ -1,4 +1,5 @@
 """Houses Project parsing class from sheetwork_project.yml."""
+
 import time
 from pathlib import Path
 from typing import Dict, Union

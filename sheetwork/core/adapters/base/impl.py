@@ -1,4 +1,5 @@
 """Abstract definition of what a basic SQL adaptor should look like to satisfy the rest of the contracts."""
+
 import abc
 from typing import Any, Dict, Optional, Tuple
 

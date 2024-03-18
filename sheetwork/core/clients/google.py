@@ -1,4 +1,5 @@
 """Houses classes and methods to help interacting with Google Spreasheet API. Uses `gspread` mainly."""
+
 from pathlib import Path
 from typing import Any, List, Tuple
 

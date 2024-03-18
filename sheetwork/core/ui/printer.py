@@ -1,4 +1,5 @@
 """Sets up some easy colour shortcuts to make sure we can easily colour logs and prints."""
+
 import time
 
 from sheetwork.core.ui.colours import COLOURS
