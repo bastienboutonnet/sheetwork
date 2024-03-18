@@ -1,4 +1,5 @@
 """Database Adaper factory."""
+
 import importlib
 from typing import Type
 

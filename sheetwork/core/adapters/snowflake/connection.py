@@ -1,4 +1,5 @@
 """Concrete Snowflake Database Connection classes."""
+
 from typing import Dict
 
 from pydantic import BaseModel, ValidationError, validator

@@ -1,4 +1,5 @@
 """Configuration class module. Loads project-wide params and all that fun stuff."""
+
 from pathlib import Path
 from typing import Any, Dict, List, Sequence, Union
 

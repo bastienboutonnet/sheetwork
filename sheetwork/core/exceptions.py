@@ -1,4 +1,5 @@
 """Contains all Sheetwork exceptions. Truely exceptional!"""
+
 from colorama import Fore
 
 

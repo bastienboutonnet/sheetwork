@@ -1,4 +1,5 @@
 """Concrete database implementations for Postgres Connector."""
+
 from typing import Any, Optional, Tuple
 
 import pandas

@@ -3,6 +3,7 @@
 This class which will instanciate CLI args default and/or
 consume CLI arguments.
 """
+
 import sys
 from argparse import ArgumentParser
 from typing import List

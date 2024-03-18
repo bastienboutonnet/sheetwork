@@ -1,4 +1,5 @@
 """System related interaction methods."""
+
 import sys
 from pathlib import Path
 

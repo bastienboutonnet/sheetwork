@@ -1,4 +1,5 @@
 """Houses Profile class which parses information from profiles.yml such as db type, creds etc."""
+
 from pathlib import Path
 from typing import Dict
 

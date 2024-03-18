@@ -1,4 +1,5 @@
 """ABC to define what an concrete Connection object should look like."""
+
 import abc
 
 
@@ -6,8 +7,7 @@ class BaseCredentials(abc.ABC):
     """Base class to define basic API contract for a Credentials class and its methods."""
 
     @abc.abstractmethod
-    def parse_and_validate_credentials(self):
-        ...
+    def parse_and_validate_credentials(self): ...
 
 
 class BaseConnection(abc.ABC):  # noqa D101

@@ -1,4 +1,5 @@
 """Holds cerberus validation schemals for each yml parsed by any of the sheetwork system."""
+
 config_schema = {
     "sheets": {
         "required": True,

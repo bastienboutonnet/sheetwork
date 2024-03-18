@@ -1,4 +1,5 @@
 """Holds some fun stuff to allow for quantity of traceback printed to stout. Nothing too magical."""
+
 import pretty_errors
 
 from sheetwork.core.flags import FlagParser

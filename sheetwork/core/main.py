@@ -1,4 +1,5 @@
 """Main module for sheetwork. Sets up Arguments to parse and task handling. That's it!"""
+
 import argparse
 import sys
 from typing import List, Union
